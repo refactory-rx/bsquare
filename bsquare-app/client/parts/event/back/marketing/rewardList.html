@@ -1,0 +1,129 @@
+<div style="width: 100%; height: 100%;">
+        
+    <div style="width: 96%; display: inline-block; margin: auto;">
+            
+        <div style="display: inline-block; width: 100%;">
+                
+            <div style="width: 100%; display: inline-block; margin-top: 0px; font-size: 18px;">{{ 'event.back.marketing.groupRewards' | translate }}</div>
+            <div style="width: 100%; display: inline-block; margin-top: 12px;">
+                <div ng-repeat="condition in event.groupRewards.conditions" style="width: 140px; height: 140px; overflow-y: hidden; position: relative; margin-left: 4px; margin-bottom: 4px; display: inline-block; vertical-align: top; border: 1px solid black;">
+                    <div style="display: inline-block; width: 100%;">
+                        <div style="border-bottom: 1px solid black;">{{condition.ticketResource.name}} x {{condition.quantity}}</div>
+                        <div>
+                            <div>{{condition.reward.code}}</div>
+                            <div>{{condition.reward.name}}</div>
+                            <div ng-show="condition.reward.type == 'ticket'">
+                                {{condition.reward.ticketResource.name}} x {{condition.reward.quantity}}
+                            </div>
+                            <div><i>{{condition.reward.description}}</i></div>
+                            <div><a ng-click="deleteGroupCondition($index)" href="">{{ 'forms.general.delete' | translate }}</a></div>
+                        </div>
+                    </div>
+                    <div class="fadeout"></div>
+                </div>
+                
+                <div style="width: 140px; height: 140px; margin-left: 4px; display: inline-block; vertical-align: top; border: 1px solid black; position: relative;">
+                    <div class="newItemButtonContainer">                       
+                        <button ng-click="createGroupCondition()" class="btn btn-default">+</button>
+                    </div>
+                </div>
+                    
+            </div>
+                
+            <div style="width: 100%; display: inline-block; margin-top: 24px; font-size: 20px;">{{ 'event.back.marketing.referralRewards' | translate }}</div>
+            <div class="panel panel-default" style="width: 100%; display: inline-block; margin-top: 12px;">
+                
+                <div class="panel-heading columnHeader" style="width: 100%; display: inline-block; margin-top: 6px; padding-left: 4px;">
+                    {{ 'event.back.marketing.conditions' | translate }}
+                </div>
+                <div class="panel-body" style="width: 100%; display: inline-block; margin-top: 6px;">
+                    <div style="display: inline-block; width: 25%; float: left;"><b>{{ 'event.back.marketing.conditionType' | translate }}</b></div>
+                        <div style="display: inline-block; width: 34%; float: left; text-align: center;">
+                            <b>{{ 'event.back.marketing.conditionUnit' | translate }}</b>
+                        </div>
+                        <div style="display: inline-block; width: 10%; float: left; text-align: center;"><b>{{ 'event.back.marketing.conditionPoints' | translate }}</b></div>
+                        <div style="display: inline-block; width: 25%; float: left; text-align: right;"></div>
+                </div>
+                <div ng-repeat="condition in event.refRewards.conditions" class="tableRowBorder" style="width: 100%; display: inline-block;">
+                        
+                    <div style="width: 100%; display: inline-block; margin: auto;">
+                        
+                        <div style="display: inline-block; width: 25%; float: left;">{{condition.type.title}}</div>
+                        <div style="display: inline-block; width: 34%; float: left; text-align: center;">
+                            <div ng-show="condition.type.type == 'sale' || condition.type.type == 'attendance'" style="display: inline-block; width: 100%;">{{condition.ticketResource.name}}</div>
+                            <div ng-show="condition.type.type == 'impression'" style="display: inline-block; width: 100%;">{{ 'event.back.marketing.uniqueView' | translate }}</div>
+                        </div>
+                        <div style="display: inline-block; width: 10%; float: left; text-align: center;">{{condition.points}}</div>
+                        <div style="display: inline-block; width: 25%; float: left; text-align: right;"><a ng-click="deleteRefCondition($index)" href="">{{ 'forms.general.delete' | translate }}</a></div>
+                            
+                    </div>
+                    
+                </div>
+                
+                <div class="panel-heading columnHeader" style="width: 100%; display: inline-block; margin-top: 6px; padding-left: 4px;">
+                    {{ 'event.back.marketing.newCondition' | translate }}
+                </div>
+                <div class="panel-body" style="width: 100%; display: inline-block; margin-top: 6px;">
+                        
+                    <div style="width: 100%; display: inline-block; margin: auto;">
+                        
+                        <div class="newRefConditionLeft">
+                            <div class="type">
+                                <select class="form-control" ng-model="newRefCondition.type" ng-options="refConditionType.title for refConditionType in refConditionTypes"></select>
+                            </div>
+                            <div class="unit">
+                                <div ng-show="newRefCondition.type.type == 'sale' || newRefCondition.type.type == 'attendance'" style="display: inline-block; width: 100%;">
+                                    <select class="form-control" ng-model="newRefCondition.ticketResource" ng-options="ticketResource.name for ticketResource in ticketResources"></select>
+                                </div>
+                                <div ng-show="newRefCondition.type.type == 'impression'" style="display: inline-block; width: 100%;">{{ 'event.back.marketing.uniqueView' | translate }}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="newRefConditionRight">
+                            <div class="points">
+                                <input type="text" placeholder="{{ 'event.back.marketing.rewardPoints' | translate }}" class="form-control" style="width: 100%;" ng-model="newRefCondition.points" />
+                            </div>
+                            <div class="add">
+                                <button class="btn btn-default" ng-click="saveRefCondition(newRefCondition)">{{ 'forms.general.add' | translate }}</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                
+                <div class="panel-heading columnHeader" style="width: 100%; display: inline-block; text-align: left; margin-top: 24px; padding-left: 4px;">{{ 'event.back.marketing.pointRewards' | translate }}
+                </div>
+                <div class="panel-body" style="width: 100%; display: inline-block; margin-top: 12px; margin-bottom: 36px;">
+        
+                    <div ng-repeat="reward in event.refRewards.pointRewards" style="width: 140px; height: 140px; overflow-y: hidden; position: relative; margin-left: 4px; margin-bottom: 4px; display: inline-block; vertical-align: top; border: 1px solid black;">
+                        <div style="display: inline-block; width: 100%;">
+                            <div style="border-bottom: 1px solid black;">{{reward.points}} pts</div>
+                            <div>
+                                <div>{{reward.code}}</div>
+                                <div>{{reward.name}}</div>
+                                <div ng-show="reward.type == 'ticket'">
+                                    {{reward.ticketResource.name}} x {{reward.ticketQty}}
+                                </div>
+                                <div><i>{{reward.description}}</i></div>
+                            </div>
+                        </div>
+                        <div class="fadeout"></div>
+                    </div>
+                    
+                    <div style="width: 140px; height: 140px; margin-left: 4px; display: inline-block; vertical-align: top; border: 1px solid black; position: relative;">
+                        <div style="width: 34px; height: 34px; top: 50%; left: 50%; margin-left: -17px; margin-top: -17px; position: absolute;">
+                            <button ng-click="createRefReward()" class="btn btn-default">+</button>
+                        </div>
+                    </div>
+                        
+                </div>
+
+            </div>
+             
+        </div>
+                
+            
+    </div>
+        
+</div>

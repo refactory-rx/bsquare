@@ -1,0 +1,28 @@
+<div class="manageOrders">
+        
+    <div style="width: 90%; display: inline-block; margin: auto;">
+            
+        <div style="display: inline-block; width: 100%;">
+            
+            <!-- Table -->
+            <div style="margin-bottom: 24px;">
+                <div ng-repeat="message in sentMessages">
+                    <div style="display: inline-block; width: 33%; text-align: right;">
+                        <span>{{message.to.length}} {{ 'event.back.guests.suffix-recipients' | translate }}</span>
+                    </div>
+                    <div style="display: inline-block; width: 33%; text-align: center;">{{message.subject}}</div>
+                    <div style="display: inline-block; width: 33%; text-align: left;">{{message.time}}</div>
+                </div>
+            </div>
+            
+            <div><a href="" ng-click="showGuestList()">{{ 'forms.general.back' | translate }}</a></div>
+                  
+            
+        </div>
+                
+            
+    </div>
+        
+</div>
+
+                  

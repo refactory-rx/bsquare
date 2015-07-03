@@ -1,0 +1,88 @@
+<div class="editEventLayout" style="height: 100%; position: absolute;" ng-controller="event.back.signup.ManageSignupCtrl">
+    
+    {{ 'event.back.signup.explanationText' | translate }} 
+    <br/><br/>
+    
+    <div style="width: 100%; display: inline-block;">
+        
+        <div class="panel panel-default signupFields">
+        
+            <div class="panel-heading" style="width: 100%; text-align: left; display: inline-block;">
+                {{ 'event.back.signup.currentFields' | translate }}
+            </div>
+            
+            <div class="panel-body">
+            <div ng-repeat="field in signupFields" style="width: 100%; text-align: left; display: inline-block;">
+                <div style="float: left; width: 40%;">
+                    {{field.title}}
+                </div>
+                <div style="float: left; width: 29%;">
+                    <div ng-show="field.required == 'true'">{{ 'event.back.signup.required' | translate }}</div>
+                    <div ng-show="field.required == 'false'">{{ 'event.back.signup.optional' | translate }}</div>
+                </div>
+                <div style="float: left; width: 29%; text-align: right;">
+                    <a ng-show="!$first" href="" ng-click="removeField($index)">{{ 'forms.general.remove' | translate }}</a>
+                </div>
+            </div>
+            </div>
+
+            <div class="panel-heading" style="width: 100%; text-align: left; display: inline-block; margin-top: 12px;">
+                {{ 'event.back.signup.newField' | translate }}
+            </div>
+            
+            <div class="panel-body" style="width: 100%; text-align: left; display: inline-block;">
+                
+                <div class="signupFieldsNewLeft">
+                    
+                    <div style="display: inline; float: left; width: 50%;">
+                        <div style="margin-bottom: 8px">
+                            <b>{{ 'event.back.signup.fieldType' | translate }}</b>
+                        </div>
+                        <div>
+                            <select ng-model="newField.type" ng-options="fieldType.title for fieldType in fieldTypes"  ng-change="updateNewField()" class="form-control" style="width: 90%">
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div style="display: inline; float: left; width: 50%;">
+                        
+                        <div>
+                            <b>{{ 'event.back.signup.fieldName' | translate }}</b>
+                        </div>
+                        <div>
+                            <div ng-show="newField.type.name == 'anyText'">
+                                <input type="text" class="form-control" ng-model="newField.title" style="width: 90%"/>
+                            </div>
+                            <div ng-show="newField.type.name != 'anyText'">
+                                {{newField.type.title}}
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                
+                <div class="signupFieldsNewRight">
+                    <div style="display: inline; float: left; width: 50%;">
+                        <select ng-model="newField.required" class="form-control" style="width: 90%">
+                            <option value="true">{{ 'event.back.signup.required' | translate }}</option>
+                            <option value="false">{{ 'event.back.signup.optional' | translate }}</option>
+                        </select>
+                    </div>
+                    
+                    <div style="display: inline; float: left; width: 50%;">
+                        <button class="btn btn-default" style="width: 100%" ng-click="addNewField()">{{ 'forms.general.add' | translate }}</button>
+                    </div>
+                </div>
+                
+            </div>
+        
+        </div>
+    
+    
+    </div>
+    
+    
+    
+    
+</div>

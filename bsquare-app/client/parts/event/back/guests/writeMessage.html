@@ -1,0 +1,39 @@
+<div class="manageOrders">
+        
+    <div style="width: 90%; display: inline-block; margin: auto;">
+            
+        <div style="display: inline-block; width: 100%;">
+            
+            <div style="width: 100%; display: inline-block; margin-bottom: 12px;">
+                {{ 'event.back.guests.recipients' | translate }}:
+                <span ng-show="selection.selectedUsers.length > 0">{{selection.selectedUsers[0].orderEmail}}</span>
+                <span style="margin-left: -0.3em;" ng-show="selection.selectedUsers.length > 1">, {{selection.selectedUsers[1].orderEmail}}</span>
+                <span style="margin-left: -0.3em;" ng-show="selection.selectedUsers.length > 2">, {{selection.selectedUsers[2].orderEmail}}</span>
+                <span ng-show="selection.selectedUsers.length > 3">+{{selection.selectedUsers.length-3}} more</span>
+            </div>
+            
+            <div style="width: 100%;">
+                
+                <div style="width: 100%; margin-bottom: 6px;">
+                    <input type="text" class="form-control" style="width: 100%;" ng-model="message.subject">    
+                </div>
+                
+                <div style="width: 100%;">
+                    <textarea style="width: 100%; height: 300px;" ng-model="message.text"></textarea>    
+                </div>
+                
+                <div>
+                    <a href="" ng-click="showGuestList()">{{ 'forms.general.back' | translate }}</a>
+                    <button style="margin-left: 6px;" ng-click="sendMessage(message, selection.selectedUsers)" class="btn btn-default">{{ 'event.back.guests.btn-send' | translate }}</button>
+                </div>
+                
+            </div> 
+                  
+            
+        </div>
+                
+            
+    </div>
+        
+</div>         
+                  

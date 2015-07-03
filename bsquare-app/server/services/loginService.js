@@ -1,0 +1,232 @@
+var passwordHash = require('password-hash');
+var crypto = require('crypto');
+
+let User, Profile;
+
+var confirmEmailText =
+	"<p>Thanks for registering. Please, confirm your e-mail by clicking the following link:"+
+	"<br/><br/>"+
+	"{{link}}"+
+	"<br/><br/>"+
+	"Keikkapalvelu Ax</p>";
+
+var recoverPasswordEmailText =
+	"<p>You have requested to reset your password. Click the following link to proceed:"+
+	"<br/><br/>"+
+	"{{link}}"+
+	"<br/><br/>"+
+	"Keikkapalvelu Ax</p>";
+
+class LoginService {
+    
+    constructor(app) {
+        this.authService = app.authService;
+        this.sendgrid = require('sendgrid')(app.settings.SENDGRID_USERNAME, app.settings.SENDGRID_PASSWORD);
+        User = app.model.User;
+        Profile = app.model.Profile;
+    }
+
+	getProfile(req, callback) {
+		
+        this.authService.screenRequest(req, true, (result) => {
+			
+			if(result.status == 'app.authService.rized') {
+				
+				var response = {
+					success: 0,
+					status: 'none'
+				};
+				
+				var profile = result.profile;
+				
+				if(profile) {
+					response.success = 1;
+					response.status = 'gotProfile';
+					response.message = 'Got profile';
+					response.profile = profile;
+				} else {
+					response.status = 'profileNotFound';
+					response.message = 'Could not find profile.';
+				}
+				
+				callback(response);
+				
+			} else {
+				callback(result);
+			}
+			
+		});
+		
+	}	
+	
+	saveProfile(req, callback) {
+		
+        this.authService.screenRequest(req, true, (result) => {
+			
+			if(result.status == 'app.authService.rized') {
+				
+				let response = {
+					success: 0,
+					status: 'none'
+				};
+				
+				let saveProfileRequest = req.body;
+				let profile = saveProfileRequest.profile;
+				let profileId = profile._id;
+				delete profile._id;
+				
+                Profile.update( { _id: profileId }, profile, (err, numAffected) => {
+					
+					if(err) {
+						response.status = 'error';
+						response.message = 'Failed to save profile';
+						response.error = err;
+					} else {
+						response.success = 1;
+						response.status = 'profileSaved';
+						response.message = 'Profile saved.';
+					}
+					
+					callback(response);
+					
+				});
+				
+			} else {
+				callback(result);
+			}
+			
+		});
+		
+	}
+	
+	expireTimedOutSessions() {
+		
+		var maxTime = (new Date()).getTime()-(1000*60*60*12);
+		
+        var query = {
+            loginStatus: { $ne: 'loggedOut' },
+			lastActiveTime: {  $lt: maxTime }
+		};
+		
+        User.find(query, (err, users) => {
+            
+            if(err) {
+				console.log(err);
+			} else {
+				for(var i=0; i < users.length; i++) {
+					this.expireUser(users[i]);
+				}	
+			}
+			
+		});
+	
+	}
+	
+	expireUser(user) {
+		
+		user.tokens = {};
+		user.loginStatus = 'loggedOut';
+	    
+        user.save((err) => { 
+			if(err) { console.log(err); }
+		});
+			
+	}	
+	
+	sendPendingEmails() {
+		
+		console.log('run send pending emails');
+		
+        User.find({ sendVerificationEmail: 'true' }, (err, users) => {
+		    
+            if(err) {
+
+                console.log(err);
+
+            } else if(users && users.length > 0) {
+
+                for(var i=0; i < users.length; i++) {
+                    
+                    var user = users[i];
+                    
+                    var verifyUrl = APP_BASE_URL+'/#/verify/'+user._id;
+                    var link = '<a href="'+verifyUrl+'">'+verifyUrl+'</a>';
+                    var emailText = confirmEmailText.replace('{{link}}', link);
+                    
+                    user.sendVerificationEmail = 'false';
+                    user.save();
+                    
+                    this.sendEmail(user.emailAddress, "Email verification request", emailText, emailText);
+                    
+                }
+
+            }	
+        
+        });
+
+        User.find({ sendRecoveryEmail: 'true' }, (err, users) => {
+			
+            if(err) {
+
+                console.log(err);
+
+            } else if(users && users.length > 0) {
+
+                console.log('pwd reset requests: '+users.length);
+                
+                for(let i=0; i < users.length; i++) {
+                    
+                    var user = users[i];
+                    
+                    var recoverUrl = APP_BASE_URL+'/#/recover/'+user.pwdRecoveryToken;
+                    var link = '<a href="'+recoverUrl+'">'+recoverUrl+'</a>';
+                    var emailText = recoverPasswordEmailText.replace('{{link}}', link);
+                    
+                    user.sendRecoveryEmail = 'false';
+                    user.save();
+                    
+                    this.sendEmail(user.emailAddress, "Password recovery", emailText, emailText);
+                    
+                }
+
+            }
+			
+		});
+			
+		
+	}
+	
+	sendEmail(emailAddress, emailSubject, emailText, emailHtml) {
+		
+		console.log('sending password reset email...', emailAddress, emailSubject);
+		
+		this.sendgrid.send({
+    		to: emailAddress,
+		  	from: SENDGRID_FROM,
+		  	subject: emailSubject,
+		  	text: emailText,
+		  	html: emailHtml
+        }, (err, json) => {
+		  	if (err) { return console.error(err); }
+		  	console.log(json);
+		});
+			
+	}
+	
+	start() {
+		
+		var expTime = 1000 * 60; // 1 hour
+		
+		this.expireTimedOutSessions();
+		this.sendPendingEmails();
+		
+		setInterval(this.sendPendingEmails, 60000);
+		setInterval(this.expireTimedOutSessions, expTime);
+		
+	}	
+
+}
+
+module.exports = (app) => {
+    return new LoginService(app);
+};

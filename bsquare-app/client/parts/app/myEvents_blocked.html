@@ -1,0 +1,16 @@
+<div class="panel-heading columnHeader myEventsHeader" ng-click="navigate('#/app?view=myEvents')">
+    <div style="display: inline;">
+        {{ 'app.myEvents.title' | translate }}
+    </div>
+    <div style="display: inline; margin-left: 4px;" ng-show="editEvent != 'new'">
+    </div>
+</div>
+
+<div class="panel-body panelContent">
+    <div style="height: 100%; width: 100%;">
+        <div class="noContent" style="padding: 6px; position: absolute; top: 50%; margin-top: -36px; width: 100%;">
+            Tapahtuman järjestäminen on tällä hetkellä avoinna ainoastaan valituille asiakkaille.<br/><br/>
+            Avaamme ominaisuuden pian julkiseen käyttöön!
+        </div>
+    </div>
+</div>

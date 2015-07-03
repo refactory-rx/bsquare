@@ -1,0 +1,23 @@
+{
+  "name": "bsquare-auth",
+  "version": "1.0.0",
+  "description": "B Square Auth Module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vhalme/bsquare-auth.git"
+  },
+  "author": "Vladimir Halme",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vhalme/bsquare-auth/issues"
+  },
+  "homepage": "https://github.com/vhalme/bsquare-auth",
+  "dependencies": {
+    "mongoose": "^3.8.25",
+    "password-hash": "^1.2.2"
+  }
+}

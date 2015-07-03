@@ -1,0 +1,44 @@
+<div class="editEvent" ng-controller="MyEventCtrl" ng-init="init(myEvent)">
+	
+	<div class="editEventHeader" style="text-align: left; margin-bottom: 12px;">
+	    
+	    <div>	
+		<div style="width: 49%; display: inline-block; vertical-align: top;">
+    		<span ng-show="event.info.title != undefined && event.info.title.length > 0">
+    			{{event.info.title}}
+    		</span>
+    		<span ng-show="event.info.title == undefined || event.info.title.length == 0">
+    			{{ 'app.myEvents.createEvent' | translate }}
+    		</span>
+    	</div>
+    	<div style="width: 49%; display: inline-block;">
+    	    
+    	    <div ng-click="navigate('#/app?view=myEvents&action='+event._id)" style="width: 20px; height: 20px; float: right; padding-top: 2px; cursor: pointer;">
+    	        <span class="glyphicon glyphicon-pencil"></span>
+    	    </div>
+    	    <div ng-click="navigate('#/event/'+event._id)" style="width: 20px; height: 20px; float: right; padding-top: 2px; cursor: pointer;">
+    	        <span class="glyphicon glyphicon-eye-open"></span>
+    	    </div>
+    	    <div ng-click="navigate('#/event/'+event._id+'?action=edit')" style="width: 20px; height: 20px; float: right; padding-top: 2px; cursor: pointer;">
+    	        <span class="glyphicon glyphicon-cog"></span>
+    	    </div>
+    	    
+    	</div>
+    	</div>
+    	
+    	<div style="margin-top: 4px; font-size: 10px; color: #808080;">
+    		<div style="display: inline;">
+	    	    {{ 'app.myEvents.sold' | translate }}: {{stats.sold}}&nbsp;&nbsp;&nbsp;&nbsp;
+	    	    {{ 'app.myEvents.reserved' | translate }}: {{stats.reserved}}&nbsp;&nbsp;&nbsp;&nbsp;
+	    	    {{ 'app.myEvents.remains' | translate }}: {{stats.remains}}&nbsp;&nbsp;&nbsp;&nbsp;
+	    	</div>
+	    	<div style="display: inline; float: right; padding-right: 12px;">
+	    		{{eventStatus}}
+	    	</div>
+    	</div>
+    	
+	</div>
+	
+	
+	
+</div>

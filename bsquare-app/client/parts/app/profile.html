@@ -1,0 +1,68 @@
+<div class="settingsContainer">
+<div class="panel panel-default settings">
+<div class="panel-body inputForm">
+	
+	<div class="row" ng-show="showError == true">
+		<div class="col-md-12 inlineError">
+			{{errorMessage}}
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-12">
+		
+			<form role="form" novalidate>
+				<div class="inputRow form-group">
+					<div class="inputRowCell labelContainer">Display name</div>
+					<div class="inputRowCell inputContainer">
+						<input type="text" placeholder="Display name: eg. Batman" class="form-control" ng-model="profile.displayName"/>
+					</div>
+				</div>
+				<div class="inputRow form-group">
+					<div class="inputRowCell labelContainer">First name</div>
+					<div class="inputRowCell inputContainer">
+						<input type="text" placeholder="First name: eg. John" class="form-control" ng-model="profile.firstName"/>
+					</div>
+				</div>
+				<div class="inputRow form-group">
+					<div class="inputRowCell labelContainer">Last name</div>
+					<div class="inputRowCell inputContainer">
+						<input type="text" placeholder="Last name: eg. Smith" class="form-control" ng-model="profile.lastName"/>
+					</div>
+				</div>
+				<div class="inputRow">
+					<div class="inputRowCell labelContainer">&nbsp;</div>
+					<div class="inputRowCell inputContainer">
+						<br/>
+						<button class="btn btn-default"  ng-click="saveProfile()">Save</button>
+						<span ng-show="profileStatus == 'changed'" style="color: #0000a0;">
+							&nbsp;Changed
+						</span>
+						<span ng-show="profileStatus == 'saved'" style="color: #00a000;">
+							&nbsp;Saved
+						</span>
+					</div>
+				</div>
+			</form>
+			
+		</div>
+	</div>
+	
+    <!--
+	<div style="margin-top: 24px;" class="row">
+            	    
+	    <div>
+	        <b>Referral stats</b>
+			<br/><br/>
+			Tickets sold by referral: <b>{{profile.refStats.numTickets}}</b><br/>
+			Orders placed by referral: <b>{{profile.refStats.numOrders}}</b><br/>
+			Revenue brought by referral: <b>{{profile.refStats.revenue}} €</b><br/>
+			Unique user impressions by referral: <b>{{profile.refStats.impressions}}</b><br/>
+		</div>
+	    
+	</div>
+	-->
+    
+</div>
+</div>
+</div>

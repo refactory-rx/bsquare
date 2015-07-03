@@ -1,0 +1,25 @@
+<style>
+
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+    }
+
+    .revenue text {
+        text-anchor: end;
+    }
+    
+    .title { font: 10px sans-serif; font-size: 14px; font-weight: bold; }
+    .subtitle { font: 10px sans-serif; fill: #999; }
+    
+    #revenue-chart {
+        font-size: 10px;    
+    }
+    
+</style>
+
+<div ng-controller="event.back.dashboard.RevenueChartCtrl" style="margin-top: 24px;">
+    <div id="revenue-chart"></div>   
+</div>

@@ -1,0 +1,125 @@
+<div id="editEvent" class="editEvent" ng-controller="QuickEditEventCtrl" ng-init="loadInit(myEvent)" ng-cloak>
+	
+	<div class="editEventHeader" style="text-align: left; margin-bottom: 12px;">
+		
+		<div style="width: 49%; display: inline-block; vertical-align: top;">
+    		<span ng-show="event.info.title != undefined && event.info.title.length > 0">
+    			{{event.info.title}}
+    		</span>
+    		<span ng-show="event.info.title == undefined || event.info.title.length == 0">
+    			{{ 'app.myEvents.createEvent' | translate }}
+    		</span>
+    	</div>
+    	<div ng-show="eventExists == true" style="width: 49%; display: inline-block;">
+    	    <div ng-click="navigate('#/event/'+event._id)" style="width: 20px; height: 20px; float: right; padding-top: 2px;">
+    	        <span class="glyphicon glyphicon-eye-open"></span>
+    	    </div>
+    	    <div ng-click="navigate('#/event/'+event._id+'?action=edit')" style="width: 20px; height: 20px; float: right; padding-top: 2px;">
+    	        <span class="glyphicon glyphicon-cog"></span>
+    	    </div>
+    	</div>
+    	
+	</div>
+	
+	<div class="quickEditEventSettings" style="height: 100%; position: absolute; left: 0%;" ng-cloak>
+		
+		<div>
+				
+				<div class="inputForm">
+					<div class="inputRow form-group" ng-class="{ 'has-error': validationErrors && validationErrors.title }">
+						<div class="inputRowCell labelContainer hideTooNarrow">{{ 'event.back.info.label-title' | translate }}</div>
+						<div class="inputRowCell eventInputContainer">
+							<input placeholder="{{ 'event.back.info.placeholder-title' | translate }}" class="form-control" style="width: 100%;" type="text" 
+								ng-model="event.info.title" ng-change="clearError('title')"/>
+						</div>
+					</div>
+					<div class="inputRow form-group" ng-class="{ 'has-error': validationErrors && validationErrors.place }">
+						<div class="inputRowCell labelContainer">{{ 'event.back.info.label-place' | translate }}</div>
+						<div class="inputRowCell eventInputContainer">
+							<input id="place-input" class="form-control" style="width: 100%;"
+								placeholder="{{ 'event.back.info.placeholder-place' | translate }}" type="text" ng-model="eventPlace" ng-change="clearError('place')" />
+						</div>
+					</div>
+					<div class="inputRow form-group">
+						<div class="inputRowCell labelContainer">{{ 'event.back.info.label-starts' | translate }}</div>
+						<div class="inputRowCell eventInputContainer">
+							
+							<div class="dropdown" style="margin-top: 6px; text-align: center;">
+							  <span ng-show="validationErrors && validationErrors.timeStart" style="color: red;">! </span>
+		                      <a class="dropdown-toggle" id="startDateSelector" role="button" data-toggle="dropdown" data-target="" href="" ng-cloak>
+		                      	<span ng-show="eventStartTime == undefined" ng-cloak>{{ 'event.back.info.placeholder-starts' | translate }}</span>
+		                        {{eventStartTime|date:'EEE, MMM d, y @ HH:mm' || event.back.info.placeholder-starts|translate}}
+		                      </a>
+		                      <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+		                        <datetimepicker data-ng-model="eventStartTime" data-datetimepicker-config="{ dropdownSelector: '#startDateSelector', minuteStep: 15 }"/>
+		                      </ul>
+		                    </div>
+							
+						</div>
+					</div>
+					<div class="inputRow form-group">
+						<div class="inputRowCell labelContainer">{{ 'event.back.info.label-ends' | translate }}</div>
+						<div class="inputRowCell eventInputContainer">
+							
+							<div class="dropdown" style="margin-top: 6px; text-align: center;">
+							  <span ng-show="validationErrors && validationErrors.timeEnd" style="color: red;">! </span>
+		                      <a class="dropdown-toggle" id="endDateSelector" role="button" data-toggle="dropdown" data-target="" href="">
+		                      	<span ng-show="eventEndTime == undefined">{{ 'event.back.info.placeholder-ends' | translate }}</span>
+		                      	{{eventEndTime|date:'EEE, MMM d, y @ HH:mm'}}
+		                      </a>
+		                      <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+		                        <datetimepicker data-ng-model="eventEndTime" data-datetimepicker-config="{ dropdownSelector: '#endDateSelector', minuteStep: 15 }"/>
+		                      </ul>
+		                    </div>
+							
+						</div>
+					</div>
+					<div class="inputRow form-group" style="height: 104px;">
+						<div class="inputRowCell labelContainer">{{ 'event.back.info.label-description' | translate }}</div>
+						<div class="inputRowCell eventInputContainer">
+							<textarea
+								placeholder="{{ 'event.back.info.placeholder-description' | translate }}" 
+								class="form-control" style="height: 100px; width: 100%;"
+								ng-model="event.info.description" />
+						</div>
+					</div>
+					<div class="inputRow">
+						<div class="inputRowCell labelContainer">&nbsp;</div>
+						<div class="inputRowCell eventInputContainer">
+							<div style="width: 100%;">
+		
+								<div ng-show="editEvent == 'new'" style="display: inline; float: right;">
+									<button class="btn btn-default" ng-click="submit()">{{ 'forms.general.create' | translate }}</button>
+								</div>
+								
+								<div ng-show="editEvent != 'new'" style="display: inline; float: right;">
+									<button ng-disabled="eventStatus != 'changed'" class="btn btn-default" ng-click="submit()">Save</button>
+								</div>
+								
+								<div ng-show="editEvent == 'new'"
+									style="display: inline; float: right; margin-right: 10px; margin-top: 6px;">
+									<a href="#/app?view=myEvents">{{ 'forms.general.cancel' | translate }}</a>
+								</div>
+								
+								<div ng-show="eventStatus == 'changed' && editEvent != 'new'" style="color: #0000a0; margin-left: 4px; padding-top: 6px;">
+									&nbsp;{{ 'forms.general.changed' | translate }}
+								</div>
+								<div ng-show="eventStatus == 'saved'" style="color: #00a000; margin-left: 4px; padding-top: 6px;">
+									&nbsp;{{ 'forms.general.saved' | translate }}
+								</div>
+								<div ng-show="eventStatus == 'created'" style="color: #00a000; margin-left: 4px; padding-top: 6px;">
+									&nbsp;{{ 'forms.general.created' | translate }}
+								</div>
+		
+							</div>
+						</div>
+					</div>
+				</div>
+		
+		</div>
+		
+			
+	</div>
+	
+
+</div>

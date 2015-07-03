@@ -1,0 +1,61 @@
+<div style="width: 100%; height: 100%;" ng-controller="event.back.orders.ViewOrderCtrl">
+        
+    <div class="viewOrder">
+        <div style="display: inline-block; width: 100%;">
+            
+            <div style="width: 100%; display: inline-block; font-size: 18px;">Order {{order._id}}</div>
+            <div style="width: 100%; display: inline-block; margin-top: 12px;">
+                <div class="viewOrderContact">
+                    <div style="width: 100%;">
+                        <div class="orderDetailLabel">Order e-mail:</div>
+                        <div class="orderDetailValue">{{order.orderEmail}}</div>    
+                    </div>
+                    <div style="width: 100%;" ng-show="order.userProfile">
+                        <div class="orderDetailLabel">User:</div>
+                        <div class="orderDetailValue">
+                            {{order.userProfile.displayName}}<br>
+                            {{order.userEmail}}
+                        </div>
+                    </div>
+                </div>
+                <div class="viewOrderInfo">
+                    <div style="width: 100%;">
+                        <div class="orderDetailLabel">Status:</div>
+                        <div class="orderDetailValue">{{order.status}}</div>    
+                    </div>
+                    <div style="width: 100%;">
+                        <div class="orderDetailLabel">Items:</div>
+                        <div class="orderDetailValue">
+                            <div ng-repeat="item in order.items">
+                                Name: {{item.name}} * Price: {{item.price}} € * Quantity: {{item.quantity}}
+                            </div>
+                        </div>    
+                    </div>
+                    <div style="width: 100%;">
+                        <div class="orderDetailLabel">Total:</div>
+                        <div class="orderDetailValue">{{order.orderTotal}}</div>    
+                    </div>
+                </div>
+                <div class="viewOrderTickets">
+                    <div ng-repeat="ticket in order.tickets">
+                        <a href="">{{ticket._id}}</a>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 100%; display: inline-block; margin-top: 12px; text-align: right;">
+                
+                <div class="orderActionButton">
+                    <a href="" ng-click="viewList()">Back</a>
+                </div>
+                <div class="orderActionButton" ng-show="order.status == 'fulfilled' && order.invoiceId">
+                    <button class="btn btn-default" style="width: 100%;" ng-click="refundOrder(order)">Refund</button>
+                </div>
+            </div>
+            
+            
+        </div>
+        
+            
+    </div>
+        
+</div>

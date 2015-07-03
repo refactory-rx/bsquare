@@ -1,0 +1,137 @@
+<div class="panel panel-default logreg opaque" style="width: 98%; left: 1%; position: absolute;">
+	
+	<div class="panel-heading columnHeader myEventsHeader" ng-click="selectMainView('myEvents')">
+		<div style="display: inline;">
+			{{ 'app.logreg.title' | translate }}
+		</div>
+	</div>
+	
+	<div ng-show="logregView == 'login'" class="panel-body inputForm" style="padding-top: 24px;">
+	    
+	    <div style="margin-bottom: 24px;">
+	        <div style="text-align: center;">
+	            {{ 'app.logreg.explanation' | translate }}
+	        </div>   
+	    </div>
+	    
+		<div ng-show="showError == true">
+			<div class="inlineError">
+				{{errorMessage}}
+			</div>
+		</div>
+		
+		<div>
+			<div>
+				<form role="form" novalidate>
+					<div class="inputRow form-group" ng-class="{ 'has-error': logregUser.emailAddress == '*' }">
+						<div class="inputRowCell labelContainer">{{ 'app.logreg.email' | translate }}</div>
+						<div class="inputRowCell inputContainer">
+							<input class="form-control" style="width: 100%;" type="text" ng-model="logregUser.emailAddress" email/>
+						</div>
+					</div>
+					<div class="inputRow form-group">
+						<div class="inputRowCell labelContainer">{{ 'app.logreg.password' | translate }}</div>
+						<div class="inputRowCell inputContainer">
+							<input ng-cloak ng-class="logregUser.password.length < 6 ? 'pwdShort' : 'pwdLong'" class="form-control" type="{{pwdInputType}}" ng-model="logregUser.password"/>
+							<span ng-show="logregUser.password.length < 6" style="color: rgb(255, 50, 20); font-size: 0.8em; font-weight: bold; margin-left: 4px;">{{logregUser.password.length}}/6</span>
+						</div>
+					</div>
+					<div class="inputRow">
+						<div class="inputRowCell labelContainer">&nbsp;</div>
+						<div class="inputRowCell inputContainer">
+							<div style="width: 100%;" ng-cloak>
+							
+								<div style="display: inline; float: left;" ng-cloak>
+									<input type="checkbox" ng-model="pwdField.hidden" />
+									{{ 'app.logreg.hidepwd' | translate }}
+								</div>
+								
+								<div style="display: inline; float: right;" ng-cloak>
+									<button class="btn btn-default" ng-disabled="logregUser.emailAddress == '*' || logregUser.emailAddress.length == 0 || logregUser.password == undefined || logregUser.password.length < 6" ng-click="logreg()">{{ 'app.logreg.btn-go' | translate }}</button>
+								</div>
+								
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>		
+		</div>
+		
+		<div>
+			
+			<div class="recoverPwdLink">
+				<a href="#/recover">{{ 'app.logreg.recoverPwd' | translate }}</a>
+			</div>
+			
+		</div>
+		
+	</div>
+	
+	<div ng-show="logregView == 'register'" class="inputForm">
+		
+		
+		<div ng-show="logregStatus == 'new'">
+			
+			<div>
+				<div style="text-align: center; margin-bottom: 12px;">
+					{{ 'app.logreg.regNewUser' | translate }}: <b>{{logregUser.emailAddress}}</b>
+				</div>
+			</div>
+			
+			<div ng-class="showError == true">
+				<div class="inlineError">
+					{{errorMessage}}
+				</div>
+			</div>
+			
+			<div>
+				<div>
+					<form role="form" novalidate>
+						<div class="inputRow form-group">
+							<div class="inputRowCell labelContainer">{{ 'forms.dataType.username' | translate }}</div>
+							<div class="inputRowCell inputContainer">
+								<input type="text" class="form-control" ng-model="logregProfile.displayName"/>
+							</div>
+						</div>
+						<div class="inputRow form-group">
+							<div class="inputRowCell labelContainer">{{ 'forms.dataType.firstName' | translate }}</div>
+							<div class="inputRowCell inputContainer">
+								<input type="text" class="form-control" ng-model="logregProfile.firstName"/>
+							</div>
+						</div>
+						<div class="inputRow form-group">
+							<div class="inputRowCell labelContainer">{{ 'forms.dataType.lastName' | translate }}</div>
+							<div class="inputRowCell inputContainer">
+								<input type="text" class="form-control" ng-model="logregProfile.lastName"/>
+							</div>
+						</div>
+						<div class="inputRow">
+							<div class="inputRowCell labelContainer">&nbsp;</div>
+							<div class="inputRowCell inputContainer">
+								<br/>
+								<button class="btn btn-default" ng-click="register()">{{ 'app.logreg.register' | translate }}</button>
+							</div>
+						</div>
+					</form>
+				</div>
+				
+			</div>
+			
+		</div>
+		
+		<div ng-show="logregStatus == 'registered'" class="registered">
+			Thank you for registering. Check your e-mail to verify your e-mail address and proceed to log-in.
+		</div>
+		
+		<div ng-show="showError == true" style="text-align: center; color: #a00000;">
+			{{errorMessage}}
+		</div>
+		
+	</div>
+	
+	<div ng-show="logregView == 'loggedIn'" class="inputForm">
+		<div class="loggedIn">
+			You are logged in.
+		</div>
+	</div>
+</div>

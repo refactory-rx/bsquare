@@ -1,0 +1,4 @@
+*/config
+*/**/*.swp
+*/**/*.log
+*/node_modules

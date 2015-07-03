@@ -1,0 +1,64 @@
+<div class="manageOrders">
+        
+    <div style="width: 90%; display: inline-block; margin: auto;">
+            
+        <div style="display: inline-block; width: 100%;">
+            <!-- Default panel contents -->
+            <div style="width: 100%; display: inline-block; text-align: right;">
+                <div style="display: inline-block; float: left;">
+                    <span><button ng-click="selectAll()" class="btn btn-default"><input type="checkbox" ng-model="selection.allSelected" style="margin-right: 6px;">{{ 'event.back.guests.btn-selectAll' | translate }}</button></span>
+                    <span><button ng-disabled="selection.selectedUsers.length == 0" ng-click="showMessageComposer()" class="btn btn-default">{{ 'event.back.guests.btn-emailSelected' | translate }}</button></span>
+                    <span style="margin-left: 6px;"><a href="" ng-click="showSentMessages()">{{ 'event.back.guests.sentMessages' | translate }}</a></span>
+                </div>
+                <div class="input-group orderSearchInput">
+                    <input type="text" class="form-control" ng-model="searchField.text">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </span>
+                </div>
+            </div>
+            
+            
+            <!-- Table -->
+            <table class="table guestsTable" style="text-align: left;">
+                
+                <thead>
+                    <tr>
+                        <th class="checkboxHeader"></th>
+                        <th class="emailHeader">{{ 'event.back.guests.contact' | translate }}</th>
+                        <th class="ordersHeader">{{ 'event.back.guests.orders' | translate }}</th>
+                        <!--<th class="actionsHeader"></th>-->
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    <tr ng-repeat="guest in guests">
+                        
+                        <td class="checkboxRow"><input type="checkbox" ng-model="guest.isSelected" ng-click="calcSelected()"></td>
+                        <td class="emailRow">
+                            <div>
+                                <div ng-show="guest.orderEmail">{{guest.orderEmail}}</div>
+                                <div ng-show="guest.user" style="color: #a0a0a0;">{{guest.user.displayName}} ({{guest.user.userEmail}})</div>
+                            </div>
+                        </td>
+                        <td class="ordersRow">
+                            <div>{{guest.numOrders}} {{ 'event.back.guests.suffix-orders' | translate }}</a></div>
+                        </td>
+                        <!--<td class="actionsRow">
+                            <div><a href="">E-mail</a></div>
+                        </td>-->
+                    </tr>
+                </tbody>
+                
+                    
+            </table>
+                                
+                  
+            
+        </div>
+                
+            
+    </div>
+        
+</div>                  
+                  

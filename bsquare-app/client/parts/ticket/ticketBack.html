@@ -1,0 +1,30 @@
+<div class="ticketContainer">
+    
+    <div class="ticket">
+    
+        <div style="background: #ededed; height: 28px;">
+            <div style="display: inline-block; width: 49%; padding-left: 4px; padding-top: 2px;">Info</div>
+            <div style="display: inline-block; width: 49%; text-align: right; padding-right: 4px; padding-top: 2px;">
+                <a href="" ng-click="setRootView('ticketFront')">Ticket</a>
+            </div>
+        </div>
+        
+        <div style="padding: 10px;">
+            
+            
+            Ticket terms<br/><br/>
+            Bundled products<br/><br/>
+            etc.<br><br>
+            
+            <div ng-show="ticket.rewards && ticket.rewards.length > 0">
+                <div><b>Rewards</b></div>
+                <div ng-repeat="reward in ticket.rewards">
+                    {{reward}}
+                </div>
+            </div>
+            
+        </div>
+    
+    </div>
+    
+</div>

@@ -1,0 +1,154 @@
+<div class="panel panel-default order">
+
+<div class="panel-heading columnHeader">
+    <div class="left">{{ 'order.front.title' | translate }}</div>
+    <div ng-show="order.tickets.length > 0 && order.signupStatus == 'complete'" class="right">
+        <a href="" ng-click="setRootView('orderBack')">Tickets</a>
+    </div>
+</div>
+
+<div class="panel-body" style="padding: 10px;">
+    
+    <div style="font-size: 16px;">
+        {{event.info.title}}
+    </div>
+    <div style="font-size: 12px;">
+        {{formatTime(event.info.timeStart)}}
+    </div>
+    
+    <div ng-show="order.status != 'fulfilled' && order.status != 'timedout' && order.status != 'refunded'" style="width: 100%; margin-bottom: 12px; color: red; text-align: center;">
+        {{ 'order.front.orderTimeText' | translate }}: {{formatRemainingTime(remainingTime)}}.
+    </div>
+    
+    <div ng-show="order.status == 'timedout'" style="width: 100%; margin-bottom: 12px; color: red; text-align: center;">
+        {{ 'order.front.orderTimedOutText' | translate }}.
+    </div>
+    
+    <div ng-show="order.signupStatus == 'complete'">
+    
+    
+    <div style="margin-top: 24px;">
+        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>{{ 'order.front.ticketType' | translate }}</th>
+                    <th>{{ 'order.front.ticketPrice' | translate }}</th>
+                    <th>{{ 'order.front.ticketQty' | translate }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in order.items">
+                    <td>
+                        {{item.name}}
+                    </td>
+                    <td>
+                        {{item.price}} e
+                    </td>
+                    <td>
+                        {{item.quantity}}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right;">
+                        <b>{{ 'order.front.orderTotal' | translate }}:</b>
+                    </td>
+                    <td>
+                        {{order.orderTotal}} €
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+    </div>
+    
+    <div style="margin-top: 24px;" ng-show="order.status != 'fulfilled' && order.status != 'timedout' && order.status != 'refunded'">
+        
+        <div ng-show="invoice && invoice.status == 'pending'">
+            {{ 'order.front.paymentNotFinished' | translate }}, <a href="{{invoice.url}}">{{ 'order.front.continuePayment' | translate }}</a>.
+        </div>
+        
+        <div ng-show="!invoice || invoice.status !== 'pending'">
+            
+            <div ng-click="payBtc()" class="orderBankButton" style="background: #D0A800;">
+                BITCOIN
+            </div>
+
+            <div class="orderBankButton" style="background: #6063DF;"  ng-click="payCheckout('nordea')">
+                NORDEA
+                <form id="payment-nordea" action="{{getTrustedUrl(banks.nordea.action)}}" method="post">
+    	            <input ng-repeat="input in banks.nordea.inputs" type="hidden" name="{{input.name}}" value="{{input.value}}"></input>
+    	        </form>
+            </div>
+        
+            <div class="orderBankButton" style="background: #6063DF;" ng-click="payCheckout('osuuspankki')">
+                OP-PANKKI
+                <form id="payment-osuuspankki" action="{{getTrustedUrl(banks.osuuspankki.action)}}" method="post">
+    	            <input ng-repeat="input in banks.osuuspankki.inputs" type="hidden" name="{{input.name}}" value="{{input.value}}"></input>
+    	        </form>
+            </div>
+            
+            <div class="orderBankButton" style="background: #6063DF;" ng-click="payCheckout('sampo')">
+                DB/SAMPO
+                <form id="payment-sampo" action="{{getTrustedUrl(banks.sampo.action)}}" method="post">
+    	            <input ng-repeat="input in banks.sampo.inputs" type="hidden" name="{{input.name}}" value="{{input.value}}"></input>
+    	        </form>
+            </div>
+
+            <div style="display: inline-block; margin-left: 6px;">
+                <a href="{{checkoutInvoice.url}}">{{ 'order.front.otherPaymentMethods' | translate }}</a>
+            </div>
+
+        </div>
+        
+    </div>
+    
+    <div style="margin-top: 24px;" ng-show="order.status == 'fulfilled'">
+        <div style="display: inline-block; height: 40px; width: 90px; margin: 6px; text-align: center; color: green;">
+            {{ 'order.front.status.paid' | translate }}
+        </div>
+        <div style="display: inline-block; height: 40px; margin: 6px; text-align: center;">
+            <a href="" ng-click="setRootView('orderBack')">{{ 'order.front.viewTickets' | translate }}</a>
+        </div>
+    </div>
+    
+    <div style="margin-top: 24px;" ng-show="order.status == 'refunded'">
+        <div style="display: inline-block; height: 40px; width: 90px; margin: 6px; text-align: center;">
+            {{ 'order.front.status.refunded' | translate }}
+        </div>
+    </div>
+    
+    
+    </div>
+    
+    <div ng-show="order.signupStatus != 'complete' && order.status != 'timedout'" style="width: 75%; margin: auto;">
+        
+        <div class="inputForm" style="margin-top: 24px;">
+            <form role="form" novalidate>
+    	        <div ng-repeat="signupField in order.signupFields;" class="inputRow form-group" ng-class="{ 'has-error': signupField.value == '*' && signupField.type.name == 'email' }">
+    			    <div class="inputRowCell labelContainer"><span ng-show="signupField.required == 'true'" style="color: #0000ff;">*</span> {{signupField.title}}</div>
+    				<div class="inputRowCell inputContainer">
+    					<input ng-show="signupField.type.name == 'email'" class="form-control" style="width: 100%;" type="text" ng-model="signupField.value" ng-change="validateForm()" email placeholder="{{signupField.title}}"/>
+    					<input ng-show="signupField.type.name != 'email'" class="form-control" style="width: 100%;" type="text" ng-model="signupField.value" ng-change="validateForm()" placeholder="{{signupField.title}}"/>
+    				</div>
+    			</div>
+    		    	
+    			<div class="inputRowCell labelContainer">&nbsp;</div>
+    			    <div class="inputRowCell inputContainer">
+    				    <div style="width: 100%;">
+    					    <div style="display: inline; float: right;">
+    						    <button class="btn btn-default" ng-disabled="order.signupStatus != 'formFilled'" ng-click="submitSignupFields()">{{ 'order.front.btn-order' | translate }}</button>
+    						</div>
+    					</div>
+    				</div>
+    			</div>
+    		</form>
+		</div>
+		
+    </div>
+    
+</div>
+
+</div>

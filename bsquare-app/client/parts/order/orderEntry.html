@@ -1,0 +1,18 @@
+
+		<div class="cardContainer">
+
+			<did id="mainCard" ng-class="{ mainFlipped: rootView == 'orderBack' }">
+
+				<figure class="cardBack" ng-include="'parts/order/orderBack.html'"
+					ng-controller="OrderBackCtrl">
+				</figure>
+				
+				<figure class="cardFront" ng-include="'parts/order/orderFront.html'"
+					ng-controller="OrderFrontCtrl">
+				</figure>
+
+			</did>
+
+
+		</div>
+

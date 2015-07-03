@@ -1,0 +1,78 @@
+<div class="ticketContainer">
+    
+    <div class="ticket">
+    
+        <div style="background: #ededed; height: 28px;">
+            <div style="display: inline-block; width: 49%; padding-left: 4px; padding-top: 2px;">Ticket</div>
+            <div class="ticketInfoHandle" style="display: inline-block; width: 49%; text-align: right; padding-right: 4px; padding-top: 2px;">
+                <a href="" ng-click="setRootView('ticketBack')">Info</a>
+            </div>
+        </div>
+        
+        <div class="ticketContent">
+            
+            <div style="height: 100%;">
+                
+                <div class="ticketInfo" style="padding: 10px;">
+                    
+                    <div style="height: 20%; width: 100%; display: inline-block;">
+                        <div style="width: 49%; display: inline-block; font-size: 1.5em; vertical-align: top;">
+                            {{ticket.eventName}}
+                        </div>
+                        <div style="width: 49%; display: inline-block; font-size: 1.0em; vertical-align: top;">
+                            {{formatTime(ticket.startTime)}}<br>
+                            Sturenkatu 37-41 B 16, 00550 Helsinki
+                        </div>
+                    </div>
+                    
+                    <div style="height: 20%;width: 100%; display: inline-block;">
+                        <div style="width: 49%; display: inline-block; font-size: 1.5em;">
+                            {{ticket.ticketName}}
+                        </div>
+                        <div style="width: 49%; display: inline-block; font-size: 1.0em;">
+                            {{ticket.price}} €
+                        </div>
+                    </div>
+                    
+                    <div class="ticketId">
+                        {{ticket._id}}    
+                    </div>
+                    
+                    <div class="admittance">
+                        <div style="margin-top: 55px">
+                            <span ng-show="ticket.status == 'used'">U S E D</span>
+                            <div ng-show="ticket.status != 'used'">
+                                <a ng-show="ticket.allowInvalidation" href="" ng-click="useTicket()">ADMIT</a>
+                                <span ng-show="!ticket.allowInvalidation">SCAN QR</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div class="ticketCode">
+                    <div class="ticketCodeQr">
+                        <img src="https://blockchain.info/qr?data=http%3A%2F%2Fbsq.co%2F%23%2Fticket%2F{{ticket._id}}&size=200" class="qrImage">
+                        <!-- <img src="http://goqr.me/_Resources/Static/Packages/GoQrMe.Ui/Images/qr_default.png" class="qrImage"> -->
+                    </div>
+                    <div class="admittance">
+                        
+                        <div class="admittanceStamp">
+                            <span ng-show="ticket.status == 'used'">U S E D</span>
+                            <div ng-show="ticket.status != 'used'">
+                                <a ng-show="ticket.allowInvalidation" href="" ng-click="useTicket()">ADMIT</a>
+                                <span ng-show="!ticket.allowInvalidation">SCAN QR</span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+            </div>
+            
+            
+        </div>
+    
+    </div>
+
+</div>

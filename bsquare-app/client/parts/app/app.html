@@ -1,0 +1,87 @@
+
+		<div class="cardContainer">
+
+			<did id="mainCard" ng-class="{ mainFlipped: rootView == 'back' }">
+
+				<figure class="cardBack">
+				    <div ng-show="logregStatus == 'loggedIn'" ng-include="'parts/app/profile.html'" ng-controller="ProfileCtrl"></div>
+				    <div ng-show="logregStatus != 'loggedIn'" ng-include="'parts/app/logreg.html'" ng-controller="LogregCtrl"></div>
+				</figure>
+				
+				<figure class="cardFront">
+	
+					<div class="main">
+	
+						<div class="opaque"
+							ng-class="{ loggedIn: logregStatus == 'loggedIn', loggedOut: logregStatus != 'loggedIn', mainView: app.views.findEvents == 0, minView1: app.views.findEvents == 1, minView2: app.views.findEvents == 2 }"
+							ng-include="'parts/app/findEvents.html'"></div>
+	
+						<div ng-show="logregStatus == 'loggedIn'"
+							ng-class="{ loggedIn: logregStatus == 'loggedIn', loggedOut: logregStatus != 'loggedIn', mainView: app.views.myEvents == 0, minView1: app.views.myEvents == 1, minView2: app.views.myEvents == 2 }"
+							ng-include="'parts/app/myEvents.html'"
+							ng-controller="MyEventsCtrl"></div>
+	                    
+						<div ng-show="logregStatus == 'loggedIn'" class="opaque"
+							ng-class="{ loggedIn: logregStatus == 'loggedIn', loggedOut: logregStatus != 'loggedIn', mainView: app.views.myTickets == 0, minView1: app.views.myTickets == 1, minView2: app.views.myTickets == 2 }"
+							ng-include="'parts/app/myTickets.html'"></div>
+	
+	                    <div ng-show="promoEvents.length > 0"
+	                        ng-class="{ loggedIn: logregStatus == 'loggedIn', loggedOut: logregStatus != 'loggedIn' }"
+	                        class="minView1 ad ad-s1">
+	                        
+	                         
+	                        <div class="promoFull" style="width: 100%; height: 100%; position: relative;" ng-click="navigate('#/event/'+promoEvents[0]._id)">
+		                        <div style="width: 100%; height: 60%; overflow-y: hidden;">
+                                    <img ng-src="{{imgBaseUrl}}{{promoEvents[0].info.eventImage}}" style="max-width: 96%;">
+		                        </div>
+		                        <div style="height: 20%; border: 1px solid black;">
+		                        	<a href="#/event/{{promoEvents[0]._id}}"><span style="font-size: 1.5em;">{{promoEvents[0].info.title}}</span></a> in {{promoEvents[0].info.place.vicinity}}
+		                        </div>
+		                        <div style="height: 20%;">
+		                        	<div class="panelBg" style="width: 96%; margin: auto; height: 100%; font-size: 1.3em;">
+		                        		{{formatTime(promoEvents[0].info.timeStart)}}	
+		                        	</div>
+		                        </div>
+	                     	</div>
+	                     	
+	                        <div class="promoSmall" style="width: 100%; height: 100%; position: relative; border: 1px solid #a0a0a0; background: #FFFACD;">
+	                        	<a style="display: inline-block; margin-top: 10px; width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" 
+	                        		href="#/event/{{promoEvents[0]._id}}">{{promoEvents[0].info.title}}</a>
+	                       	</div>
+	                        
+	                    </div>
+	                    
+	                    <div ng-show="promoEvents.length > 1"
+	                        ng-class="{ loggedIn: logregStatus == 'loggedIn', loggedOut: logregStatus != 'loggedIn' }"
+	                        class="minView2 ad ad-s2">
+	                        
+	                        <div class="promoFull" style="width: 100%; height: 100%; position: relative;" ng-click="navigate('#/event/'+promoEvents[1]._id)">
+		                        <div style="width: 100%; height: 60%; overflow-y: hidden;">
+                                    <img ng-src="{{imgBaseUrl}}{{promoEvents[1].info.eventImage}}" style="max-width: 96%;">
+		                        </div>
+		                        <div style="height: 20%; border: 1px solid black;">
+		                        	<a href="#/event/{{promoEvents[1]._id}}"><span style="font-size: 1.5em;">{{promoEvents[1].info.title}}</span></a> in {{promoEvents[1].info.place.vicinity}}
+		                        </div>
+		                        <div style="height: 20%;">
+		                        	<div class="panelBg" style="width: 96%; margin: auto; height: 100%; font-size: 1.3em;">
+		                        		{{formatTime(promoEvents[1].info.timeStart)}}	
+		                        	</div>
+		                        </div>
+	                        </div>
+	                        
+	                        <div class="promoSmall" style="width: 100%; height: 100%; position: relative; border: 1px solid #a0a0a0; background: #FFFACD;">
+	                        	<a style="display: inline-block; margin-top: 10px; width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" 
+	                        		href="#/event/{{promoEvents[0]._id}}">{{promoEvents[1].info.title}}</a>
+	                       	</div>
+	                        
+	                    </div>
+							
+					</div>
+	
+				</figure>
+
+			</did>
+
+
+		</div>
+

@@ -1,0 +1,30 @@
+<div style="width: 100%; margin-botom: 8px;">
+
+    <div style="width: 60%; display: inline-block; margin: auto;">
+        <div style="display: inline-block; width: 100%;">
+            <div style="display: inline-block; width: 100%;">
+                <div style="display: inline-block; width: 33%;">
+                    <input type="text" class="form-control" placeholder="{{ 'event.back.marketing.reward.name' | translate }}" ng-model="newPointReward.name"></textarea>
+                </div>
+                <div style="display: inline-block; width: 33%;">
+                    <input type="text" class="form-control" placeholder="{{ 'event.back.marketing.reward.code' | translate }}" ng-model="newPointReward.code"></textarea>
+                </div>
+                <div style="display: inline-block; width: 32%;">
+                    <input type="text" class="form-control" placeholder="{{ 'event.back.marketing.reward.points' | translate }}" ng-model="newPointReward.points"></textarea>
+                </div>
+                
+            </div>
+            
+            <div style="display: inline-block; width: 100%; margin-top: 4px;">
+                <textarea class="form-control" placeholder="{{ 'event.back.marketing.reward.description' | translate }}" ng-model="newPointReward.description"></textarea>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<div style="margin-top: 8px;">
+    <button class="btn btn-default" ng-click="savePointReward()">{{ 'event.back.marketing.reward.saveReward' | translate }}</button>
+    <button class="btn btn-default" ng-click="cancelNewReward()">{{ 'forms.general.cancel' | translate }}</button>
+</div>

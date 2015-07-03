@@ -1,0 +1,84 @@
+<div class="panel panel-default myTickets" ng-controller="MyTicketsCtrl" ng-init="init()">
+	
+	<div class="panel-heading columnHeader" ng-click="navigate('#/app?view=myTickets')">
+		{{ 'app.myTickets.title' | translate }}
+	</div>
+	
+	<div class="panel-body panelContent">
+		
+		<div ng-show="tickets.length == 0" style="height: 100%; width: 100%;">
+			<div class="noContent" style="position: absolute; top: 50%; margin-top: -6px; width: 100%;">
+				{{ 'app.myTickets.noTicketsText' | translate }}
+			</div>
+		</div>
+		
+		<div class="ticketsFull" style="margin-top: 8px;">
+	    	
+	    	<div ng-show="ticketsByEvent.length > 0" class="myListTicket" ng-repeat="event in ticketsByEvent" style="text-align: left;">
+	    		
+	    	    <div class="panel panel-default" style="">
+	        	    <div class="panel-heading columnHeader" style="">
+	        	        <div style="display: inline-block; color: white; font-size: 16px; padding-left: 6px;">{{event.eventName}}</div>
+	        	        <div style="display: inline-block; color: white; float: right; padding-right: 6px;">{{formatTime(event.startTime)}}</div>
+                    </div>
+                    
+		    	    <div class="panel-body" style="padding: 6px;">
+                        <div ng-repeat="ticketResource in event.ticketsByName" style="display: inline-block; margin-right: 12px; margin-bottom: 4px;">
+                            
+                            <div class="headerBg" style="display: inline-block; color: white; opacity: 1; height: 37px; margin-right: -4px;  padding-top: 8px; padding-bottom: 8px; padding-left: 6px; padding-right: 8px;">{{ticketResource.ticketName}}</div>
+                            
+                            <div class="ticketTab panelBg" ng-repeat="ticket in ticketResource.tickets">
+                                <a href="#/ticket/{{ticket._id}}">{{$index + 1}}</a>&nbsp;
+                            </div>
+                            
+                        </div>
+	    	        </div>
+	    	    </div>
+	    	    
+	    	</div>
+	    	
+    	</div>
+    	
+    	<div class="ticketsSmall" style="padding-left: 1%;">
+
+
+            <div ng-show="ticketsByEvent.length > 0" ng-repeat="event in ticketsByEvent" style="width: 100%; padding: 12px;">
+                <div style="display: inline-block; float: left; max-width: 75%; text-align: left;">{{event.eventName}}</div>
+                <div style="display: inline-block; float: right;">{{event.tickets.length}} lippua</div>
+            </div>
+
+            <!-- 
+    		<div ng-repeat="ticket in tickets" style="display: inline-block; width: 31%; float: left; margin: 1%; border: 1px solid #ededed; padding: 4px;">
+    			<div>{{ticket.eventName}}</div>
+    			<div><a href="#/ticket/{{ticket._id}}">{{ticket.ticketName}}</a></div>
+    		</div>
+            -->
+
+    		<!--
+    		<div ng-show="ticketsByEvent.length > 0" class="myListTicket" ng-repeat="event in ticketsByEvent" style="text-align: left;">
+	    		
+	    	    <div style="">
+	        	    <div style="">
+	        	        <div style="">{{event.eventName}}</div>
+	        	    </div>
+	    	    </div>
+		    	<div style="">
+		    	    <div ng-repeat="ticketResource in event.ticketsByName" style="display: inline-block;">
+		    	    	
+		    	    	<div style="display: inline-block; ">{{ticketResource.ticketName}}</div>
+		    	    	
+		    	    	<div style="display: inline-block;" ng-repeat="ticket in ticketResource.tickets">
+		    	    		<a href="#/ticket/{{ticket._id}}">{{$index + 1}}</a>&nbsp;
+		    	    	</div>
+		    	    	
+		    	    </div>
+	    	    </div>
+	    	    
+	    	</div>
+	    	-->
+	    	
+    	</div>
+    	
+	</div>
+	
+</div>

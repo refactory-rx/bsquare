@@ -1,0 +1,36 @@
+{
+  "name": "bsquare",
+  "version": "0.0.0",
+  "description": "B Square Event Management",
+  "main": "server.js",
+  "scripts": {
+    "jshint-node": "./node_modules/.bin/jshint ./app --exclude ./node_modules",
+    "jshint-front": "./node_modules/.bin/jshint ./public/js --exclude-path ./.jshintignore",
+    "babel-node": "babel-node --stage 0 --ignore='foo|bar|baz'"
+  },
+  "repository": "https://github.com/vhalme/bsquare.git",
+  "dependencies": {
+    "MD5": "^1.2.2",
+    "body-parser": "^1.13.1",
+    "connect-busboy": "0.0.2",
+    "express": "^4.13.0",
+    "form-urlencoded": "^0.1.4",
+    "merge": "^1.2.0",
+    "method-override": "^2.3.3",
+    "moment": "^2.10.3",
+    "mongoose": "^3.8.31",
+    "mongoose-q": "0.0.17",
+    "morgan": "^1.6.0",
+    "nodemailer": "^1.4.0",
+    "password-hash": "^1.2.2",
+    "q": "^1.4.1",
+    "request": "^2.58.0",
+    "sendgrid": "^1.8.0",
+    "utf8": "^2.1.0",
+    "xml2js": "^0.4.9"
+  },
+  "devDependencies": {},
+  "author": "Vladimir Halme",
+  "license": "MIT",
+  "readmeFilename": "README.md"
+}

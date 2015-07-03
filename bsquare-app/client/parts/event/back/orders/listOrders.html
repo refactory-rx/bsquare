@@ -1,0 +1,84 @@
+<div class="manageOrders">
+        
+    <div style="width: 90%; display: inline-block; margin: auto;">
+            
+        <div style="display: inline-block; width: 100%;">
+                <!-- Default panel contents -->
+                <div style="width: 100%; display: inline-block; text-align: right;">
+                    <div style="display: inline-block; float: left;">
+                        <button ng-show="refundAllStatus.code == 'init'" ng-click="refundAllStatus.code = 'confirm'" class="btn btn-default">{{ 'event.back.orders.refundAll' | translate }}</button>
+                        <span ng-show="refundAllStatus.code == 'confirm'">{{ 'event.back.orders.messages.areYouSure' | translate }}</span>
+                        <button ng-show="refundAllStatus.code == 'confirm'" ng-click="refundAllFulfilled(orders)" class="btn btn-default">{{ 'forms.general.yes' | translate }}</button>
+                        <button ng-show="refundAllStatus.code == 'confirm'" ng-click="refundAllStatus.code = 'init'" class="btn btn-default">{{ 'forms.general.no' | translate }}</button>
+                        <span ng-show="refundAllStatus.code == 'refunding'">{{ 'event.back.orders.messages.inProgress' | translate:refundAllStatus }}</span>
+                        <span ng-show="refundAllStatus.code == 'refunded'" style="color: #00AA00">{{ 'event.back.orders.messages.doneOk' | translate:refundAllStatus }}</span>
+                        <span ng-show="refundAllStatus.code == 'refundedWithErrors'" style="color: #A00000">{{ 'event.back.orders.messages.doneErrors' | translate:refundAllStatus }}</span>
+                        <span ng-show="refundAllStatus.code == 'error'" style="color: #A00000">{{ 'event.back.orders.messages.failed' | translate }}</span>
+                        <button ng-show="refundAllStatus.code == 'error'" ng-click="refundAllFulfilled(orders)" class="btn btn-default">{{ 'event.back.orders.messages.btn-tryAgain' | translate }}</button>
+                        <span ng-show="refundAllStatus.code == 'nonerefundable'">{{ 'event.back.orders.messages.notFound' | translate }}</span>
+                    </div>
+                    <div class="input-group orderSearchInput">
+                        <input type="text" class="form-control" ng-model="searchField.text" ng-change="searchOrder()">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </span>
+                    </div>
+                </div>
+                
+                
+                <!-- Table -->
+                <table class="table ordersTable" style="text-align: left;">
+                    
+                    <thead>
+                        <tr>
+                            <th>{{ 'event.back.orders.order' | translate }}</th>
+                            <th class="emailHeader">{{ 'event.back.orders.contact' | translate }}</th>
+                            <th>{{ 'event.back.orders.status' | translate }}</th>
+                            <th class="ticketsHeader">{{ 'event.back.orders.tickets' | translate }}</th>
+                            <th class="totalHeader">{{ 'event.back.orders.orderTotal' | translate }}</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        <tr ng-repeat="order in orders">
+                            
+                            <td>
+                                <!--
+                                <div class="orderSelector" style="width: 15px;">
+                                    <div><input type="checkbox"></input></div>
+                                </div>
+                                -->
+                                <div style="display: inline-block;">
+                                    <a href="" ng-click="viewOrder(order)">{{order._id}}</a>
+                                </div>
+                            </td>
+                            
+                            <td class="emailRow">
+                                <div>
+                                    <div ng-show="order.orderEmail">{{order.orderEmail}}</div>
+                                    <div ng-show="order.userProfile" style="color: #a0a0a0;">{{order.userProfile.displayName}} ({{order.userEmail}})</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>{{order.status}}</div>
+                            </td>
+                            <td class="ticketsRow">
+                                <div><a>{{order.tickets.length}} ticket(s)</a></div>
+                            </td>
+                            <td class="totalRow">
+                                <div>{{order.orderTotal}} €</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    
+                        
+                </table>
+                                    
+                  
+            
+        </div>
+                
+            
+    </div>
+        
+</div>

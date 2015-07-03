@@ -1,0 +1,90 @@
+<div ng-show="recoveryView == 'recover'" class="inputForm">
+	
+	<div class="row" ng-show="showError == true">
+		<div class="col-md-12 inlineError">
+			{{errorMessage}}
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-12">
+			<form role="form" novalidate>
+				<div class="inputRow form-group" ng-class="{ 'has-error': recoveryRequest.emailAddress == '*' }">
+					<div class="inputRowCell labelContainer">{{ 'forms.dataType.email' | translate }}</div>
+					<div class="inputRowCell inputContainer">
+						<input style="width: 100%;" class="form-control" type="text" ng-model="recoveryRequest.emailAddress" email/>
+					</div>
+				</div>
+				<div class="inputRow">
+					<div class="inputRowCell labelContainer">&nbsp;</div>
+					<div class="inputRowCell inputContainer">
+						<div style="width: 100%;">
+							<div style="display: inline; float: right;">
+								<button class="btn btn-default" ng-disabled="recoveryRequest.emailAddress == '*' || recoveryRequest.emailAddress.length == 0" ng-click="recoverPassword()">{{ 'pwdRecovery.recoverPwd' | translate }}</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-12">
+			
+		</div>	
+	</div>
+	
+</div>
+
+<div ng-show="recoveryView == 'emailSent'" class="inputForm">
+	{{ 'pwdRecovery.mailSent' | translate }} <b>{{recoveryRequest.emailAddress}}</b>.
+	{{ 'pwdRecovery.followInstructions' | translate }}	
+</div>
+
+<div ng-show="recoveryView == 'change'" class="inputForm">
+	
+	<div class="row" ng-show="showError == true">
+		<div class="col-md-12 inlineError">
+			{{errorMessage}}
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-12">
+			<form role="form" novalidate>
+				<div class="inputRow form-group">
+					<div class="inputRowCell labelContainer">{{ 'pwdRecovery.newPwd' | translate }}</div>
+					<div class="inputRowCell inputContainer">
+						<input ng-class="changeRequest.password.length < 6 ? 'pwdShort' : 'pwdLong'" class="form-control" type="text" ng-model="changeRequest.password" ng-show="!hidePassword"/>
+						<input ng-class="changeRequest.password.length < 6 ? 'pwdShort' : 'pwdLong'" class="form-control" type="password" ng-model="changeRequest.password" ng-show="hidePassword"/>
+						<span ng-show="changeRequest.password.length < 6" style="color: #a00000;">{{changeRequest.password.length}}/6</span>
+					</div>
+				</div>
+				<div class="inputRow form-group">
+					<div class="inputRowCell labelContainer">&nbsp;</div>
+					<div class="inputRowCell inputContainer">
+						<div style="width: 100%;">
+						
+							<div style="display: inline; float: left;">
+								<input type="checkbox" ng-model="hidePassword" />
+								{{ 'app.logreg.hidepwd' | translate }}
+							</div>
+							
+							<div style="display: inline; float: right;">
+								<button class="btn btn-default" ng-disabled="changeRequest.password == undefined || changeRequest.password.length < 6" ng-click="changePassword()">{{ 'pwdRecovery.change' | translate }}</button>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>		
+	</div>
+	
+</div>
+
+<div ng-show="recoveryView == 'changed'" class="inputForm">
+	{{ 'pwdRecovery.pwdChanged' | translate }} <a href="#/app?view=logreg">{{ 'pwdRecovery.login' | translate }}</a> {{ 'pwdRecovery.withNewPwd' | translate }}	
+</div>
+

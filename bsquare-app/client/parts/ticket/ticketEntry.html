@@ -1,0 +1,14 @@
+<div class="cardContainer">
+
+	<did id="mainCard" ng-class="{ mainFlipped: rootView == 'ticketBack' }">
+
+		<figure class="cardBack" ng-include="'parts/ticket/ticketBack.html'" ng-controller="TicketBackCtrl">
+		</figure>
+				
+		<figure class="cardFront" ng-include="'parts/ticket/ticketFront.html'" ng-controller="TicketFrontCtrl">
+		</figure>
+
+	</did>
+
+</div>
+

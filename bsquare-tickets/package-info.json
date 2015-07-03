@@ -1,0 +1,18 @@
+{
+  "name": "bsquare-tickets",
+  "version": "0.0.0",
+  "description": "B Square Tickets Module",
+  "main": "index.js",
+  "scripts": {
+    "jshint-node": "./node_modules/.bin/jshint ./app --exclude ./node_modules",
+    "jshint-front": "./node_modules/.bin/jshint ./public/js --exclude-path ./.jshintignore"
+  },
+  "repository": "https://github.com/vhalme/bsquare.git",
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "author": "Vladimir Halme",
+  "license": "MIT",
+  "readmeFilename": "README.md"
+}

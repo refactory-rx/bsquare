@@ -1,0 +1,148 @@
+<div class="editEventTickets" style=" position: absolute;" ng-controller="event.back.tickets.ManageTicketsCtrl">
+    
+    <div ng-show="validationErrors" style="width: 100%;">
+        <div ng-repeat="errorKey in validationErrors.keys" style="color: #CC1111;">
+            {{validationErrors[errorKey]}}
+        </div>
+    </div>
+    
+    <div id="addTicketsContainer" style="width: 100%; position: relative;">
+        
+        <div ng-show="editingTicketResource" class="editTicketResource">
+        
+            <div class="addTickets ticketResource_{{event._id}}">
+                
+                <div class="addTicketsName">
+                    <div>{{ 'event.back.tickets.name' | translate }}</div>
+                    <div>
+                        <input type="text" class="form-control" ng-model="newTicketResource.name"/>
+                    </div>
+                </div>
+                <div class="addTicketsPrice">
+                    <div>{{ 'event.back.tickets.price' | translate }}</div>
+                    <div>
+                        <input type="text" class="form-control" ng-model="newTicketResource.price"/> €
+                    </div>
+                </div>
+                <div class="addTicketsQty">
+                    <div>{{ 'event.back.tickets.quantity' | translate }}</div>
+                    <div>
+                        <input type="text" class="form-control" ng-model="newTicketResource.quantity"/>
+                    </div>
+                </div>
+                <div class="addTicketsQty">
+                    <div>{{ 'event.back.tickets.maxOrder' | translate }}</div>
+                    <div>
+                        <input type="text" class="form-control" ng-model="newTicketResource.allowedPerOrder"/>
+                    </div>
+                </div>
+                <div class="addTicketsPublic">
+                    <div>{{ 'event.back.tickets.public' | translate }}</div>
+                    <div>
+                        <input type="checkbox" ng-model="newTicketResource.isPublic" style="width: initial; font-size: 1.2em;"/>
+                    </div>
+                </div>
+                <div style="margin-top: 4px;">
+                    <div class="addTicketsLowerCell">
+                        <div>{{ 'event.back.tickets.salesStart' | translate }}</div>
+                        <div class="input-group date">
+                            <div class="dropdown" style="margin-top: 6px; text-align: center;">
+    		                      <a class="dropdown-toggle" id="startDateSelector" role="button" data-toggle="dropdown" data-target="" href="">
+    		                      	<span ng-show="salesStartTime == undefined">(set start time)</span>
+    		                        {{salesStartTime|date:'EEE, MMM d, y @ HH:mm'}}
+    		                      </a>
+    		                      <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+    		                        <datetimepicker data-ng-model="salesStartTime" data-datetimepicker-config="{ dropdownSelector: '#startDateSelector', minuteStep: 15 }"/>
+    		                      </ul>
+    		                </div>
+		                </div>
+                    </div>
+                    <div class="addTicketsLowerCell">
+                        <div>{{ 'event.back.tickets.salesEnd' | translate }}</div>
+                        <div class="input-group date" id="salesEnd_{{event._id}}">
+                            <div class="dropdown" style="margin-top: 6px; text-align: center;">
+    		                      <a class="dropdown-toggle" id="endDateSelector" role="button" data-toggle="dropdown" data-target="" href="">
+    		                      	<span ng-show="salesEndTime == undefined">(set end time)</span>
+    		                        {{salesEndTime|date:'EEE, MMM d, y @ HH:mm'}}
+    		                      </a>
+    		                      <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+    		                        <datetimepicker data-ng-model="salesEndTime" data-datetimepicker-config="{ dropdownSelector: '#endDateSelector', minuteStep: 15 }"/>
+    		                      </ul>
+    		                </div>
+                        </div>
+                    </div>
+                    
+                    <!--
+                    <div class="addTicketsLowerCell">
+                        <div>Bundled products</div>
+                        <div style="position: relative; display: table; border-collapse: separate;">
+                            <img style="width: 40px; height: 40px;" ng-src="{{product.imageUrl}}" ng-repeat="product in newTicketResource.bundledProducts">
+                        </div>
+                    </div>
+                    -->
+                    
+                    <div class="addTicketsLowerCell">
+                        <div style="width: 100%; text-align: center;">{{ 'event.back.tickets.authInvalidation' | translate }}</div>
+                        <div style="position: relative; display: table; border-collapse: separate; text-align: center; width: 100%;">
+                            <input type="checkbox" ng-model="newTicketResource.authorizedInvalidation" style="width: initial; font-size: 1.2em;"/>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div>
+                    <div class="addTicketsProductUrl">
+                        <div>&nbsp;</div>
+                        <div class="input-group">
+                            <input type="text" placeholder="Bundle product URL" class="form-control"
+                            ng-model="newTicketResource.newProductUrl">
+                            <span class="input-group-btn">
+                                <button ng-click="bundleProduct(newTicketResource)" class="btn btn-default" type="button">Bundle</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 12px;">
+                    <div style="display: table; width: 100%; text-align: right;">
+                        <a href="" ng-click="cancelTicketResourceEdit()" style="margin-right: 12px;">{{ 'forms.general.cancel' | translate }}</a>
+                        <button ng-click="saveTicketResource()" class="btn btn-default" style="margin-right: 6px;" type="button">{{ 'forms.general.save' | translate }}</button>
+                        <button ng-show="newTicketResource.status != 'undeletable'" ng-click="deleteTicketResource(newTicketResource)" class="btn btn-default" style="margin-right: 6px;" type="button">{{ 'forms.general.delete' | translate }}</button>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+        
+        
+        <div ng-show="!editingTicketResource">
+        
+            <div style="width: 100%; display: inline-block; margin-top: 12px; margin-bottom: 36px;">
+        
+                <div ng-repeat="ticketResource in ticketResources" class="ticketResourceItem">
+                    <div style="display: inline-block; width: 100%;">
+                        <div style="border-bottom: 1px solid black;">{{ticketResource.name}}</div>
+                        <div>
+                            <div>{{ticketResource.price}} €</div>
+                            <div>x {{ticketResource.quantity}}</div>
+                            <div><a href="" ng-click="editTicketResource(ticketResource)">{{ 'forms.general.edit' | translate }}</a></div>
+                            <div ng-show="ticketResource.status != 'undeletable'"><a ng-click="deleteTicketResource(ticketResource)">Delete</a></div>
+                            <div ng-show="ticketResource.visibility == 'hidden'" style="color: #A0A0A0;">{{ 'event.back.tickets.hidden' | translate }}</div>
+                            <div ng-show="ticketResource.visibility == 'visible'" style="color: #11CC11;">{{ 'event.back.tickets.visible' | translate }}</div>
+                        </div>
+                    </div>
+                    <div class="fadeout"></div>
+                </div>
+                
+                <div style="width: 140px; height: 140px; margin-left: 4px; display: inline-block; vertical-align: top; border: 1px solid black; position: relative;">
+                    <div class="newItemButtonContainer"> 
+                        <button ng-click="editTicketResource()" class="btn btn-default">+</button>
+                    </div>
+                </div>
+                        
+            </div>
+        
+        </div>
+        
+    </div>
+</div>

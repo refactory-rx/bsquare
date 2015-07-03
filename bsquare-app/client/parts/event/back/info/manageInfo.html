@@ -1,0 +1,95 @@
+<div class="editEventSettings" style="height: 100%;" ng-controller="event.back.info.ManageInfoCtrl">
+    
+    <div ng-show="validationErrors" style="width: 100%;">
+        <div ng-repeat="errorKey in validationErrors.keys" style="color: #CC1111;">
+            {{validationErrors[errorKey]}}
+        </div>
+    </div>
+    
+    <div role="form">
+        <div class="inputForm">
+            <div class="inputRow form-group">
+                <div class="inputRowCell labelContainer hideTooNarrow">{{ 'event.back.info.label-title' | translate }}</div>
+                <div class="inputRowCell eventInputContainer">
+                    <input placeholder="{{ 'event.back.info.placeholder-title' | translate }}" class="form-control" style="width: 100%;"
+                    type="text" ng-model="info.title" />
+                </div>
+            </div>
+            <div class="inputRow form-group">
+                <div class="inputRowCell labelContainer hideTooNarrow">{{ 'event.back.info.label-eventImage' | translate }}</div>
+                <div class="inputRowCell eventInputContainer">
+                    <div style="margin-top: 6px;" ng-show="imageUploadStatus == 'inactive'">
+                        <div style="width: 65%; display: inline-block;">
+				<img id="eventImageThumbnail" src="{{imgBaseUrl}}{{info.eventImage}}" style="max-height: 25px;"></img>
+                        </div>
+                        
+                        <a href="" ng-click="enableImageUpload()" style="display: inline-block; float: right;">{{ 'event.back.info.changeEventImage' | translate }}</a>
+                        
+                    </div>
+                    <form ng-show="imageUploadStatus == 'upload'" id="eventImageUpload" enctype="multipart/form-data">
+                        <input type="file" name="eventImage" placeholder="{{ 'event.back.info.label-eventImage' | translate }}" class="form-control" style="width: 65%; display: inline-block;" />
+                        <button ng-click="uploadEventImage()" class="btn btn-default" style="display: inline-block; float: right;">Upload</button>
+                    </form>
+                </div>
+            </div>
+            <div class="inputRow form-group">
+                <div class="inputRowCell labelContainer">{{ 'event.back.info.label-place' | translate }}</div>
+                <div class="inputRowCell eventInputContainer">
+                    <!-- <input id="placeInput_{{event._id}}" class="form-control" style="width: 100%;" type="text" ng-model="event.info.place" /> -->
+                    <input id="place-input" class="form-control" style="width: 100%;" type="text" placeholder="{{ 'event.back.info.placeholder-place' | translate }}"/>
+                </div>
+            </div>
+            <div class="inputRow form-group">
+                <div class="inputRowCell labelContainer">{{ 'event.back.info.label-starts' | translate }}</div>
+                <div class="inputRowCell eventInputContainer">
+                    
+                    <div class="dropdown" style="margin-top: 6px; text-align: center;">
+                      <a class="dropdown-toggle" id="startDateSelector" role="button" data-toggle="dropdown" data-target="" href="">
+                        {{eventStartTime|date:'EEE, MMM d, y @ HH:mm' || 'event.back.info.placeholder-starts'|translate}}
+                      </a>
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <datetimepicker data-ng-model="eventStartTime" data-datetimepicker-config="{ dropdownSelector: '#startDateSelector', minuteStep: 15 }"/>
+                      </ul>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="inputRow form-group">
+                <div class="inputRowCell labelContainer">{{ 'event.back.info.label-ends' | translate }}</div>
+                <div class="inputRowCell eventInputContainer">
+                    
+                    <div class="dropdown" style="margin-top: 6px; text-align: center;">
+                      <a class="dropdown-toggle" id="endDateSelector" role="button" data-toggle="dropdown" data-target="" href="">
+                        {{eventEndTime|date:'EEE, MMM d, y @ HH:mm' || 'event.back.info.placeholder-ends'|translate}}
+                      </a>
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <datetimepicker data-ng-model="eventEndTime" data-datetimepicker-config="{ dropdownSelector: '#endDateSelector', minuteStep: 15 }"/>
+                      </ul>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="inputRow form-group" style="height: 104px;">
+                <div class="inputRowCell labelContainer">{{ 'event.back.info.label-description' | translate }}</div>
+                <div class="inputRowCell eventInputContainer">
+                    <textarea placeholder="{{ 'event.back.info.placeholder-description' | translate }}" class="form-control"
+                    style="height: 100px; width: 100%;" ng-model="info.description" />
+                </div>
+            </div>
+            <div class="inputRow">
+                <div class="inputRowCell labelContainer">&nbsp;</div>
+                <div class="inputRowCell eventInputContainer">
+                    <div style="width: 100%;">
+                        <div style="display: inline; float: right;">
+                            <button ng-disabled="infoStatus != 'changed'" class="btn btn-default" ng-click="submit()">{{ 'forms.general.save' | translate }}</button>
+                        </div>
+                        <div ng-show="infoStatus == 'changed' && editEvent != 'new'" style="color: #0000a0; margin-left: 4px; padding-top: 6px;">&nbsp;{{ 'forms.general.changed' | translate }}</div>
+                        <div ng-show="infoStatus == 'saved'" style="color: #00a000; margin-left: 4px; padding-top: 6px;">&nbsp;{{ 'forms.general.saved' | translate }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+</div>

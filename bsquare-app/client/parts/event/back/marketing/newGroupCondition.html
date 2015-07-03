@@ -1,0 +1,45 @@
+<div style="width: 100%; margin-top: 12px;">
+    
+    <div style="width: 90%; margin: auto;">
+        
+        <div style="width: 50%; display: inline-block; float: left;">
+            <div style="width: 100%;">
+                <div>{{ 'event.back.marketing.reward.condition' | translate }}</div>
+            </div>
+            <div style="width: 100%;">
+                <div style="width: 49%; display: inline-block;">
+                    <select class="form-control" ng-model="newGroupCondition.ticketResource" ng-options="ticketResource.name for ticketResource in ticketResources"></select>
+                </div>
+                <div style="width: 49%; display: inline-block;">
+                    <input type="text" placeholder="{{ 'event.back.marketing.reward.ticketsQty' | translate }}" class="form-control" ng-model="newGroupCondition.quantity" />
+                </div>
+            </div>
+        </div>
+        
+        <div style="width: 45%; display: inline-block; float: right;">
+            <div style="display: inline-block; width: 100%;">
+                <div>{{ 'event.back.marketing.reward.reward' | translate }}</div>
+            </div>
+            <div style="display: inline-block; width: 100%;">
+                <div style="display: inline-block; width: 100%;">
+                    <input type="text" class="form-control" placeholder="{{ 'event.back.marketing.reward.name' | translate }}" ng-model="newGroupCondition.reward.name"></textarea>
+                </div>
+                <div style="display: inline-block; width: 100%; margin-top: 4px;">
+                    <input type="text" class="form-control" placeholder="{{ 'event.back.marketing.reward.code' | translate }}" ng-model="newGroupCondition.reward.code"></textarea>
+                </div>
+                <div style="display: inline-block; width: 100%; margin-top: 4px;">
+                    <textarea class="form-control" placeholder="{{ 'event.back.marketing.reward.description' | translate }}" ng-model="newGroupCondition.reward.description"></textarea>
+                </div>
+            </div>
+        </div>
+        <div style="width: 15%; display: inline-block; margin-top: 4px;">
+            
+        </div>
+    </div>
+
+</div>
+
+<div style="margin-top: 8px;">
+    <button class="btn btn-default" ng-click="saveGroupCondition(newGroupCondition)">{{ 'forms.general.add' | translate }}</button>
+    <button class="btn btn-default" ng-click="cancelNewReward()">{{ 'forms.general.cancel' | translate }}</button>
+</div>

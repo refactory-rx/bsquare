@@ -1,0 +1,266 @@
+<div class="panel panel-default event {{event.layout}}" ng-controller="EventFrontCtrl" data-ng-init="init()" ng-cloak>
+
+    <div class="panel-heading columnHeader">
+        <div class="left">{{event.info.title}}</div>
+        <div ng-show="ownEvent == true" class="right"><a href="" ng-click="setRootView('edit')" ng-show="loggedUser != undefined">{{ 'event.front.manage' | translate }}</a></div>
+    </div>
+    
+    <div class="panel-body event-content" style="height: 92%; overflow-y: auto; margin-right: 1px;" ng-cloak>
+    	
+            <div style="padding-top: 1%; padding-left: 1%">
+            
+                <div class="eventInfo">
+                    
+                    <div class="eventLogo">
+                        
+			    <img ng-show="event.info.eventImage != undefined" id="eventImage" align="right" ng-src="{{imgBaseUrl}}{{event.info.eventImage}}" style="width: 100%; display: inline;"/>
+                        <img ng-show="event.info.eventImage == undefined" align="right" data-src="holder.js/100%x150/#dad34d:#000000/text:EVENT LOGO" style="width: 100%; display: inline;"/>
+                        
+                    </div>
+                    
+                    
+                    <div class="eventDescription">
+                        <div>
+                            <div style="font-size: 20px;">
+                                {{event.info.title}}
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                {{formatTime(event.info.timeStart)}}
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                {{event.info.place.address}}
+                            </div>
+                        </div>
+                        <div style="margin-top: 12px;">
+                            {{event.info.description}}
+                        </div>
+                    </div>
+                    
+                    <div class="eventMap">
+                        <div id="map_canvas" style="width: 100%; height: 250px"></div>
+                        <!-- <img align="right" data-src="holder.js/100%x250/#a0a0a0:#000000/text:MAP" style="width: 100%; margin-right: 6px; display: inline;"/> -->
+                    </div>
+                
+                    
+                </div>
+                
+                <div style="display: inline-block; width: 100%; margin-top: 24px; margin-bottom: 24px;" 
+                    ng-show="event.groupRewards.conditions.length > 0 || event.refRewards.pointRewards.length > 0">
+                    
+                            <div class="groupRewardsBlock">
+                                <div style="width: 100%; display: inline-block; position: relative;">
+                                    
+                                    <div class="panel panel-default" style="width: 100%; display: inline-block;">
+                                        <div class="panel-heading columnHeader">
+                                            <div style="display: inline;">
+                                                {{ 'event.front.rewards.groupRewards' | translate }}
+                                            </div>
+                                            <div style="display: inline;" ng-show="refTrackerUrls['group'] != undefined">
+                                                [<a class="a2a_dd" href="http://www.addtoany.com/share_save">{{ 'event.front.rewards.shareToGet' | translate }}</a>]
+                                            </div>
+                                            <div style="display: inline;" ng-show="refTrackerUrls['group'] == undefined">
+                                                [<a href="">{{ 'event.front.rewards.logIn' | translate }}</a> {{ 'event.front.rewards.startSharingGroup' | translate }}]
+                                            </div>
+                                        </div>
+                                        <div class="panel-body" style="width: 100%; display: inline-block; padding-top: 6px;">
+                                            
+                                            <div ng-repeat="condition in event.groupRewards.conditions" class="headerBg rewardItem" ng-mouseleave="resetRewardDescription()" ng-mouseenter="setRewardDescription(condition)">
+                                                <div style="width: 100%; display: inline-block; height: 12px;">
+                                                    <b>{{condition.reward.name}}</b>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="bodyBg rewardDescription" style="" ng-show="hoveredRewardCondition != undefined">
+                                            <i>{{hoveredRewardCondition.reward.description}}</i><br/>
+                                            <b>{{hoveredRewardCondition.quantity}}</b> x <b>{{hoveredRewardCondition.ticketResource.name}}</b>
+                                        </div>    
+                                        <script type="text/javascript">
+                                            var a2a_config = a2a_config || {};
+                                            a2a_config.linkurl = 'url';
+                                        </script>
+                                    </div> 
+                                </div>
+                            </div>
+                            <div class="refRewardsBlock">
+                            
+                                <div style="width: 100%; display: inline-block; position: relative;">
+                                
+                                    <div class="panel panel-default" style="width: 100%; display: inline-block;">
+                                        <div class="panel-heading columnHeader">
+                                            <div style="display: inline;">
+                                                {{ 'event.front.rewards.referralRewards' | translate }}
+                                            </div>
+                                            <div style="display: inline;" ng-show="shareRef">
+                                                [<a class="a2a_dd" href="http://www.addtoany.com/share_save">{{ 'event.front.rewards.shareToGet' | translate }}</a>]
+                                            </div>
+                                            <div style="display: inline;" ng-show="shareRef == undefined">
+                                                [<a href="">{{ 'event.front.rewards.logIn' | translate }}</a> {{ 'event.front.rewards.startSharingRef' | translate }}]
+                                            </div>
+                                        </div>
+
+                                        <div class="panel-body" style="width: 100%; display: inline-block; padding-top: 6px;">
+                                            
+                                            <div ng-repeat="reward in event.refRewards.pointRewards" class="headerBg rewardItem" ng-mouseleave="resetPointRewardDescription()" ng-mouseenter="setPointRewardDescription(reward)">
+                                                <div style="width: 100%; display: inline-block; height: 12px;">
+                                                    <b>{{reward.name}}</b>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    
+                                        <div class="bodyBg rewardDescription" style="" ng-show="hoveredPointReward != undefined">
+                                            <i>{{hoveredPointReward.description}}</i><br/>
+                                            <b>{{hoveredPointReward.points}}</b> {{ 'event.front.rewards.pointsRequired' | translate }}
+                                        </div>
+
+                                    </div>          
+                                    
+                                </div>
+                                <div style="width: 100%; display: inline-block;">
+                                    
+                                    <div ng-repeat="condition in event.refRewards.conditions" style="width: 100%; display: inline-block; height: 12px;">
+                                        <div ng-show="condition.type.type == 'impression'">
+                                            <b>{{condition.points}}</b> {{ 'event.front.rewards.pointsPerView' | translate }}
+                                        </div>
+                                        <div ng-show="condition.type.type == 'attendance'">
+                                            <b>{{condition.points}}</b> {{ 'event.front.rewards.pointsPerAttendance' | translate }} <b>{{condition.ticketResource.name}}</b>
+                                        </div>
+                                        <div ng-show="condition.type.type == 'sale'">
+                                            <b>{{condition.points}}</b> {{ 'event.front.rewards.pointsPerSale' | translate }} <b>{{condition.ticketResource.name}}</b>
+                                        </div>
+                                    </div>
+                                        
+                                </div>
+                                
+                                <script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+                                
+                            </div>
+                        </div>
+                
+                
+                <div style="margin-bottom: 24px;">
+                    
+                    <div class="orderTickets" ng-show="publicTicketResources.length > 0">
+                        
+                        <div class="panel panel-default">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading">{{ 'event.front.tickets.title' | translate }}</div>
+                            
+                            <!-- Table -->
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'event.front.tickets.type' | translate }}</th>
+                                        <th>{{ 'event.front.tickets.price' | translate }}</th>
+                                        <th>{{ 'event.front.tickets.quantity' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="ticketResource in publicTicketResources">
+                                        <td>
+                                            <div>{{ticketResource.name}}</div>
+                                            <div style="max-width: 300px; font-size: 10px;">
+                                                {{ticketResource.description}}
+                                            </div>
+                                            <div ng-show="ticketResource.bundledProducts.length > 0" style="margin-top: 4px;">
+                					            <div>Bundled products</div>
+                					            <div style="position: relative; display: table; border-collapse: separate;">
+									    <img style="width: 40px; height: 40px;" ng-repeat="product in ticketResource.bundledProducts" ng-src="{{product.imageUrl}}">
+                					            </div>
+                				            </div>
+                                        </td>
+                                        <td>
+                                            {{ticketResource.price}} e
+                                        </td>
+                                        <td>
+                                            
+                                            <div class="input-group input-group-sm" style="width: 100px;" ng-show="ticketResource.qtyAvailable-ticketResource.qtyReserved > 0">
+                                                <span class="input-group-btn">
+                                                    <button ng-click="orderQty(ticketResource, '-')" class="btn btn-default" type="button" style="width: 30px">-</button>
+                                                </span>
+                                                <input disabled="true" type="text" class="form-control" ng-model="ticketResource.orderQty">
+                                                <span class="input-group-btn">
+                                                    <button ng-click="orderQty(ticketResource, '+')" class="btn btn-default" type="button" style="width: 30px">+</button>
+                                                </span>
+                                            </div>
+                                            <div style="width: 100px;" ng-show="ticketResource.qtyAvailable-ticketResource.qtyReserved <= 0">
+                                                Sold out
+                                            </div>
+                                            
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                        
+                        <div style="width: 100%; text-align: center; color: #CC1111" ng-show="orderError">
+                            {{orderError.message}}
+                        </div>
+                        
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div style="display: inline-block; width: 49%;">
+                                    <b>{{ 'event.front.tickets.total' | translate }}:</b> {{order.totalPrice}} €
+                                </div>
+                                <div style="display: inline-block; width: 49%; text-align: right;">
+                                    <button class="btn btn-default" ng-click="placeOrder()">{{ 'order.front.btn-order' | translate }}</a>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="orderTickets" ng-show="publicTicketResources.length === 0" style="text-align: center; padding: 24px;">
+                        <span>There are no publically available tickets for this event at the moment.</span>
+                        <br>
+                        <span ng-show="ownEvent == true">
+                            To add tickets and/or adjust their sales dates and visibility, go to <a href="" ng-click="setRootView('edit')">event management</a>.
+                        </span>
+                        
+                    </div>
+                    
+                    <div class="leftContent">
+                        <div>
+                            <div>
+                                <p style="display: inline-block; text-align: justify; line-height: 100%;">
+                                    
+                                    <!--
+                                    <img data-src="holder.js/33%x80/#ad3ad5:#000000/text:ORG LOGO" style="width: 33%; margin-right: 6px;" align="left"/>
+                                    
+                                    
+                                    <b>Club Liberté</b>
+                                    <span style="line-height: 80%;"><br/>&nbsp;<br/></span>
+                                    <i>Chill place to hang out and we have gigs and free beer every week-end. Free beer to everyone! That's how we roll.</i>
+                                    -->    
+                                </p>
+                            </div>
+                        </div>
+                        <div style="margin-top: 6px;">
+                            <!--
+                            <div>
+                                <b>Upcoming events</b>
+                                <br/>
+                                2014/04/23 <a href="">My Event #2</a><br/>
+                                2014/04/30 <a href="">My Event #3</a><br/>
+                            </div>
+                            -->
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <script src="holder.js"></script>
+            
+            </div>
+        
+    
+    </div>
+    
+</div>

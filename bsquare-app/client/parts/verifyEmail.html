@@ -1,0 +1,30 @@
+<div class="row">
+		
+	<div class="col-md-12 front">
+		<div class="row">
+			<div class="col-md-6" style="text-align: center; padding-top: 60px;">
+				EMAIL VERIFICATION
+				<br/>
+			</div>
+			<div class="col-md-6" style="padding-top: 60px;">
+				
+				<div ng-show="showError == true" style="width: 100%; text-align: center;">
+					<span style="color: #a00000;">
+						{{errorMessage}}
+					</span>
+				</div>
+				
+				<div style="width: 100%; text-align: center;">
+					<span ng-show="verifyStatus == ''">
+						Verifying account...
+					</span>
+					<span ng-show="verifyStatus == 'emailVerified'" style="color: #00a000;">
+						E-mail successfully verified.
+					</span>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	
+</div>

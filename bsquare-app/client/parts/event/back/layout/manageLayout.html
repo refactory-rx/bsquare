@@ -1,0 +1,38 @@
+<div class="editEventLayout" style="height: 100%; position: absolute;" ng-controller="event.back.layout.ManageLayoutCtrl">
+    <div>{{ 'event.back.layout.explanationText' | translate }}</div>
+    <div>
+        <div ng-click="saveLayout('classic')" class="layoutOption" style="position: relative; border: 1px solid black;">
+            <div style="position: absolute; width: 100%; height: 100%; border: 4px solid black; z-index: 2;"
+            ng-show="event.layout == 'classic'"></div>
+            <div style="position: absolute; width: 100%; height: 100%; border: 4px solid grey; display: none;"
+                showonhoverparent></div>
+        </div>
+        <div ng-click="saveLayout('white')" class="layoutOption" style="position: relative; background: white; border: 1px solid black;">
+            <div style="position: absolute; width: 100%; height: 100%; border: 4px solid black; z-index: 2;"
+            ng-show="event.layout == 'white'"></div>
+            <div style="position: absolute; width: 100%; height: 100%; border: 4px solid grey; display: none;"
+                showonhoverparent></div>
+        </div>
+        <div ng-click="saveLayout('red')" class="layoutOption" style="position: relative; background: red;">
+            <div style="position: absolute; width: 100%; height: 100%; border: 4px solid black; z-index: 2;"
+            ng-show="event.layout == 'red'"></div>
+            <div style="position: absolute; width: 100%; height: 100%; border: 4px solid grey; display: none;"
+                showonhoverparent></div>
+        </div>
+        <div ng-click="saveLayout('green')" class="layoutOption" style="position: relative; background: green;">
+            <div style="position: absolute; width: 100%; height: 100%; border: 4px solid black; z-index: 2;"
+            ng-show="event.layout == 'green'"></div>
+            <div style="position: absolute; width: 100%; height: 100%; border: 4px solid grey; display: none;"
+                showonhoverparent></div>
+        </div>
+        <div ng-click="saveLayout('blue')" class="layoutOption" style="position: relative; background: blue;">
+            <div style="position: absolute; width: 100%; height: 100%; border: 4px solid black; z-index: 2;"
+            ng-show="event.layout == 'blue'"></div>
+            <div style="position: absolute; width: 100%; height: 100%; border: 4px solid grey; display: none;"
+                showonhoverparent></div>
+        </div>
+    </div>
+    <div>
+        <!-- <button class="btn btn-default">Preview</button> -->
+    </div>
+</div>
