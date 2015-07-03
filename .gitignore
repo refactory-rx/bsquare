@@ -1,4 +1,7 @@
-*/config
 */**/*.swp
+*/**/*.swo
 */**/*.log
 */node_modules
+*/config
+*/client/tickets
+*/client/bower_components
