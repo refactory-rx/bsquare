@@ -7,6 +7,7 @@ class PaymentService {
 
     constructor(app) {
         ({ Order, Invoice, TicketResource } = app.model);
+        this.app = app;
         this.coinbaseService = require('./coinbaseService')(app);
         this.checkoutService = require('./checkoutService')(app);
         this.orderService = app.orderService;
@@ -468,6 +469,11 @@ class PaymentService {
 		return deferred.promise;
 		
 	}
+    
+    initRoutes() {
+        let paymentServiceRoutes = require("./paymentServiceRoutes");
+        paymentServiceRoutes.init(this.app);
+    }
 		
 }
 

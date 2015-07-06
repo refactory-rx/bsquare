@@ -1,9 +1,9 @@
-let Q = require('q');
+import Q from "q";
 
-let request = require('request');
-let fs = require('fs');
-let url = require('url');
-let moment = require('moment');
+import request from "request";
+import fs from "fs";
+import url from "url";
+import moment from "moment";
 
 let Ticket, TicketResource, Event, Order;
 let APP_BASE_URL, SENDGRID_FROM, SENDGRID_USERNAME, SENDGRID_PASSWORD;
@@ -255,7 +255,7 @@ class TicketService {
                     let orderEmail;
                     for(let i=0; i < order.signupFields.length; i++) {
                         console.log(order.signupFields[i]);
-                        if(order.signupFields[i].name === 'email') {
+                        if(order.signupFields[i].name === "email") {
                             orderEmail = order.signupFields[i].value;
                             break;
                         }

@@ -1,46 +1,43 @@
-var url = require('url');
+import url from "url";
 
-var responseUtil = require('../utils/responseUtil');
+let responseUtil = require("../utils/responseUtil");
+let RefTracker, ImpressionTracker, Order, Ticket, Event;
 
-module.exports = function(app) {
+class TrackerService {
+
+    constructor(app) {
+        ({ RefTracker, ImpressionTracker, Order, Ticket, Event } = app.model);
+        this.app = app;
+        this.authService = app.authService;
+    }
     
-    let { RefTracker, ImpressionTracker, Order, Ticket, Event } = app.model;
-
-    var module = {};
-
-    module.exports = {
-
-	getRefTrackers: function(req, callback) {
+	getRefTrackers(req, callback) {
 		
-		var params = req.body.refTracker;
+		let params = req.body.refTracker;
 		
-		app.authService.screenRequest(req, true, function(result) {
+        this.authService.screenRequest(req, true, (result) => {
 			
-			module.exports.getRefTrackersByParams(params, function(response) {
+            this.getRefTrackersByParams(params, (response) => {
 				callback(response);
 			});
 			
 		});
 		
-	},
+	}
 	
-	
-	getRefTrackersByParams: function(params, callback) {
+	getRefTrackersByParams(params, callback) {
 		
-		var response = {
+		let response = {
 			success: 0,
-			status: 'none'
+			status: "none"
 		};
 		
-		//console.log('reftracker params:');
-		//console.log(params);
-		
-		RefTracker.find(params, function(err, refTrackers) {
+        RefTracker.find(params, (err, refTrackers) => {
 			
 			if(err) {
 					
-				response.status = 'error';
-				response.message = 'Error reading data.';
+				response.status = "error";
+				response.message = "Error reading data.";
 				response.error = err;
 				
 				callback(response);
@@ -50,22 +47,22 @@ module.exports = function(app) {
 				if(refTrackers) {
 					
 					response.success = 1;
-					response.status = 'refTrackersFound';
+					response.status = "refTrackersFound";
 					response.refTrackers = refTrackers;
 					
 					if(refTrackers.length === 0) {
-						response.status = 'zeroRefTrackersFound';
+						response.status = "zeroRefTrackersFound";
 					} else if(refTrackers.length == 1) {
 						response.refTracker = refTrackers[0];
-						response.status = 'refTrackerExisted';
+						response.status = "refTrackerExisted";
 					}
 					
 					callback(response);
 							
 				} else {
 					
-					response.status = 'refTrackersNotFound';
-					response.message = 'refTrackers not found.';
+					response.status = "refTrackersNotFound";
+					response.message = "refTrackers not found.";
 							
 					callback(response);
 					
@@ -76,32 +73,29 @@ module.exports = function(app) {
 			
 		});
 		
-	},
+	}
 	
-	
-	saveRefTracker: function(req, callback) {
+	saveRefTracker(req, callback) {
 		
-		var refTrackerRequest = req.body;
+		let refTrackerRequest = req.body;
 		
-		//console.log(refTrackerRequest);
-		
-		var response = {
+		let response = {
 			success: 0,
-			status: 'none'
+			status: "none"
 		};
 				
-		var refTracker = refTrackerRequest.refTracker;
+		let refTracker = refTrackerRequest.refTracker;
 			    
-		RefTracker.create(refTracker, function(err, createdRefTracker) {
+        RefTracker.create(refTracker, (err, createdRefTracker) => {
 			
        		if(err) {
-            	response.status = 'error';
-                response.message = 'Failed to create refTracker.';
+            	response.status = "error";
+                response.message = "Failed to create refTracker.";
                 response.error = err;
         	} else {
             	response.success = 1;
-                response.status = 'refTrackerCreated';
-                response.message = 'refTracker created.';
+                response.status = "refTrackerCreated";
+                response.message = "refTracker created.";
                 response.refTrackers = [ createdRefTracker ];
                 response.refTracker = createdRefTracker;
             }
@@ -111,87 +105,74 @@ module.exports = function(app) {
 		});
 		
 		
-	},
+	}
 	
-	
-	createTicketResourceMap: function(orders, exclOrder) {
+    createTicketResourceMap(orders, exclOrder) {
 		
-		var qtysByTicketResource = [];
+		let qtysByTicketResource = [];
 			
-		for(var i=0; i<orders.length; i++) {
-				
-			var order = orders[i];
-			var items = order.items;
+	    order.forEach(order => {
+
+			let items = order.items;
 			
-			var orderId = order._id.toHexString();
-			var exclOrderId = null;
+			let orderId = order._id.toHexString();
+			let exclOrderId = null;
 			
 			if(exclOrder) {
 				exclOrderId = exclOrder._id.toHexString();
-				//console.log(orderId+' == '+exclOrderId+' = '+(orderId == exclOrderId));
+				//console.log(orderId+" == "+exclOrderId+" = "+(orderId == exclOrderId));
 			}
 			
 			if(exclOrder && orderId == exclOrderId) {
-				//console.log('skip excluded order '+orderId);
-				continue;
+				//console.log("skip excluded order "+orderId);
+				return;
 			}
 			
-			for(var j=0; j<items.length; j++) {
-						
-				var item = items[j];
-						
+		    items.forEach(item => {
+
 				if(!qtysByTicketResource[item.ticketResource]) {
 					qtysByTicketResource[item.ticketResource] = 0;
 				}
 				
 				qtysByTicketResource[item.ticketResource] += item.quantity;
 						
-			}
+			});
 			
 			
-		}
+		});
 		
 		return qtysByTicketResource;
 		
-	},
+	}
 	
-	
-	addRewardToTickets: function(orders, ticketResourceId, reward) {
+	addRewardToTickets(orders, ticketResourceId, reward) {
 		
-		//console.log('addRewardToTickets: orders.length='+orders.length);
+		//console.log("addRewardToTickets: orders.length="+orders.length);
 		
-		for(var i=0; i<orders.length; i++) {
+        orders.forEach(order => {
+
+			let rewardsAdded = false;
 			
-			var order = orders[i];
-			
-			var rewardsAdded = false;
-			
-			for(var j=0; j<order.tickets.length; j++) {
-				
-				if(order.tickets[j].ticketResourceId == ticketResourceId) {
-					
-					module.exports.updateTicketWithReward(order, order.tickets[j], reward);
+            order.tickets.forEach(ticket => {
+
+				if(ticket.ticketResourceId == ticketResourceId) {
+					this.updateTicketWithReward(order, ticket, reward);
 					rewardsAdded = true;
-					
 				}
 				
+			});
+			
+			//console.log("order "+order._id+" add="+rewardsAdded);
+			
+			if(rewardsAdded) {	
+				this.updateOrderWithTickets(order, order.tickets);
 			}
 			
-			//console.log('order '+order._id+' add='+rewardsAdded);
+		});
 			
-			if(rewardsAdded) {
-				
-				module.exports.updateOrderWithTickets(order, order.tickets);
-				
-			}
-			
-		}
-		
-			
-	},
+	}
 	
-	
-	updateTicketWithReward: function(order, ticket, reward) {
+	updateTicketWithReward(order, ticket, reward) {
 		
 		if(!ticket.rewards) {
 			ticket.rewards = [];
@@ -199,24 +180,25 @@ module.exports = function(app) {
 					
 		ticket.rewards.push(reward);
 					
-		Ticket.update( { orderId: order._id.toHexString(), ticketResourceId: ticket.ticketResourceId }, 
-			{ rewards: ticket.rewards }, { multi: true }, function(err, numAffected) {
+        Ticket.update({ 
+            orderId: order._id.toHexString(), 
+            ticketResourceId: ticket.ticketResourceId 
+        }, { rewards: ticket.rewards }, { multi: true }, (err, numAffected) => {
 						
 			if(err) {
 				//console.log(err);
 			} else {
-				//console.log('updated '+numAffected+' tickets');
+				//console.log("updated "+numAffected+" tickets");
 			}
 						
 		});
 				
 			
-	},
+	}
 	
-	
-	updateOrderWithTickets: function(order, tickets) {
+	updateOrderWithTickets(order, tickets) {
 		
-		Order.update({ _id: order._id }, { tickets: tickets }, function(err, numAffected) {
+        Order.update({ _id: order._id }, { tickets: tickets }, (err, numAffected) => {
 					
 			if(err) {
 				//console.log(err);
@@ -224,93 +206,83 @@ module.exports = function(app) {
 					
 		});
 				
-	},
+	}
 	
-	
-	detectGroupRewardConditions: function(event, orders, newOrder) {
+	detectGroupRewardConditions(event, orders, newOrder) {
 		
-		//console.log('detectRewardConditions, orders.length='+orders.length);
+		//console.log("detectRewardConditions, orders.length="+orders.length);
 		
-		var groupRewards = event.groupRewards;
+		let groupRewards = event.groupRewards;
 							
-		var origQtysMap = module.exports.createTicketResourceMap(orders, newOrder);
-		var newQtysMap = module.exports.createTicketResourceMap(orders);
+		let origQtysMap = this.createTicketResourceMap(orders, newOrder);
+		let newQtysMap = this.createTicketResourceMap(orders);
 							
-		for(var i=0; i<groupRewards.conditions.length; i++) {
-								
-			var rewardCondition = groupRewards.conditions[i];
-			var ticketResourceId = rewardCondition.ticketResource._id;
-			var qtyBefore = origQtysMap[ticketResourceId];
-			var qtyAfter = newQtysMap[ticketResourceId];
+        groupRewards.conditions.forEach(rewardCondition => {
+
+			let ticketResourceId = rewardCondition.ticketResource._id;
+			let qtyBefore = origQtysMap[ticketResourceId];
+			let qtyAfter = newQtysMap[ticketResourceId];
 			//console.log(origQtysMap);
 			//console.log(newQtysMap);
 			
 			if(qtyAfter && qtyAfter >= rewardCondition.quantity) {
 				if(!qtyBefore || qtyBefore < rewardCondition.quantity) {
 					// Add to all tickets
-					module.exports.addRewardToTickets(orders, ticketResourceId, rewardCondition.reward);
+					this.addRewardToTickets(orders, ticketResourceId, rewardCondition.reward);
 				} else {
 					// Add to new tickets
-					module.exports.addRewardToTickets([newOrder], ticketResourceId, rewardCondition.reward);
+					this.addRewardToTickets([newOrder], ticketResourceId, rewardCondition.reward);
 				}
 			}
-								
-								
-		}
-			
-	},
-	
-	
-	checkGroupTrackingRules: function(newOrder) {
-		
-		//console.log('checkGroupTrackingRules');
-		
-		module.exports.getOrdersByTracker(newOrder.event, newOrder.groupTrackerId, 'group', function(event, orders) {
-			module.exports.detectGroupRewardConditions(event, orders, newOrder);
+													
 		});
-		
 			
-	},
+	}
 	
-	
-	checkRefTrackingRules: function(newOrder) {
+	checkGroupTrackingRules(newOrder) {
 		
-		//console.log('checkRefTrackingRules');
-		
-		module.exports.getOrdersByTracker(newOrder.event, newOrder.groupTrackerId, 'ref', function(event, orders) {
-			module.exports.detectGroupRewardConditions(event, orders, newOrder);
+		//console.log("checkGroupTrackingRules");	
+        this.getOrdersByTracker(newOrder.event, newOrder.groupTrackerId, "group", (event, orders) => {
+			this.detectGroupRewardConditions(event, orders, newOrder);
 		});
-		
 			
-	},
+	}
 	
+	checkRefTrackingRules(newOrder) {
+		
+		//console.log("checkRefTrackingRules");
+		
+        this.getOrdersByTracker(newOrder.event, newOrder.groupTrackerId, "ref", (event, orders) => {
+			this.detectGroupRewardConditions(event, orders, newOrder);
+		});
+			
+	}
 	
-	getOrdersByTracker: function(eventId, trackerId, type, callback) {
+	getOrdersByTracker(eventId, trackerId, type, callback) {
 		
-		//console.log('checkTrackingRules for type '+type);
-		
-		var response = {};
+		//console.log("checkTrackingRules for type "+type);		
+		let response = {};
 		
 		if(!trackerId) {
-			return { 'error': 'missingTrackerId' };
+			return { "error": "missingTrackerId" };
 		}
 		
-		Event.findOne( { _id: eventId }, function(err, event) {
+        Event.findOne( { _id: eventId }, (err, event) => {
 			
-			responseUtil.createFindResponse('Event', err, event, function(response) {
+            responseUtil.createFindResponse("Event", err, event, (response) => {
 				
 				if(response.success == 1) {
 					
-					var trackerQuery = {};
-					if(type == 'ref') {
+					let trackerQuery = {};
+					if(type == "ref") {
 						trackerQuery.refTrackerId = trackerId;	
-					} else if(type == 'group') {
+					} else if(type == "group") {
 						trackerQuery.groupTrackerId = trackerId;
 					}
 					
-					Order.find( trackerQuery, function(err, orders) {
+                    Order.find( trackerQuery, (err, orders) => {
 						
-						responseUtil.createFindResponse('Order', err, orders, function(response) {
+                        responseUtil.createFindResponse("Order", err, orders, (response) => {
 								
 							if(response.success == 1) {
 								callback(event, orders);
@@ -328,43 +300,41 @@ module.exports = function(app) {
 			
 		});
 		
-		
-	},
+	}
 	
-	
-	getStatsByRefTrackers: function(refTrackers, callback) {
+	getStatsByRefTrackers(refTrackers, callback) {
 		
-		var trackerIds = [];
-		for(var i=0; i<refTrackers.length; i++) {
-			trackerIds.push(refTrackers[i]._id.toHexString());
-		}
+        let trackerIds = [];
+        refTrackers.forEach(refTracker => {
+			trackerIds.push(refTracker._id.toHexString());
+		});
 		
-		Order.find( { $or: [ { groupTrackerId: { $in: trackerIds } }, { refTrackerId: { $in: trackerIds } } ] }, function(err, orders) {
+        Order.find({ 
+            $or: [ 
+                { groupTrackerId: { $in: trackerIds } },
+                { refTrackerId: { $in: trackerIds } } 
+            ] 
+        }, (err, orders) => {
 			
-			responseUtil.createFindResponse('Order', err, orders, function(response) {
+            responseUtil.createFindResponse("Order", err, orders, (response) => {
 				
-				var numTickets = 0;
-				var numOrders = 0;
-				var revenue = 0;
+				let numTickets = 0;
+				let numOrders = 0;
+				let revenue = 0;
 					
 				if(response.success == 1) {
 					
-					//console.log('orders.length = '+orders.length);
+					//console.log("orders.length = "+orders.length);
 					
-					for(var i=0; i<orders.length; i++) {
-						
-						for(var j=0; j<orders[i].items.length; j++) {
-							var item = orders[i].items[j];
+                    orders.forEach(order => {
+                        order.items.forEach(item => {    
 							numTickets += item.quantity;
-						}
-							
+						});	
 						revenue += orders[i].orderTotal;
 						numOrders += 1;
+					});
 						
-						
-					}
-						
-					var refStats = {
+					let refStats = {
 						numTickets: numTickets,
 						numOrders: numOrders,
 						revenue: revenue,
@@ -382,36 +352,36 @@ module.exports = function(app) {
 			
 		});	
 		
-	},
+	}
 	
-	getRefStats: function(req, callback) {
+	getRefStats(req, callback) {
 		
-		var response = {
+		let response = {
 			success: 0,
-			status: 'none'
+			status: "none"
 		};
 		
-		app.authService.screenRequest(req, true, function(result) {
+        this.authService.screenRequest(req, true, (result) => {
 			
-			var user = result.user;
+			let user = result.user;
 			//console.log(user);
 			
-			RefTracker.find( { userId: user.id }, function(err, refTrackers) {
+            RefTracker.find( { userId: user.id }, (err, refTrackers) => {
 				
-				responseUtil.createFindResponse('RefTracker', err, refTrackers, function(response) {
+                responseUtil.createFindResponse("RefTracker", err, refTrackers, (response) => {
 					
 					if(response.success == 1) {
 						
-						//console.log('found '+refTrackers.length+' refTrackers');
+						//console.log("found "+refTrackers.length+" refTrackers");
 						
-						module.exports.getStatsByRefTrackers(refTrackers, function(response) {
+                        this.getStatsByRefTrackers(refTrackers, (response) => {
 							
-							var refTrackerIds = [];
-							for(var i=0; i<refTrackers.length; i++) {
-								refTrackerIds.push(refTrackers[i]._id.toHexString());
-							}
+							let refTrackerIds = [];
+                            refTrackers.forEach(refTracker => {
+								refTrackerIds.push(refTracker._id.toHexString());
+							});
 							
-							ImpressionTracker.find( { refTrackerId: { $in: refTrackerIds } }, function(err, impressionTrackers) {
+                            ImpressionTracker.find( { refTrackerId: { $in: refTrackerIds } }, (err, impressionTrackers) => {
 								
 								if(err) {
 									//console.log(err);
@@ -438,64 +408,15 @@ module.exports = function(app) {
 		});
 		
 			
-	},
-	
-	
-	initRoutes: function() {
-		
-		app.get('/api/refstats', function(req, res) {
-			
-			module.exports.getRefStats(req, function(response) {
-				res.json(response);
-			});
-			
-		});
-		
-		app.post('/api/reftrackers', function(req, res) {
-			
-			module.exports.getRefTrackers(req, function(result) {
-				
-				//console.log(result);
-				
-				if(result.success == 1) {
-					
-					if(result.status == 'zeroRefTrackersFound' || result.status == 'trackersNotFound') {
-						
-						module.exports.saveRefTracker(req, function(result) {
-							res.json(result);
-						});
-					
-					} else if(result.refTrackers.length == 1) {
-						
-						if(result.status == 'refTrackersFound') {
-							result.status = 'refTrackerExisted';
-							result.message = 'refTracker existed.';
-							result.refTracker = result.refTrackers[0];
-						}
-						
-						res.json(result);
-						
-					} else {
-						
-						res.json(result);
-						
-					}
-					
-				} else {
-					
-					res.json(result);
-					
-				}
-				
-				
-			});
-			
-		});
-		
+	}
+
+    initRoutes() {
+        let trackerServiceRoutes = require("./trackerServiceRoutes");
+        trackerServiceRoutes.init(this.app);
     }
-
-    };
-
-    return module.exports;
 	
+}
+
+module.exports = (app) => {
+    return new TrackerService(app);
 };

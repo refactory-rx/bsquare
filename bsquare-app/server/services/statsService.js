@@ -1,98 +1,89 @@
-var Q = require('q');
-var fs = require('fs');
-var url = require('url');
+import Q from "q";
+import fs from "fs";
+import url from "url";
 
-var responseUtil = require('../utils/responseUtil');
+let responseUtil = require("../utils/responseUtil");
+let Ticket, TicketResource, Event, Order;
 
-module.exports = function(app) {
+class StatsService {
     
-    let { Ticket, TicketResource, Event, Order } = app.model;
+    constructor(app) {
+        ({ Ticket, TicketResource, Event, Order } = app.model);
+        this.app = app;
+    }
 
-    var module = {};
-
-    module.exports = {
-
-	getEventStats: function(eventId, statType) {
+	getEventStats(eventId, statType) {
 	    
-	    if(statType === 'tickets') {
-	    	return module.exports.getTicketStats(eventId);
-	    } else if(statType === 'revenue') {
-	    	return module.exports.getRevenueStats(eventId);
+	    if(statType === "tickets") {
+	    	return this.getTicketStats(eventId);
+	    } else if(statType === "revenue") {
+	    	return this.getRevenueStats(eventId);
 	    }
 	          
-	},
+	}
 	
-	
-	getTicketStats: function(eventId) {
+	getTicketStats(eventId) {
 		
-		var deferred = Q.defer();
+		let deferred = Q.defer();
 		
-		var response = {
+		let response = {
 	        success: 0
 	    };
 	    
-		var countsByResource = {};
+		let countsByResource = {};
 	    
 	    TicketResource.findQ({ event: eventId })
-	    .then(function(ticketResources) {
+        .then((ticketResources) => {
 	        return ticketResources;
 	    })
-	    .then(function(ticketResources) {
+        .then((ticketResources) => {
 	    	
 	    	////console.log(ticketResources);
-	    	
-	    	for(var i=0; i<ticketResources.length; i++) {
-	    		var countStat = {
-	    			name: ticketResources[i].name,
-	    			quantity: ticketResources[i].quantity,
+
+            ticketResources.forEach(ticketResource => {
+	    		let countStat = {
+	    			name: ticketResource.name,
+	    			quantity: ticketResource.quantity,
 	    			sold: 0,
 	    			attended: 0
 	    		}
-	    		countsByResource[ticketResources[i]._id.toHexString()] = countStat;
-	    	}
+	    		countsByResource[ticketResource._id.toHexString()] = countStat;
+	    	});
 	    	
-	        var ticketQueryPromises = ticketResources.map(function(ticketResource) {
+            let ticketQueryPromises = ticketResources.map((ticketResource) => {
 	           return Ticket.findQ({ ticketResourceId: ticketResource._id.toHexString() }) 
 	        });
 	        
 	        return ticketQueryPromises;
 	    
 	    })
-	    .then(function(ticketQueryPromises) {
+        .then((ticketQueryPromises) => {
 	        return Q.all(ticketQueryPromises);
 	    })
-	    .then(function(tickets) {
-	    	
-	    	////console.log(countsByResource);
-	    	////console.log(tickets);
-	    	
-	    	for(var i=0; i<tickets.length; i++) {
-	    		//console.log('ticket', tickets[i]);
-	    		for(var j=0; j<tickets[i].length; j++) {
-	    			//console.log('get by '+tickets[i][j].ticketResourceId);
-	    			countsByResource[tickets[i][j].ticketResourceId].sold++;
-	    			if(tickets[i][j].status === 'used') {
-	    				countsByResource[tickets[i][j].ticketResourceId].attended++;
+        .then((ticketResults) => {
+
+            ticketResults.forEach(ticketResult => {
+                ticketResult.tickets.forEach(ticket => {
+	    			countsByResource[ticket.ticketResourceId].sold++;
+	    			if(ticket.status === "used") {
+	    				countsByResource[ticket.ticketResourceId].attended++;
 	    			}
-	    		}
-	    		
-	    	}
+	    		});	
+	    	});
 	    	
 	    	response.success = 1;
-	    	response.status = 'statsRetrieved';
+	    	response.status = "statsRetrieved";
 	    	response.data = {
 	    		countsByResource: countsByResource
 	    	};
 	    	
-	    	////console.log(response);
-	    	
 	    	deferred.resolve(response);
 	    	
 	    })
-	    .catch(function(err) {
+        .catch((err) => {
 	        
 	        //console.log(err);
-	        response.status = 'statsError';
+	        response.status = "statsError";
 	        response.error = err.message;
 	        response.data = err;
 	        
@@ -102,21 +93,20 @@ module.exports = function(app) {
 	    
 	    return deferred.promise;
 			
-	},
+	}
 	
-	
-	getRevenueStats: function(eventId) {
+	getRevenueStats(eventId) {
 		
-		var deferred = Q.defer();
+		let deferred = Q.defer();
 		
-		var response = {
+		let response = {
 	        success: 0
 	    };
 	    
-	    var availableTicketResources;
+	    let availableTicketResources;
 	    
 	    TicketResource.findQ({ event: eventId })
-	    .then(function(ticketResources) {
+        .then((ticketResources) => {
 	        
 	        availableTicketResources = ticketResources;
 	        //console.log(ticketResources);
@@ -124,28 +114,27 @@ module.exports = function(app) {
 	        return Order.find({ event: eventId }).sort({ timePlaced: 1 }).execQ();
 	        
 	    })
-	    .then(function(orders) {
+        .then((orders) => {
 	    	
 	    	if(orders.length === 0) {
 	    		return [];
 	    	}
 	    	
-	    	var lastTime;
-	    	var lastTimeMark;
+	    	let lastTime;
+	    	let lastTimeMark;
 	    	
-	    	var rowsByTimeMark = {};
-	    	var reportRows = [];
+	    	let rowsByTimeMark = {};
+	    	let reportRows = [];
 	    	
-	    	//console.log('orders.length = '+orders.length);
+	    	//console.log("orders.length = "+orders.length);
 	    	
-	    	for(var i=0; i<orders.length; i++) {
+            orders.forEach(order => {
+
+                //console.log(order.status, order.timePlaced);
 	    		
-	    		var order = orders[i];
-	    		//console.log(order.status, order.timePlaced);
-	    		
-	    		if(order.status === 'fulfilled' && order.timePlaced) {
+	    		if(order.status === "fulfilled" && order.timePlaced) {
 	    			
-	    			var currentTimeMark = lastTimeMark;
+	    			let currentTimeMark = lastTimeMark;
 	    			
 	    			if(!lastTime) {
 	    				lastTime = order.timePlaced;
@@ -153,21 +142,21 @@ module.exports = function(app) {
 	    				currentTimeMark = lastTimeMark;
 	    			}
 	    			
-	    			var timeDiff = order.timePlaced - lastTimeMark;
+	    			let timeDiff = order.timePlaced - lastTimeMark;
 	    			timeDiff = timeDiff / (1000 * 60 * 15);
 	    			
-	    			//console.log('timeDiff='+timeDiff);
+	    			//console.log("timeDiff="+timeDiff);
 	    			if(timeDiff >= 1 || reportRows.length === 0) {
 	    				
 	    				currentTimeMark = order.timePlaced;
 	    				lastTimeMark = currentTimeMark;
 	    				
-	    				var reportRow = {
+	    				let reportRow = {
 	    					timeMark: currentTimeMark,
 	    					revenuesByResource: {}
 	    				};
 	    				
-	    				availableTicketResources.map(function(ticketResource) {
+                        availableTicketResources.map((ticketResource) => {
 	    					reportRow.revenuesByResource[ticketResource._id.toHexString()] = {
 	    						ticketName: ticketResource.name,
 	    						value: 0
@@ -178,29 +167,28 @@ module.exports = function(app) {
 	    				
 	    			}
 	    			
-	    			for(var j=0; j<order.items.length; j++) {
-	    				
-	    				var item = order.items[j];
-	    				
+                    order.items.forEach(item => {
+
 	    				if(!reportRows[reportRows.length-1].revenuesByResource[item.ticketResource]) {
-	    					continue;
+	    					return;
 	    				}
 	    				
-	    				reportRows[reportRows.length-1].revenuesByResource[item.ticketResource].value += item.price * item.quantity;
-	    				
-	    			}
+                        reportRows[reportRows.length-1].revenuesByResource[item.ticketResource].value += 
+                            item.price * item.quantity;
+
+	    			});
 	    			
 	    			lastTime = order.timePlaced;
 	    			
 	    		}
 	    		
-	    	}
+	    	});
 	        
-	        var resourceIds;
+	        let resourceIds;
 	        
-	        for(var i=1; i<reportRows.length; i++) {
-	        	resourceIds = Object.getOwnPropertyNames(reportRows[i].revenuesByResource);
-	        	resourceIds.map(function(resourceId) {
+	        for(let i = 1; i < reportRows.length; i++) {
+	        	resourceIds = Object.keys(reportRows[i].revenuesByResource);
+                resourceIds.map((resourceId) => {
 	        		reportRows[i].revenuesByResource[resourceId].value += reportRows[i-1].revenuesByResource[resourceId].value;	
 	        	});
 	        }
@@ -208,102 +196,71 @@ module.exports = function(app) {
 	        return reportRows;
 	    
 	    })
-	    .then(function(reportRows) {
+        .then((reportRows) => {
 	    	
 	    	//console.log(reportRows);
 	    	
-	    	var tsv = 'date\t';
+	    	let tsv = "date\t";
 	    	
-	    	var resourceId;
-	    	var revenueResources = [];
+	    	let resourceId;
+	    	let revenueResources = [];
 	    	
-	    	for(var i=0; i<availableTicketResources.length; i++) {
-	    		
-	    		resourceId = availableTicketResources[i]._id.toHexString();
+	        availableTicketResources.forEach(availableTicketResource => {	
+	    		resourceId = availableTicketResource._id.toHexString();
 	    		if(reportRows.length > 0 && reportRows[reportRows.length-1].revenuesByResource[resourceId].value > 0) {
-	    			tsv += availableTicketResources[i].name+'\t';
+	    			tsv += availableTicketResource.name+"\t";
 	    			revenueResources.push(resourceId);
-	    		}
-	    		
-	    	}
+	    		}	
+	    	});
 	    	
-	    	tsv = tsv.substring(0, tsv.length-1)+'\n';
+	    	tsv = tsv.substring(0, tsv.length-1)+"\n";
 	    	
 	    	if(revenueResources.length > 0 && reportRows.length === 1) {
 	    		
-	    		tsv += (reportRows[0].timeMark-(60*60*1000))+'\t';
-	    		for(var i=0; i<revenueResources.length; i++) {
-	    			tsv += '0\t';
-	    		}
+	    		tsv += (reportRows[0].timeMark-(60*60*1000))+"\t";
+                revenueResources.forEach(revenueResource => {
+	    			tsv += "0\t";
+	    		});
 	    		
-	    		tsv = tsv.substring(0, tsv.length-1)+'\n';
+	    		tsv = tsv.substring(0, tsv.length-1)+"\n";
 	    	
 	    	}
-	    	
-	    	for(var i=0; i<reportRows.length; i++) {
-	    		
-	    		tsv += reportRows[i].timeMark+'\t';
-	    		
-	    		for(var j=0; j<availableTicketResources.length; j++) {
-	    			resourceId = availableTicketResources[j]._id.toHexString();
+
+            reportRows.forEach(reportRow => {
+	            	
+	    		tsv += reportRow.timeMark+"\t";
+
+                availableTicketResources.forEach(availableTicketResource => {
+	    			resourceId = availableTicketResource._id.toHexString();
 	    			if(reportRows.length > 0 && reportRows[reportRows.length-1].revenuesByResource[resourceId].value > 0) {
-	    				tsv += reportRows[i].revenuesByResource[resourceId].value+'\t';
+	    				tsv += reportRow.revenuesByResource[resourceId].value+"\t";
 	    			}
-	    		}
+	    		});
 	    		
-	    		tsv = i < reportRows.length-1 ? tsv.substring(0, tsv.length-1)+'\n' : tsv;
+	    		tsv = i < reportRows.length-1 ? tsv.substring(0, tsv.length-1)+"\n" : tsv;
 	    		
-	    	}
+	    	});
 	    	
 	    	//console.log(tsv);
 			deferred.resolve(tsv);
 			
 	    })
-	    .catch(function(error) {
+        .catch((error) => {
 	    	console.log(error)		
 	    });
 		
 		
 	    return deferred.promise;
 			
-	},
-	
-	
-	initRoutes: function() {
-		
-		app.get('/api/stats/:eventId/:statType', function(req, res) {
-		    
-		    //console.log('screen request to get stats');
-		    
-		    app.authService.screenRequest(req, true, function(authResult) {
-	            
-	            if(authResult.status === 'authorized') {
-	            	
-	            	var statType = req.params.statType;
-	                ////console.log('get stats for '+req.params.eventId);        
-	                module.exports.getEventStats(req.params.eventId, statType)
-	                .then(function(response) {
-	                   	////console.log('returning stats', response);
-	                	
-	                	if(statType === 'revenue') {
-	                		res.end(response);	
-	                	} else {
-	                		res.json(response);
-	                	}
-	                	
-	                });
-	                
-	            } else {
-	                res.json(authResult);
-	            }
-	            
-	        });
-		});
-		
+	}
+
+    initRoutes() {
+        let statsServiceRoutes = require("./statsServiceRoutes");
+        statsServiceRoutes.init(this.app);
     }
-
-    };
-
-    return module.exports;
 	
+}
+
+module.exports = (app) => {
+    return new StatsService(app);
 };

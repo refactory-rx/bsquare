@@ -1,28 +1,19 @@
-var mongoose = require('mongoose');
-var url = require('url');
-
-var restUtil = require('./utils/restUtil');
-
-let eventServiceRoutes = require('./services/eventServiceRoutes');
-let loginServiceRoutes = require('./services/loginServiceRoutes');
-let orderServiceRoutes = require('./services/orderServiceRoutes');
-let paymentServiceRoutes = require('./services/paymentServiceRoutes');
+import mongoose from "mongoose";
+import url from "url";
 
 module.exports = function(app) {
 
-    var User = app.model.User;
-    var Event = app.model.Event;
+    let Event = app.model.Event;
     
     app.loginService.start();
     app.orderUpdates.start();
 
-    eventServiceRoutes.init(app);
-    loginServiceRoutes.init(app);
-    orderServiceRoutes.init(app);
-    paymentServiceRoutes.init(app);
-
-	app.trackerService.initRoutes();
-	app.statsService.initRoutes();
+    app.eventService.initRoutes();
+    app.loginService.initRoutes();
+    app.orderService.initRoutes();
+    app.paymentService.initRoutes();
+    app.trackerService.initRoutes();
+    app.statsService.initRoutes();
     app.guestService.initRoutes();
     app.ticketService.initRoutes();
 
@@ -37,24 +28,8 @@ module.exports = function(app) {
         });
     });
 
-	app.get('/api/users/:id', function(req, res) {
-		restUtil.getOne(User, req, res);
-	});
-
-    app.get('/api/users', function(req, res) {
-    	restUtil.getMany(User, req, res);
-    });
-
-	app.post('/api/users/:id', function(req, res) {
-		restUtil.post(User, req, res);
-	});
-
-	app.delete('/api/users/:id', function(req, res) {
-		restUtil.delete(User, req, res);
-	});
-
-	app.get('*', function(req, res) {
-		res.sendFile(__dirname+'/public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+    app.get('*', (req, res) => {
+		res.sendFile(__dirname+'/client/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 	});
 
 

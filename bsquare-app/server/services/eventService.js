@@ -12,6 +12,7 @@ let Event, ImpressionTracker, TicketResource;
 class EventService {
     
     constructor(app) {
+        this.app = app;
         this.authService = app.authService;
         ({ Event, ImpressionTracker, TicketResource } = app.model);
     }
@@ -843,7 +844,12 @@ class EventService {
         	
     	});	
 		
-	}
+    }
+
+    initRoutes() {
+        let eventServiceRoutes = require("./eventServiceRoutes");
+        eventServiceRoutes.init(this.app);
+    }
 	
 }
 

@@ -52,12 +52,6 @@ var httpPort = process.env.PORT || 8080;
 httpServer.listen(httpPort);
 console.log('Listening on port '+httpPort);
 
-/*
-process.on('uncaughtException', function(err) {
-      console.log('Caught exception.', err);
-});
-*/
-
 /**
  * Run HTTPS server instead of HTTP
  *
@@ -77,38 +71,3 @@ if(fs.existsSync(__dirname+'/keys')) {
 }
 
 ***/
-
-/*
-var https = require('https');
-var http = require('http');
-var fs = require('fs');
-var express  = require('express');
-var app      = express();
-var mongoose = require('mongoose');
-var port  	 = 80;
-var database = require('./config/database');
-
-mongoose.connect(database.url);
-
-app.configure(function() {
-    app.use(express.static(__dirname + '/public')); 		// set the static files location /public/img will be /img for users
-	app.use(express.logger('dev')); 						// log every request to the console
-	app.use(express.bodyParser()); 							// pull information from html in POST
-	app.use(express.methodOverride()); 						// simulate DELETE and PUT
-});
-
-require('./app/routes.js')(app);
-	
-var privateKey  = fs.readFileSync(__dirname+'/keys/server-key.pem', 'utf8');
-var certificate = fs.readFileSync(__dirname+'/keys/server-cert.pem', 'utf8');
-
-var credentials = { key: privateKey, cert: certificate };
-
-var httpServer = http.createServer(app);
-var httpsServer = https.createServer(credentials, app);
-
-httpServer.listen(8080);
-console.log("Listening on port 8080");
-//httpsServer.listen(443);
-//console.log("Listening on port 443");
-*/

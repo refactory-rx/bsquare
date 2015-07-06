@@ -20,10 +20,10 @@ var recoverPasswordEmailText =
 class LoginService {
     
     constructor(app) {
+        this.app = app;
         this.authService = app.authService;
         this.sendgrid = require('sendgrid')(app.settings.SENDGRID_USERNAME, app.settings.SENDGRID_PASSWORD);
-        User = app.model.User;
-        Profile = app.model.Profile;
+        ({ User, Profile } = app.model);
     }
 
 	getProfile(req, callback) {
@@ -224,6 +224,11 @@ class LoginService {
 		setInterval(this.expireTimedOutSessions, expTime);
 		
 	}	
+    
+    initRoutes() {
+        let loginServiceRoutes = require("./loginServiceRoutes");
+        loginServiceRoutes.init(this.app);
+    }
 
 }
 

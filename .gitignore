@@ -3,6 +3,6 @@
 *.log
 .DS_Store
 node_modules
+bower_components
 config
 tickets
-bower_components

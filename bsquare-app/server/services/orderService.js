@@ -28,7 +28,8 @@ class OrderService {
             TicketResource
 
         } = app.model);
-
+        
+        this.app = app;
         this.authService = app.authService;
         this.ticketService = app.ticketService;
         this.trackerService = app.trackerService;
@@ -623,6 +624,11 @@ class OrderService {
 	    });
 
 	}
+    
+    initRoutes() {
+        let orderServiceRoutes = require("./orderServiceRoutes");
+        orderServiceRoutes.init(this.app);
+    }
 
 }
 
