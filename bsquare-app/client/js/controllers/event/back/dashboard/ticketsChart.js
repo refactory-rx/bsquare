@@ -37,7 +37,7 @@ controllers.controller('event.back.dashboard.TicketsChartCtrl',
 		    var countsByResource = response.data.countsByResource;
             var resourceIds = Object.getOwnPropertyNames(countsByResource);
             var categories = [];
-            for(var i=0; i<resourceIds.length; i++) {
+            for(var i = 0; i < resourceIds.length; i++) {
                 var resource = countsByResource[resourceIds[i]];
                 categories.push(resource.name);
             }
@@ -90,11 +90,11 @@ controllers.controller('event.back.dashboard.TicketsChartCtrl',
             [ $translate.instant('event.back.dashboard.sold') ], 
             [ $translate.instant('event.back.dashboard.remaining') ]
         ];
-        
+         
         var countsByResource = response.data.countsByResource;
-        var resourceIds = Object.getOwnPropertyNames(countsByResource);
+        var resourceIds = Object.keys(countsByResource);
         
-        for(var i=0; i<resourceIds.length; i++) {
+        for(var i=0; i < resourceIds.length; i++) {
             var resource = countsByResource[resourceIds[i]];
             columns[0].push(resource.attended);
             columns[1].push(resource.sold);

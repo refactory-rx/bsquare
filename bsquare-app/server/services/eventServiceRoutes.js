@@ -10,8 +10,8 @@ module.exports = {
 		    let params = url_parts.query;
 
             app.authService.screenRequest(req, true, (result) => {
-
-                if (result.status === "authorized") {
+                
+                if (params.kind === "own" && result.status === "authorized") {
                     params.user = result.user;
                 }
 

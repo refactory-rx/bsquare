@@ -47,7 +47,7 @@ class EventService {
 
 				
 			} else {
-				
+			     
                 this.getEventsByParams(params, (response) => {
 					callback(response);
 				});
@@ -89,7 +89,8 @@ class EventService {
 	}
 	
 	getEventsByParams(params, callback) {
-
+        
+        console.log("getEventsByParams", params);
 		let response = {
 			success: 0,
 			status: 'none'

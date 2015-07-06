@@ -60,10 +60,9 @@ class StatsService {
         .then((ticketQueryPromises) => {
 	        return Q.all(ticketQueryPromises);
 	    })
-        .then((ticketResults) => {
-
-            ticketResults.forEach(ticketResult => {
-                ticketResult.tickets.forEach(ticket => {
+        .then((ticketQueryResults) => {
+            ticketQueryResults.forEach(ticketQueryResult => {
+                ticketQueryResult.forEach(ticket => {
 	    			countsByResource[ticket.ticketResourceId].sold++;
 	    			if(ticket.status === "used") {
 	    				countsByResource[ticket.ticketResourceId].attended++;
@@ -82,7 +81,7 @@ class StatsService {
 	    })
         .catch((err) => {
 	        
-	        //console.log(err);
+	        console.log(err);
 	        response.status = "statsError";
 	        response.error = err.message;
 	        response.data = err;
@@ -225,8 +224,8 @@ class StatsService {
 	    		tsv = tsv.substring(0, tsv.length-1)+"\n";
 	    	
 	    	}
-
-            reportRows.forEach(reportRow => {
+            
+            reportRows.forEach((reportRow, i) => {
 	            	
 	    		tsv += reportRow.timeMark+"\t";
 
