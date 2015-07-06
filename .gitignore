@@ -5,4 +5,5 @@
 node_modules
 bower_components
 config
+dist
 tickets

@@ -197,7 +197,9 @@ class TicketService {
 
             } else {
 
-		        let qtyByResource = {};
+                createdTickets = createdTickets[0];
+                
+                let qtyByResource = {};
                 tickets.forEach(ticket => {
 
 			        if(!qtyByResource[ticket.ticketResourceId]) {
@@ -237,8 +239,6 @@ class TicketService {
                 let emailContent = "Your tickets have been issued<br/><br/>";
 
                 createdTickets.forEach(ticket => {
-                    console.log("created ticket", ticket);
-                    createdTickets.push(ticket);
                     emailContent +=
                         `<a href="${APP_BASE_URL}/#/ticket/${ticket._id}">
                             ${ticket.ticketName}

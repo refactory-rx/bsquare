@@ -1,16 +1,16 @@
-var passwordHash = require('password-hash');
-var crypto = require('crypto');
+let passwordHash = require("password-hash");
+let crypto = require("crypto");
 
 let User, Profile;
 
-var confirmEmailText =
+let confirmEmailText =
 	"<p>Thanks for registering. Please, confirm your e-mail by clicking the following link:"+
 	"<br/><br/>"+
 	"{{link}}"+
 	"<br/><br/>"+
 	"Keikkapalvelu Ax</p>";
 
-var recoverPasswordEmailText =
+let recoverPasswordEmailText =
 	"<p>You have requested to reset your password. Click the following link to proceed:"+
 	"<br/><br/>"+
 	"{{link}}"+
@@ -22,7 +22,7 @@ class LoginService {
     constructor(app) {
         this.app = app;
         this.authService = app.authService;
-        this.sendgrid = require('sendgrid')(app.settings.SENDGRID_USERNAME, app.settings.SENDGRID_PASSWORD);
+        this.sendgrid = require("sendgrid")(app.settings.SENDGRID_USERNAME, app.settings.SENDGRID_PASSWORD);
         ({ User, Profile } = app.model);
     }
 
@@ -30,23 +30,23 @@ class LoginService {
 		
         this.authService.screenRequest(req, true, (result) => {
 			
-			if(result.status == 'app.authService.rized') {
+			if(result.status === "authorized") {
 				
-				var response = {
+				let response = {
 					success: 0,
-					status: 'none'
+					status: "none"
 				};
 				
-				var profile = result.profile;
+				let profile = result.profile;
 				
 				if(profile) {
 					response.success = 1;
-					response.status = 'gotProfile';
-					response.message = 'Got profile';
+					response.status = "gotProfile";
+					response.message = "Got profile";
 					response.profile = profile;
 				} else {
-					response.status = 'profileNotFound';
-					response.message = 'Could not find profile.';
+					response.status = "profileNotFound";
+					response.message = "Could not find profile.";
 				}
 				
 				callback(response);
@@ -63,11 +63,11 @@ class LoginService {
 		
         this.authService.screenRequest(req, true, (result) => {
 			
-			if(result.status == 'app.authService.rized') {
+			if(result.status == "app.authService.rized") {
 				
 				let response = {
 					success: 0,
-					status: 'none'
+					status: "none"
 				};
 				
 				let saveProfileRequest = req.body;
@@ -78,13 +78,13 @@ class LoginService {
                 Profile.update( { _id: profileId }, profile, (err, numAffected) => {
 					
 					if(err) {
-						response.status = 'error';
-						response.message = 'Failed to save profile';
+						response.status = "error";
+						response.message = "Failed to save profile";
 						response.error = err;
 					} else {
 						response.success = 1;
-						response.status = 'profileSaved';
-						response.message = 'Profile saved.';
+						response.status = "profileSaved";
+						response.message = "Profile saved.";
 					}
 					
 					callback(response);
@@ -101,10 +101,10 @@ class LoginService {
 	
 	expireTimedOutSessions() {
 		
-		var maxTime = (new Date()).getTime()-(1000*60*60*12);
+		let maxTime = (new Date()).getTime()-(1000*60*60*12);
 		
-        var query = {
-            loginStatus: { $ne: 'loggedOut' },
+        let query = {
+            loginStatus: { $ne: "loggedOut" },
 			lastActiveTime: {  $lt: maxTime }
 		};
 		
@@ -113,7 +113,7 @@ class LoginService {
             if(err) {
 				console.log(err);
 			} else {
-				for(var i=0; i < users.length; i++) {
+				for(let i=0; i < users.length; i++) {
 					this.expireUser(users[i]);
 				}	
 			}
@@ -125,7 +125,7 @@ class LoginService {
 	expireUser(user) {
 		
 		user.tokens = {};
-		user.loginStatus = 'loggedOut';
+		user.loginStatus = "loggedOut";
 	    
         user.save((err) => { 
 			if(err) { console.log(err); }
@@ -135,9 +135,9 @@ class LoginService {
 	
 	sendPendingEmails() {
 		
-		console.log('run send pending emails');
+		console.log("run send pending emails");
 		
-        User.find({ sendVerificationEmail: 'true' }, (err, users) => {
+        User.find({ sendVerificationEmail: "true" }, (err, users) => {
 		    
             if(err) {
 
@@ -145,15 +145,15 @@ class LoginService {
 
             } else if(users && users.length > 0) {
 
-                for(var i=0; i < users.length; i++) {
+                for(let i=0; i < users.length; i++) {
                     
-                    var user = users[i];
+                    let user = users[i];
                     
-                    var verifyUrl = APP_BASE_URL+'/#/verify/'+user._id;
-                    var link = '<a href="'+verifyUrl+'">'+verifyUrl+'</a>';
-                    var emailText = confirmEmailText.replace('{{link}}', link);
+                    let verifyUrl = APP_BASE_URL+"/#/verify/"+user._id;
+                    let link = `<a href="${verifyUrl}">${verifyUrl}</a>`;
+                    let emailText = confirmEmailText.replace("{{link}}", link);
                     
-                    user.sendVerificationEmail = 'false';
+                    user.sendVerificationEmail = "false";
                     user.save();
                     
                     this.sendEmail(user.emailAddress, "Email verification request", emailText, emailText);
@@ -164,7 +164,7 @@ class LoginService {
         
         });
 
-        User.find({ sendRecoveryEmail: 'true' }, (err, users) => {
+        User.find({ sendRecoveryEmail: "true" }, (err, users) => {
 			
             if(err) {
 
@@ -172,17 +172,17 @@ class LoginService {
 
             } else if(users && users.length > 0) {
 
-                console.log('pwd reset requests: '+users.length);
+                console.log("pwd reset requests: "+users.length);
                 
                 for(let i=0; i < users.length; i++) {
                     
-                    var user = users[i];
+                    let user = users[i];
                     
-                    var recoverUrl = APP_BASE_URL+'/#/recover/'+user.pwdRecoveryToken;
-                    var link = '<a href="'+recoverUrl+'">'+recoverUrl+'</a>';
-                    var emailText = recoverPasswordEmailText.replace('{{link}}', link);
+                    let recoverUrl = APP_BASE_URL+"/#/recover/"+user.pwdRecoveryToken;
+                    let link = `<a href="${recoverUrl}">${recoverUrl}</a>`;
+                    let emailText = recoverPasswordEmailText.replace("{{link}}", link);
                     
-                    user.sendRecoveryEmail = 'false';
+                    user.sendRecoveryEmail = "false";
                     user.save();
                     
                     this.sendEmail(user.emailAddress, "Password recovery", emailText, emailText);
@@ -198,7 +198,7 @@ class LoginService {
 	
 	sendEmail(emailAddress, emailSubject, emailText, emailHtml) {
 		
-		console.log('sending password reset email...', emailAddress, emailSubject);
+		console.log("sending password reset email...", emailAddress, emailSubject);
 		
 		this.sendgrid.send({
     		to: emailAddress,
@@ -215,7 +215,7 @@ class LoginService {
 	
 	start() {
 		
-		var expTime = 1000 * 60; // 1 hour
+		let expTime = 1000 * 60; // 1 hour
 		
 		this.expireTimedOutSessions();
 		this.sendPendingEmails();

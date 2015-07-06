@@ -15,7 +15,7 @@ class PhantomService {
     }
 
     createTicketHtml(ticket, callback) {
-        
+
         var time = moment(ticket.startTime, "x").format("YYYY/MM/DD hh:mm");
 
         var ticketHtml =
@@ -38,7 +38,7 @@ class PhantomService {
             </div>
             </body>
         </html>`;
-        
+
         var writeStream = fs.createWriteStream(`${WEB_CONTENT_PATH}/tickets/qr${ticket._id}.png`);
 
         writeStream.on("finish", () => {
@@ -125,7 +125,6 @@ class PhantomService {
 	createTickets(tickets, callback) {
 
         let createTicketPromises = [];
-
         tickets.forEach(ticket => {
             console.log("schedule ticket pdf", ticket);
             createTicketPromises.push(this.createTicket(ticket));

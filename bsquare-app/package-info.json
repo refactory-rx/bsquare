@@ -6,7 +6,7 @@
   "scripts": {
     "jshint-node": "./node_modules/.bin/jshint ./app --exclude ./node_modules",
     "jshint-front": "./node_modules/.bin/jshint ./public/js --exclude-path ./.jshintignore",
-    "babel-node": "babel-node --stage 0 --ignore='foo|bar|baz'"
+    "server": "grunt && server.js"
   },
   "repository": "https://github.com/vhalme/bsquare.git",
   "dependencies": {

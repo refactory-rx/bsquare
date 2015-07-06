@@ -17,7 +17,7 @@
     <link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>	
     <link href="//fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet"/>
     <link rel="stylesheet" href="/css/bootstrap-sandstone.css"/>
-	<!-- <link rel="stylesheet" href="js/bower_components/bootstrap/dist/css/bootstrap.min.css"/> -->
+	<!-- <link rel="stylesheet" href="dist/bower_components/bootstrap/dist/css/bootstrap.min.css"/> -->
 	<link rel="stylesheet" href="bower_components/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"/>
 	<link rel="stylesheet" href="bower_components/c3/c3.min.css"/>
 	<link rel="stylesheet" href="css/wireframe.css"/>
@@ -56,7 +56,7 @@
         */
         
 	</style>
-	
+    
 	<!-- Libraries (bower) -->
 	<script src="bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -75,48 +75,48 @@
 	
 	
 	<!-- Libraries (non-bower) -->
-	<script src="js/lib/jquery.slimscroll.min.js"></script>
-	<script src="js/lib/bootstrap-datetimepicker.min.js"></script>
-	<script src="js/lib/angulike.js"></script>
+	<script src="lib/jquery.slimscroll.min.js"></script>
+	<script src="lib/bootstrap-datetimepicker.min.js"></script>
+	<script src="lib/angulike.js"></script>
 	
 	<!-- Libraries (external) -->
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
 	<script type="text/javascript" src="https://static.addtoany.com/menu/page.js"></script>
 	
 	<!-- App scripts -->
-	<script src="js/main.js"></script>
-	<script src="js/translate.js"></script>
-	<script src="js/directives.js"></script>
-	<script src="js/services/stringUtils.js"></script>
-	<script src="js/services/validationService.js"></script>
-	<script src="js/controllers/event/eventEntry.js"></script>
-	<script src="js/controllers/event/front/eventFront.js"></script>
-	<script src="js/controllers/event/back/manageEvent.js"></script>
-	<script src="js/controllers/event/back/tickets/manageTickets.js"></script>
-	<script src="js/controllers/event/back/info/manageInfo.js"></script>
-	<script src="js/controllers/event/back/layout/manageLayout.js"></script>
-	<script src="js/controllers/event/back/signup/manageSignup.js"></script>
-	<script src="js/controllers/event/back/marketing/manageMarketing.js"></script>
-	<script src="js/controllers/event/back/orders/manageOrders.js"></script>
-	<script src="js/controllers/event/back/dashboard/dashboard.js"></script>
-	<script src="js/controllers/event/back/dashboard/ticketsChart.js"></script>
-	<script src="js/controllers/event/back/dashboard/revenueChart.js"></script>
-	<script src="js/controllers/event/back/payout/payout.js"></script>
-	<script src="js/controllers/event/back/guests/guests.js"></script>
-	<script src="js/controllers/ticket/ticket.js"></script>
-	<script src="js/controllers/order/order.js"></script>
-	<script src="js/controllers/app/app.js"></script>
-	<script src="js/controllers/app/myEvent.js"></script>
-	<script src="js/controllers/app/quickEditEvent.js"></script>
-	<script src="js/controllers/app/myEvents.js"></script>
-	<script src="js/controllers/app/myTickets.js"></script>
-	<script src="js/controllers/app/findEvents.js"></script>
-	<script src="js/controllers/app/logreg.js"></script>
-	<script src="js/controllers/app/profile.js"></script>
-	<script src="js/controllers/verify.js"></script>
-	<script src="js/controllers/user.js"></script>
-	<script src="js/controllers/pwdRecovery.js"></script>
-	<script src="js/controllers/front.js"></script>
+	<script src="dist/main.js"></script>
+	<script src="dist/translate.js"></script>
+	<script src="dist/directives.js"></script>
+	<script src="dist/services/stringUtils.js"></script>
+	<script src="dist/services/validationService.js"></script>
+	<script src="dist/controllers/event/eventEntry.js"></script>
+	<script src="dist/controllers/event/front/eventFront.js"></script>
+	<script src="dist/controllers/event/back/manageEvent.js"></script>
+	<script src="dist/controllers/event/back/tickets/manageTickets.js"></script>
+	<script src="dist/controllers/event/back/info/manageInfo.js"></script>
+	<script src="dist/controllers/event/back/layout/manageLayout.js"></script>
+	<script src="dist/controllers/event/back/signup/manageSignup.js"></script>
+	<script src="dist/controllers/event/back/marketing/manageMarketing.js"></script>
+	<script src="dist/controllers/event/back/orders/manageOrders.js"></script>
+	<script src="dist/controllers/event/back/dashboard/dashboard.js"></script>
+	<script src="dist/controllers/event/back/dashboard/ticketsChart.js"></script>
+	<script src="dist/controllers/event/back/dashboard/revenueChart.js"></script>
+	<script src="dist/controllers/event/back/payout/payout.js"></script>
+	<script src="dist/controllers/event/back/guests/guests.js"></script>
+	<script src="dist/controllers/ticket/ticket.js"></script>
+	<script src="dist/controllers/order/order.js"></script>
+	<script src="dist/controllers/app/app.js"></script>
+	<script src="dist/controllers/app/myEvent.js"></script>
+	<script src="dist/controllers/app/quickEditEvent.js"></script>
+	<script src="dist/controllers/app/myEvents.js"></script>
+	<script src="dist/controllers/app/myTickets.js"></script>
+	<script src="dist/controllers/app/findEvents.js"></script>
+	<script src="dist/controllers/app/logreg.js"></script>
+	<script src="dist/controllers/app/profile.js"></script>
+	<script src="dist/controllers/verify.js"></script>
+	<script src="dist/controllers/user.js"></script>
+	<script src="dist/controllers/pwdRecovery.js"></script>
+	<script src="dist/controllers/front.js"></script>
 	
 </head>
 
@@ -128,7 +128,7 @@
 		<div class="appHeader">
 							
 			<div class="logo">
-				<a href="#/app?view=findEvents"><img src="{{imgBaseUrl}}/logo.png" height="30px"></a>
+				<a href="#/app?view=findEvents"><img src="img/logo.png" height="30px"></a>
 			</div>
 			
 			<!--
