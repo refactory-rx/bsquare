@@ -23,7 +23,7 @@ controllers.controller("ProfileCtrl",
 
     $rootScope.$watch("logregStatus", (value) => {
 
-    	$log.debug("profile::logregStatus -> "+value);
+        //$log.debug("profile::logregStatus -> "+value);
         if(value === "loggedIn") {
             $scope.getProfile();
         }
@@ -35,7 +35,7 @@ controllers.controller("ProfileCtrl",
 
 		$scope.showError = false;
 
-		$log.debug("getting the profile ... xxx");
+        //$log.debug("getting the profile ... xxx");
 
 		$http.get("/api/profile", { headers: requestHeaders } )
 			.success((response) => {
