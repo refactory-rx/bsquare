@@ -77,7 +77,7 @@ controllers.controller("MainCtrl",
 	$scope.init = function() {
 		
 		$log.debug(requestHeaders);
-		$log.debug('init main');
+		$log.debug('INIT MAIN!!!');
 		
 		$http.get('/api', { headers: requestHeaders } )
 			.success(function(response) {
