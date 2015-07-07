@@ -32,8 +32,6 @@ controllers.controller("MainCtrl",
     ["$rootScope", "$scope", "$route", "$routeParams", "$location", "$http", "$cookies", "$log", "$timeout", "$locale", "$translate",
     ($rootScope, $scope, $route, $routeParams, $location, $http, $cookies, $log, $timeout, $locale, $translate) => {
     
-    console.log("INIT MAIN APP");
-    
     let lang = $locale.id.split('-')[0];
     
     if(lang === 'fi' || lang === 'en') {

@@ -32,6 +32,7 @@ npm install grunt-contrib-copy --save-dev
 npm install grunt-contrib-watch --save-dev
 npm install grunt-nodemon --save-dev
 
+mkdir client/dist
 mkdir client/tickets
 mkdir client/img/events
 

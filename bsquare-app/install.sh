@@ -24,7 +24,15 @@ npm install sendgrid --save
 npm install mongoose@3.8 --save
 npm install mongoose-q --save
 npm install moment --save
+npm install grunt --save-dev
+npm install load-grunt-tasks --save-dev
+npm install grunt-babel --save-dev
+npm install grunt-concurrent --save-dev
+npm install grunt-contrib-copy --save-dev
+npm install grunt-contrib-watch --save-dev
+npm install grunt-nodemon --save-dev
 
+mkdir client/dist
 mkdir client/tickets
 mkdir client/img/events
 
