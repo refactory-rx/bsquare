@@ -22,6 +22,7 @@ let APP_BASE_URL, SENDGRID_FROM, SENDGRID_USERNAME, SENDGRID_PASSWORD;
 class LoginService {
     
     constructor(app) {
+
         ({ APP_BASE_URL, SENDGRID_FROM, SENDGRID_USERNAME, SENDGRID_PASSWORD } = app.settings);
         ({ User, Profile } = app.model);
         this.app = app;
