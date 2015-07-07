@@ -15,7 +15,6 @@ npm install q --save
 npm install request --save
 npm install mongoose@3.8.25 --save
 npm install mongoose-q --save
-npm install phantom --save
 npm install moment --save
 npm install sendgrid --save
 
