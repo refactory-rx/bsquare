@@ -17,13 +17,16 @@ let recoverPasswordEmailText =
 	"<br/><br/>"+
 	"Keikkapalvelu Ax</p>";
 
+let APP_BASE_URL, SENDGRID_USERNAME, SENDGRID_PASSWORD;
+
 class LoginService {
     
     constructor(app) {
+        ({ APP_BASE_URL, SENDGRID_USERNAME, SENDGRID_PASSWORD } = app.settings);
+        ({ User, Profile } = app.model);
         this.app = app;
         this.authService = app.authService;
-        this.sendgrid = require("sendgrid")(app.settings.SENDGRID_USERNAME, app.settings.SENDGRID_PASSWORD);
-        ({ User, Profile } = app.model);
+        this.sendgrid = require("sendgrid")(SENDGRID_USERNAME, SENDGRID_PASSWORD);
     }
 
 	getProfile(req, callback) {
