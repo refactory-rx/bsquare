@@ -20,7 +20,7 @@ function handleRequest(request, response) {
         
         response.end('It Works!! Path Hit: ' + request.url);
         
-        if (message.hook.events.indexOf("push") != -1) {
+        if (message.commits && message.commits.length > 0) {
             
             console.log("PUSH DETECTED");
             
