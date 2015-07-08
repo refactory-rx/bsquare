@@ -135,10 +135,11 @@ controllers.controller('event.back.info.ManageInfoCtrl',
         xhr.onreadystatechange = function() { 
             if(xhr.readyState == 4 && xhr.status == 200) {
                 var response = JSON.parse(xhr.responseText);
-                $scope.$apply(function() {
-                   $scope.imageUploadStatus = 'inactive';
-                   $('#eventImageThumbnail').attr('src', $rootScope.imgBaseUrl+response.eventImage+'?changed='+(new Date()).getTime());
-                   $('#eventImage').attr('src', $rootScope.imgBaseUrl+response.eventImage+'?changed='+(new Date()).getTime());
+                $scope.$apply(() => {
+                    $scope.imageUploadStatus = 'inactive';
+                    $scope.info.eventImage = response.eventImage;
+                    $('#eventImageThumbnail').attr('src', response.eventImage+'?changed='+(new Date()).getTime());
+                    $('#eventImage').attr('src', response.eventImage+'?changed='+(new Date()).getTime());
                 });
             }
         };
