@@ -47,8 +47,7 @@ app.use(function errorHandler(err, req, res, next) {
 require('./server/routes.js')(app);
 
 var httpServer = http.createServer(app);
-var httpPort = process.env.PORT || settings.HTTP_PORT || 8888;
-
+var httpPort = process.env.PORT || settings.HTTP_PORT || 8080;
 httpServer.listen(httpPort);
 console.log("Starting up on port "+httpPort);
 
