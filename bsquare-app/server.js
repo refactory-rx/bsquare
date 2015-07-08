@@ -50,7 +50,7 @@ var httpServer = http.createServer(app);
 var httpPort = process.env.PORT || settings.HTTP_PORT || 8080;
 
 httpServer.listen(httpPort);
-console.log('Listening on port '+httpPort);
+console.log("Starting up on port "+httpPort);
 
 /**
  * Run HTTPS server instead of HTTP
