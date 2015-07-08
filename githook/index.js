@@ -15,12 +15,23 @@ function handleRequest(request, response) {
     
     request.on("end", function() {
         
-        var json = JSON.parse(body);
-        console.log(json);
+        var message = JSON.parse(body);
+        console.log(message);
         
-
         response.end('It Works!! Path Hit: ' + request.url);
-    
+        
+        if (message.hook.events.indexOf("push") != -1) {
+            console.log("PUSH DETECTED");
+            var exec = require("child_process").exec;
+            var child = exec("./restart.sh", function(error, stdout, stderr) {
+                console.log("stdout: ", stdout);
+                console.log("stderr: ", stderr);
+                if (error) {
+                    console.log("error: ", error);
+                }
+            });
+        }
+
     });
 
 }
