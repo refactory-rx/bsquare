@@ -11,7 +11,6 @@ var methodOverride = require('method-override');
 let mongoose = require('mongoose-q')(require('mongoose'));
 
 var settings = env.getSettings();
-console.log("DB URL: ", settings.DATABASE_URL);
 mongoose.connect(settings.DATABASE_URL);
 
 var app = express();
@@ -48,7 +47,7 @@ app.use(function errorHandler(err, req, res, next) {
 require('./server/routes.js')(app);
 
 var httpServer = http.createServer(app);
-var httpPort = process.env.PORT || 8080;
+var httpPort = process.env.PORT || settings.HTTP_PORT || 8080;
 
 httpServer.listen(httpPort);
 console.log('Listening on port '+httpPort);
