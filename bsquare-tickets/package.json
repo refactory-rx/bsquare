@@ -10,8 +10,6 @@
   "repository": "https://github.com/vhalme/bsquare.git",
   "dependencies": {
     "body-parser": "^1.13.1",
-    "bsquare-auth": "file:../lib/bsquare-auth",
-    "bsquare-model": "file:../lib/bsquare-model",
     "connect-busboy": "0.0.2",
     "express": "^4.13.0",
     "method-override": "^2.3.3",
@@ -19,7 +17,6 @@
     "mongoose": "^3.8.25",
     "mongoose-q": "0.0.17",
     "morgan": "^1.6.0",
-    "phantom": "^0.7.2",
     "q": "^1.4.1",
     "request": "^2.58.0",
     "sendgrid": "^1.8.0"
