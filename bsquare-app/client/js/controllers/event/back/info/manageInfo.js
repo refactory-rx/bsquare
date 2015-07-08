@@ -118,28 +118,28 @@ controllers.controller('event.back.info.ManageInfoCtrl',
     	}
     }, true);
     
-    $scope.uploadEventImage = function() {
+    $scope.uploadEventImage = () => {
         
-        var uploadForm = document.getElementById('eventImageUpload');
+        var uploadForm = document.getElementById("eventImageUpload");
         var formData = new FormData(uploadForm);
         console.log(formData);
         console.log(uploadForm);
         
-        var url = '/api/uploads/'+$scope.event._id+'/file';
+        var url = `/api/uploads/${$scope.event._id}/file`;
         
         var xhr = new XMLHttpRequest();
         
-        xhr.open('POST', url, true);
+        xhr.open("POST", url, true);
         xhr.send(formData);
         
-        xhr.onreadystatechange = function() { 
+        xhr.onreadystatechange = () => { 
             if(xhr.readyState == 4 && xhr.status == 200) {
                 var response = JSON.parse(xhr.responseText);
                 $scope.$apply(() => {
-                    $scope.imageUploadStatus = 'inactive';
+                    $scope.imageUploadStatus = "inactive";
                     $scope.info.eventImage = response.eventImage;
-                    $('#eventImageThumbnail').attr('src', response.eventImage+'?changed='+(new Date()).getTime());
-                    $('#eventImage').attr('src', response.eventImage+'?changed='+(new Date()).getTime());
+                    $("#eventImageThumbnail").attr("src", `img/${response.eventImage}?changed=${(new Date()).getTime()}`);
+                    $("#eventImage").attr("src", `img/${response.eventImage}?changed=${(new Date()).getTime()}`);
                 });
             }
         };
