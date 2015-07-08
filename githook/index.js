@@ -21,15 +21,24 @@ function handleRequest(request, response) {
         response.end('It Works!! Path Hit: ' + request.url);
         
         if (message.hook.events.indexOf("push") != -1) {
+            
             console.log("PUSH DETECTED");
-            var exec = require("child_process").exec;
-            var child = exec("./restart.sh", function(error, stdout, stderr) {
-                console.log("stdout: ", stdout);
-                console.log("stderr: ", stderr);
-                if (error) {
-                    console.log("error: ", error);
-                }
+            
+            var spawn = require("child_process").spawn;
+            var process = spawn("./restart.sh");
+            
+            process.stdout.on("data", function(data) {
+                console.log("stdout: " + data);
             });
+            
+            process.stderr.on("data", function(data) {
+                console.log("stdout: " + data);
+            });
+            
+            process.stderr.on("exit", function(code) {
+                console.log("exit: " + code);
+            });
+
         }
 
     });
