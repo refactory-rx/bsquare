@@ -5,16 +5,31 @@ var http = require('http');
 const PORT = 3420; 
 
 //We need a function which handles requests and send response
-function handleRequest(request, response){
-    console.log(request, request.body);
-    response.end('It Works!! Path Hit: ' + request.url);
+function handleRequest(request, response) {
+     
+    var body = "";
+    
+    request.on("data", function(data) {
+        body += data;
+    });
+    
+    request.on("end", function() {
+        
+        var json = JSON.parse(body);
+        console.log(json);
+        
+
+        response.end('It Works!! Path Hit: ' + request.url);
+    
+    });
+
 }
 
 //Create a server
 var server = http.createServer(handleRequest);
 
 //Lets start our server
-server.listen(PORT, function(){
+server.listen(PORT, function() {
     //Callback triggered when server is successfully listening. Hurray!
     console.log("Server listening on: http://localhost:%s", PORT);
 });
