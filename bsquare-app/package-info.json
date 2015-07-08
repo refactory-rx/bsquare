@@ -7,7 +7,7 @@
     "jshint-node": "./node_modules/.bin/jshint ./app --exclude ./node_modules",
     "jshint-front": "./node_modules/.bin/jshint ./public/js --exclude-path ./.jshintignore",
     "babel-node": "babel-node --stage 0 --ignore='node_modules'",
-    "forever": "forever start --uid 'bsquare-app' -al ./bsquare-app.log -c babel-node server.js",
+    "forever": "forever start --uid 'bsquare-app' --minUptime 3000 --spinSleepTime 6000 -al ./bsquare-app.log -c babel-node server.js",
     "dev": "nodemon --exec npm run babel-node -- server.js", 
     "server": "grunt && babel-node server.js"
   },
