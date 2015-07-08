@@ -8,13 +8,15 @@ let mailUtil = require('../utils/mailUtil');
 let httpUtil = require('../utils/httpUtil');
 
 let Event, ImpressionTracker, TicketResource;
+let WEB_CONTENT_PATH;
 
 class EventService {
     
     constructor(app) {
+        ({ Event, ImpressionTracker, TicketResource } = app.model);
+        ({ WEB_CONTENT_PATH } = app.settings);
         this.app = app;
         this.authService = app.authService;
-        ({ Event, ImpressionTracker, TicketResource } = app.model);
     }
 
 	getEvents(params, callback) {	
