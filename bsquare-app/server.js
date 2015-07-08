@@ -11,6 +11,7 @@ var methodOverride = require('method-override');
 let mongoose = require('mongoose-q')(require('mongoose'));
 
 var settings = env.getSettings();
+console.log("DB URL: ", settings.DATABASE_URL);
 mongoose.connect(settings.DATABASE_URL);
 
 var app = express();
