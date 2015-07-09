@@ -257,6 +257,7 @@ div.main div.minView1.loggedIn {
 
 div.main div.minView1.loggedOut {
     height: 47%;
+    transition: none;
 }
 
 div.minView1 div.panelContent {
@@ -282,6 +283,7 @@ div.main div.minView2.loggedIn {
 div.main div.minView2.loggedOut {
 	top: 48%;
 	height: 47%;
+    transition: none;
 }
 
 div.minView2 div.panelContent {

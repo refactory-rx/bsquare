@@ -7,13 +7,13 @@ let merge = require('merge');
 let mailUtil = require('../utils/mailUtil');
 let httpUtil = require('../utils/httpUtil');
 
-let Event, ImpressionTracker, TicketResource;
+let Event, ImpressionTracker, TicketResource, Ticket;
 let WEB_CONTENT_PATH;
 
 class EventService {
     
     constructor(app) {
-        ({ Event, ImpressionTracker, TicketResource } = app.model);
+        ({ Event, ImpressionTracker, TicketResource, Ticket } = app.model);
         ({ WEB_CONTENT_PATH } = app.settings);
         this.app = app;
         this.authService = app.authService;

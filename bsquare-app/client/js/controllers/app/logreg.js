@@ -49,8 +49,8 @@ controllers.controller(
                 $rootScope.loggedUser = loggedUser;
                 $cookies.evxSesssionToken = loggedUser.token;
                 $cookies.bsqUser = loggedUser.email;
-                requestHeaders['session-token'] = loggedUser.token;
-                requestHeaders['bsq-user'] = loggedUser.email;
+                requestHeaders["session-token"] = loggedUser.token;
+                requestHeaders["bsquare-user"] = loggedUser.email;
                 console.log("logged in", response);
                 
                 $rootScope.navigate('#/app?view=findEvents');

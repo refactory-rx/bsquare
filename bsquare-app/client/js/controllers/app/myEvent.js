@@ -1,6 +1,7 @@
-controllers.controller('MyEventCtrl', 
-		['$rootScope', '$scope', '$routeParams', '$http', '$log', '$timeout',
-		 function($rootScope, $scope, $routeParams, $http, $log, $timeout) {
+controllers.controller(
+    "MyEventCtrl", 
+    ["$rootScope", "$scope", "$routeParams", "$http", "$log", "$timeout",
+    ($rootScope, $scope, $routeParams, $http, $log, $timeout) => {
 	
 	$scope.eventStatus = '';
 	
@@ -30,14 +31,14 @@ controllers.controller('MyEventCtrl',
     };
     
     
-    $scope.init = function(myEvent, firstLoad) {
+    $scope.init = (myEvent, firstLoad) => {
     	
     	$log.debug('init event in list: ');
     	$log.debug(myEvent);
     	
     	if(myEvent) {
     		
-    		$timeout(function() {
+            $timeout(() => {
     			
     			$scope.event = myEvent;
     	        
@@ -50,27 +51,27 @@ controllers.controller('MyEventCtrl',
     	            } else {
     	                
     	                if($scope.event.info.timeStart > now) {
-    	                    $scope.eventStatus = 'COMING';
+    	                    $scope.eventStatus = "COMING";
     	                } else if($scope.event.info.timeEnd < now) {
-    	                    $scope.eventStatus = 'ENDED';
+    	                    $scope.eventStatus = "ENDED";
     	                } else if($scope.event.info.timeStart < now < $scope.event.info.timeEnd) {
-    	                    $scope.eventStatus = 'HAPPENING';
+    	                    $scope.eventStatus = "HAPPENING";
     	                }
     	                
     	            }
     	            
-    	            $http.get('/api/ticketresources/'+$scope.event._id, { headers: requestHeaders } )
-        			.success(function(response) {
+    	            $http.get("/api/ticketresources/"+$scope.event._id, { headers: requestHeaders } )
+                    .success((response) => {
         				
         				$log.debug(response);
         				
-        				if(response.status == 'ticketResourcesFound') {
+        				if(response.status === "ticketResourcesFound") {
         			    
         			        var ticketResources = response.ticketResources;
         				    
         				    var soldTotal = 0, reservedTotal = 0, remainsTotal = 0;
         				    
-        				    for(var i=0; i<ticketResources.length; i++) {
+        				    for(var i=0; i < ticketResources.length; i++) {
         				        
         				        if(ticketResources[i].qtySold) {
         				            soldTotal += ticketResources[i].qtySold;

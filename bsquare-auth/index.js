@@ -98,36 +98,10 @@ class AuthService {
 										
                                         Profile.findOne( { user: savedUser._id }, (profileErr, profile) => {
 											
-											let username = null;
-											
-											if(profile) {
-												
-												if(profile.displayName) {
-													username = profile.displayName;
-												} else {
-													
-													if(profile.firstName || profile.lastName) {
-														
-														username = '';
-														
-														if(profile.firstName) {
-															username += profile.firstName;
-														}
-														
-														if(profile.lastName) {
-															if(profile.firstName) {
-																username += ' ';
-															}
-															username += profile.firstName;
-														}
-														
-													}
-													
-												}
-												
-											}
-											
-											loggedUser.username = username;
+											if (profile) {
+											    loggedUser.displayName = profile.displayName;
+                                            }
+
 											response.user = loggedUser;
 											callback(response);
 											

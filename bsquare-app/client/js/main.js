@@ -61,8 +61,8 @@ controllers.controller("MainCtrl",
     		}
     	};
     
-	requestHeaders['session-token'] = $cookies.evxSesssionToken;
-	requestHeaders['bsquare-user'] = $cookies.bsqUser;
+	requestHeaders["session-token"] = $cookies.evxSesssionToken;
+	requestHeaders["bsquare-user"] = $cookies.bsqUser;
 	
     $rootScope.screenResponse = (response, callback) => {
 		
@@ -109,27 +109,27 @@ controllers.controller("MainCtrl",
 	    	
 	};
 	
-	$scope.logout = function() {
+    $scope.logout = () => {
 		
-		$http.get('/api/logout', { headers: requestHeaders })
-			.success(function(response) {
+		$http.get("/api/logout", { headers: requestHeaders })
+        .success((response) => {
 			
-				$log.debug(response);
-				
-				if(response.success == 1) {
-					requestHeaders['session-token'] = '';
-                    $cookies.evxSesssionToken = '';
-                    $cookies.bsqUser = '';
-					$rootScope.logregStatus = 'start';
-					$rootScope.logregView = 'login';
-					delete $rootScope.loggedUser;
-					$rootScope.setRootView('front');
-				}
-				
-			})
-			.error(function(data) {
-				$log.debug('Error: ' + data);
-			});
+            $log.debug(response);
+            
+            if(response.success == 1) {
+                requestHeaders["session-token"] = "";
+                $cookies.evxSesssionToken = "";
+                $cookies.bsqUser = "";
+                $rootScope.logregStatus = "start";
+                $rootScope.logregView = "login";
+                delete $rootScope.loggedUser;
+                $rootScope.setRootView("front");
+            }
+            
+        })
+        .error((data) => {
+            $log.debug("Error: ", data);
+        });
             
 	};
 	

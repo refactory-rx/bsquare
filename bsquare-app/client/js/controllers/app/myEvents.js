@@ -1,5 +1,5 @@
 controllers.controller(
-    'MyEventsCtrl', 
+    "MyEventsCtrl", 
 	['$rootScope', '$scope', '$location', '$routeParams', '$http', '$log', '$timeout',
     ($rootScope, $scope, $location, $routeParams, $http, $log, $timeout) => {
 	
@@ -47,13 +47,12 @@ controllers.controller(
     });
     
     
-    $scope.$watch('logregStatus', (value) => {
-    	
-    	if(value) {
-    		if(value == 'loggedIn') {
-    			$scope.getMyEvents();
-    		}
-    	}
+    $scope.$watch("logregStatus", (value) => {
+        
+        console.log("my events detected logreg status change", value);
+        if(value === "loggedIn") {
+            $scope.getMyEvents();
+        }
     	
     }, true);
     
@@ -105,8 +104,7 @@ controllers.controller(
     			}
     			
 	    	} else {
-	    		
-	    		
+	    			
 	    		if(action) {
 	    			$scope.editEvent = action;
 	    		} else {
@@ -181,13 +179,13 @@ controllers.controller(
     	$http.get("/api/events?kind=own", { headers: requestHeaders } )
         .success((response) => {
 			
-			$log.debug(response);
+			$log.debug("getMyEvents response", response);
 			
             $rootScope.screenResponse(response, () => {
 				
 				$scope.eventsStatus = response.status;
 				
-				if(response.status == "ok") {
+				if(response.status === "ok") {
 					
 					var myEvents = response.events;
 				    	
