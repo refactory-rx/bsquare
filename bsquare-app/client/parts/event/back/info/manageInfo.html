@@ -20,7 +20,7 @@
                 <div class="inputRowCell eventInputContainer">
                     <div style="margin-top: 6px;" ng-show="imageUploadStatus == 'inactive'">
                         <div style="width: 65%; display: inline-block;">
-				<img id="eventImageThumbnail" src="img/{{info.eventImage}}" style="max-height: 25px;"></img>
+				<img id="eventImageThumbnail" src="img{{info.eventImage}}" style="max-height: 25px;"></img>
                         </div>
                         
                         <a href="" ng-click="enableImageUpload()" style="display: inline-block; float: right;">{{ 'event.back.info.changeEventImage' | translate }}</a>

@@ -16,7 +16,7 @@
     
     <link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>	
     <link href="//fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet"/>
-    <link rel="stylesheet" href="/css/bootstrap-sandstone.css"/>
+    <link rel="stylesheet" href="/css/bootstrap-superhero.min.css"/>
 	<!-- <link rel="stylesheet" href="dist/bower_components/bootstrap/dist/css/bootstrap.min.css"/> -->
 	<link rel="stylesheet" href="bower_components/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"/>
 	<link rel="stylesheet" href="bower_components/c3/c3.min.css"/>
@@ -143,12 +143,11 @@
 					EVENTS 
 				</div>
                 -->
-                
                 <button  class="btn btn-default" ng-show="logregStatus == 'loggedIn'" ng-click="logout()" style="display: inline-block; text-align: center; padding: initial;width: 75px; height: 30px; vertical-align: top; cursor: pointer;">
 					{{ 'app.header.logout' | translate }} 
 				</button>
 				<button class="btn btn-default" id="action-menu" ng-show="logregStatus == 'loggedIn'" ng-click="navigate('#/app?view=settings')" style="display: inline-block; text-align: center; padding: 4px; min-width: 60px; max-width: 90px; height: 30px; background: #606060; color: #ffffff; overflow-x: hidden; overflow-y: hidden; cursor: pointer;">
-					<div style="width: 100%; display: inline-block; overflow-x: hidden; text-overflow: ellipsis;">{{loggedUser.username}}</div>
+					<div style="width: 100%; display: inline-block; overflow-x: hidden; text-overflow: ellipsis;">{{loggedUser.displayName}}</div>
 				</button>
 				<button class="btn btn-default" ng-show="logregStatus != 'loggedIn' && rootView != 'back'" ng-click="navigate('#/app?view=logreg')" style="display: inline-block; text-align: center; padding: initial; width: 70px; height: 30px; overflow: hidden; cursor: pointer;"> 
 					{{ 'app.header.login' | translate }} 

@@ -1,6 +1,7 @@
-controllers.controller('MyEventsCtrl', 
-		['$rootScope', '$scope', '$location', '$routeParams', '$http', '$log', '$timeout',
-		 function($rootScope, $scope, $location, $routeParams, $http, $log, $timeout) {
+controllers.controller(
+    'MyEventsCtrl', 
+	['$rootScope', '$scope', '$location', '$routeParams', '$http', '$log', '$timeout',
+    ($rootScope, $scope, $location, $routeParams, $http, $log, $timeout) => {
 	
 	$scope.myEventsStatus = '';
 	$scope.myEventsView = '';
@@ -16,15 +17,15 @@ controllers.controller('MyEventsCtrl',
     $rootScope.editViewHeight = 420;
 
     
-    $scope.init = function() {
+    $scope.init = () => {
     	$scope.getMyEvents();
     };
     
     
     $scope.$watch('app.views.selectedView', function(value) {
     	
-    	if(value !== undefined) {
-    		if(value != 'myEvents') {
+    	if(value) {
+    		if(value !== 'myEvents') {
     			$scope.newEventStatus = '';
     			$log.debug('view changed ('+value+'), newEventStatus -> '+$scope.newEventStatus);
     		}
@@ -32,23 +33,23 @@ controllers.controller('MyEventsCtrl',
     	
     }, true);
     
-    $scope.$watch('app.route', function(value) {
+    $scope.$watch('app.route', (value) => {
     	
-    	if(value !== undefined) {
+    	if(value) {
     		$scope.updateView(value.params);
     	}
     	
     }, true);
     
     
-    $scope.$on('$routeUpdate', function(current, next) {
+    $scope.$on('$routeUpdate', (current, next) => {
     	$scope.updateView(next.params);
     });
     
     
-    $scope.$watch('logregStatus', function(value) {
+    $scope.$watch('logregStatus', (value) => {
     	
-    	if(value !== undefined) {
+    	if(value) {
     		if(value == 'loggedIn') {
     			$scope.getMyEvents();
     		}
@@ -57,13 +58,13 @@ controllers.controller('MyEventsCtrl',
     }, true);
     
     
-    $rootScope.changeEditViewHeight = function(editViewHeight) {
+    $rootScope.changeEditViewHeight = (editViewHeight) => {
         $rootScope.editViewHeight = editViewHeight;
         $scope.selectItem($scope.editEvent, true);
     };
     
     
-    $scope.updateView = function(params) {
+    $scope.updateView = (params) => {
     	
     	$log.debug('view='+params.view+', action='+params.action);
     	
@@ -140,7 +141,7 @@ controllers.controller('MyEventsCtrl',
     	
     };
     
-    $scope.resetItems = function() {
+    $scope.resetItems = () => {
     		
     		var newEventIndex;
     		
@@ -175,32 +176,32 @@ controllers.controller('MyEventsCtrl',
     	
     };
     
-    $scope.getMyEvents = function() {
+    $scope.getMyEvents = () => {
     	
-    	$http.get('/api/events?kind=own', { headers: requestHeaders } )
-			.success(function(response) {
+    	$http.get("/api/events?kind=own", { headers: requestHeaders } )
+        .success((response) => {
 			
 			$log.debug(response);
 			
-			$rootScope.screenResponse(response, function() {
+            $rootScope.screenResponse(response, () => {
 				
 				$scope.eventsStatus = response.status;
 				
-				if(response.status == 'eventsFound') {
+				if(response.status == "ok") {
 					
 					var myEvents = response.events;
 				    	
-					if($scope.editEvent == 'new') {
+					if($scope.editEvent == "new") {
 						var newEvent = {};
-		    			newEvent._id = 'new';
-		    			newEvent.layout = 'bw';
+		    			newEvent._id = "new";
+		    			newEvent.layout = "bw";
 		    			myEvents.push(newEvent);
 					}
 
                     $scope.myEventsTemplate = response.myEventsTemplate;
 					$scope.myEvents = myEvents;
 					
-					$timeout(function() {
+                    $timeout(() => {
 						
 						//$scope.selectItem($scope.editEvent);
 						
@@ -216,14 +217,14 @@ controllers.controller('MyEventsCtrl',
 					});
 					
 				} else {
-					$scope.profileStatus = 'error';
+					$scope.profileStatus = "error";
 				}
 				
 			});
 		
 		})
-		.error(function(data) {
-			$log.debug('Error: ' + data);
+        .error((data) => {
+			$log.debug("Error: ", data);
 		});
     	
     };

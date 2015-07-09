@@ -64,9 +64,9 @@ controllers.controller("MainCtrl",
 	requestHeaders['session-token'] = $cookies.evxSesssionToken;
 	requestHeaders['bsquare-user'] = $cookies.bsqUser;
 	
-	$rootScope.screenResponse = function(response, callback) {
+    $rootScope.screenResponse = (response, callback) => {
 		
-		if(response.status == 'unauthorized') {
+		if(response.status === "unauthorized") {
 			//$rootScope.navigate('#/app?view=findEvents');
 		} else {
 			callback();
@@ -74,33 +74,36 @@ controllers.controller("MainCtrl",
 		
 	};
 	
-	$scope.init = function() {
+    $scope.init = () => {
 		
 		$log.debug(requestHeaders);
-		$log.debug('INIT MAIN!!!');
 		
-		$http.get('/api', { headers: requestHeaders } )
-			.success(function(response) {
+		$http.get("/api", { headers: requestHeaders } )
+        .success((response) => {
 				
-				$log.debug(response);
-				
-				if(response.status == 'authorized') {
-					
-					loggedUser = response.user;
-					$rootScope.logregStatus = loggedUser.loginStatus;
-					$rootScope.loggedUser = loggedUser;
-					$log.debug('set logregStatus to '+$rootScope.logregStatus);
-					
-				}
-				
-				$rootScope.app.route = { params: $routeParams };
-				
-			})
-			.error(function(data) {
-				$log.debug('Error: ' + data);
-			});
+            $log.debug(response);
+            
+            if (response.status == "authorized") {
+                
+                loggedUser = response.user;
+                if (response.profile) {
+                    loggedUser.displayName = response.profile.displayName;
+                }
+
+                $rootScope.logregStatus = loggedUser.loginStatus;
+                $rootScope.loggedUser = loggedUser;
+                $log.debug("set logregStatus to "+$rootScope.logregStatus);
+                
+            }
+            
+            $rootScope.app.route = { params: $routeParams };
+            
+        })
+        .error((data) => {
+            $log.debug("Error: " + data);
+        });
 			
-		$timeout(function() {
+        $timeout(() => {
 			$("body").css("width", "100%");
 		}, 1000);
 	    	

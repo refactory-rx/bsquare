@@ -28,8 +28,8 @@ module.exports = function(app) {
         });
     });
 
-    app.get('*', (req, res) => {
-		res.sendFile(__dirname+'/client/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+    app.get("/", (req, res) => {
+		res.sendFile(app.settings.WEB_CONTENT_PATH+"/index.html"); // load the single view file (angular will handle the page changes on the front-end)
 	});
 
 

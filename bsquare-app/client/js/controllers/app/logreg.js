@@ -1,6 +1,7 @@
-controllers.controller('LogregCtrl', 
-		['$rootScope', '$scope', '$routeParams', '$http', '$cookies', '$location', '$log', 
-		 function($rootScope, $scope, $routeParams, $http, $cookies, $location, $log) {
+controllers.controller(
+    "LogregCtrl", 
+    ["$rootScope", "$scope", "$routeParams", "$http", "$cookies", "$location", "$log", 
+        ($rootScope, $scope, $routeParams, $http, $cookies, $location, $log) => {
 	
 	$scope.appName = $scope.$parent.name;
     
@@ -10,20 +11,20 @@ controllers.controller('LogregCtrl',
         hidden: true
     };
     $scope.showError = false;
-    $scope.errorMessage = '';
-    $scope.pwdInputType = 'password';
+    $scope.errorMessage = "";
+    $scope.pwdInputType = "password";
     
-	$scope.init = function() {
+    $scope.init = () => {
 		
-		$log.debug('init logreg ctrl ('+$rootScope.logregStatus+')');
+		$log.debug("init logreg ctrl ("+$rootScope.logregStatus+")");
 		
-		if($rootScope.logregStatus == 'loggedIn') {
+		if ($rootScope.logregStatus == 'loggedIn') {
 			$rootScope.logregView = 'loggedIn';
 		}
 		
 	};
 	
-    $scope.logreg = function() {
+    $scope.logreg = () => {
     	
     	$log.debug("logreg user:");
     	$log.debug($scope.logregUser);
@@ -31,46 +32,46 @@ controllers.controller('LogregCtrl',
     	$scope.showError = false;
     	
     	$http.post('/api/login', $scope.logregUser)
-			.success(function(response) {
+        .success((response) => {
 				
-				$log.debug(response);
-				
-				$rootScope.logregStatus = response.status;
-				
-				if(response.status == 'new') {
-					
-					$rootScope.logregView = 'register';
-					
-				} else if(response.status == 'loggedIn') {
-					
-					$rootScope.logregView = 'loggedIn';
-					loggedUser = response.user;
-					$rootScope.loggedUser = loggedUser;
-					$cookies.evxSesssionToken = loggedUser.token;
-					$cookies.bsqUser = loggedUser.email;
-					requestHeaders['session-token'] = loggedUser.token;
-					requestHeaders['bsq-user'] = loggedUser.email;
-                    console.log("logged in", response);
-					
-					$rootScope.navigate('#/app?view=findEvents');
-					
-				} else {
-					
-					$scope.showError = true;
-					$scope.errorMessage = response.message;
-				
-				}
-				
-			})
-			.error(function(data) {
-				$log.debug('Error: ' + data);
-			});
+            $log.debug(response);
+            
+            $rootScope.logregStatus = response.status;
+            
+            if (response.status == 'new') {
+                
+                $rootScope.logregView = 'register';
+                
+            } else if (response.status == 'loggedIn') {
+                
+                $rootScope.logregView = 'loggedIn';
+                loggedUser = response.user;
+                $rootScope.loggedUser = loggedUser;
+                $cookies.evxSesssionToken = loggedUser.token;
+                $cookies.bsqUser = loggedUser.email;
+                requestHeaders['session-token'] = loggedUser.token;
+                requestHeaders['bsq-user'] = loggedUser.email;
+                console.log("logged in", response);
+                
+                $rootScope.navigate('#/app?view=findEvents');
+                
+            } else {
+                
+                $scope.showError = true;
+                $scope.errorMessage = response.message;
+            
+            }
+            
+        })
+        .error((data) => {
+            $log.debug('Error: ' + data);
+        });
     	
     	
     };
     
     
-    $scope.register = function() {
+    $scope.register = () => {
     	
     	var user = $scope.logregUser;
     	
@@ -88,42 +89,42 @@ controllers.controller('LogregCtrl',
     	$scope.showError = false;
     	
     	$http.post('/api/register', registration)
-			.success(function(response) {
+        .success((response) => {
 				
-				$log.debug(response);
-				
-				$rootScope.logregStatus = response.status;
-				
-				if(response.status == 'registered') {
-					// CONTINUE TO POST-REG
-				} else if(response.status == 'loggedIn') {
-				     
-					$rootScope.logregView = 'loggedIn';
-					loggedUser = response.user;
-					$rootScope.loggedUser = loggedUser;
-					$cookies.evxSesssionToken = loggedUser.token;
-					$cookies.bsqUser = loggedUser.email;
-					requestHeaders['session-token'] = loggedUser.token;
-					requestHeaders['bsq-user'] = loggedUser.email;
-					
-                    console.log("regged user", loggedUser);
-                    
-                    $rootScope.navigate('#/app?view=findEvents');
-					
-				} else {
-					$scope.showError = true;
-					$scope.errorMessage = response.message;
-				}
-				
-			})
-			.error(function(data) {
-				$log.debug('Error: ' + data);
-			});
+            $log.debug(response);
+            
+            $rootScope.logregStatus = response.status;
+            
+            if(response.status == 'registered') {
+                // CONTINUE TO POST-REG
+            } else if(response.status == 'loggedIn') {
+                 
+                $rootScope.logregView = 'loggedIn';
+                loggedUser = response.user;
+                $rootScope.loggedUser = loggedUser;
+                $cookies.evxSesssionToken = loggedUser.token;
+                $cookies.bsqUser = loggedUser.email;
+                requestHeaders['session-token'] = loggedUser.token;
+                requestHeaders['bsq-user'] = loggedUser.email;
+                
+                console.log("regged user", loggedUser);
+                
+                $rootScope.navigate('#/app?view=findEvents');
+                
+            } else {
+                $scope.showError = true;
+                $scope.errorMessage = response.message;
+            }
+            
+        })
+        .error((data) => {
+            $log.debug('Error: ' + data);
+        });
     	
     	
     };
     
-    $scope.$watch('pwdField.hidden', function(value) {
+    $scope.$watch('pwdField.hidden', (value) => {
         
         console.log('password field hidden: '+value);
         	

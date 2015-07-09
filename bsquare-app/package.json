@@ -16,6 +16,7 @@
     "MD5": "^1.2.2",
     "body-parser": "^1.13.1",
     "connect-busboy": "0.0.2",
+    "ejs": "^2.3.2",
     "express": "^4.13.0",
     "form-urlencoded": "^0.1.4",
     "merge": "^1.2.0",

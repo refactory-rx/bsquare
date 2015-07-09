@@ -1,19 +1,29 @@
-var env = require('./env/env');
+let env = require("./env/env");
 
-var https = require('https');
-var http = require('http');
-var fs = require('fs');
-var express = require('express');
-var busboy = require('connect-busboy');
-var morgan = require('morgan');
-var bodyParser = require('body-parser');
-var methodOverride = require('method-override');
-let mongoose = require('mongoose-q')(require('mongoose'));
+let https = require("https");
+let http = require("http");
+let fs = require("fs");
+let express = require("express");
+let busboy = require("connect-busboy");
+let morgan = require("morgan");
+let bodyParser = require("body-parser");
+let methodOverride = require("method-override");
+let mongoose = require("mongoose-q")(require("mongoose"));
 
-var settings = env.getSettings();
+let Errors = require("./lib/Errors");
+
+let settings = env.getSettings();
 mongoose.connect(settings.DATABASE_URL);
 
-var app = express();
+let app = express();
+
+let staticDir = __dirname + "/client";
+console.log("static file dir: " + staticDir);
+
+app.set("view engine", "html");
+app.set("views", staticDir);
+app.engine("html", require("ejs").renderFile);
+
 app.db = mongoose;
 app.model = require("../bsquare-model")(app.db);
 
@@ -32,19 +42,32 @@ app.statsService = require("./server/services/statsService")(app);
 app.eventService = require("./server/services/eventService")(app);
 app.orderUpdates = require('./server/tasks/orderUpdates')(app);
 
-app.use(express.static(__dirname + '/client')); 				// set the static files location
-app.use(bodyParser.urlencoded({'extended':'true'}));            // parse application/x-www-form-urlencoded
-app.use(bodyParser.json());                                     // parse application/json
-app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
-app.use(methodOverride());										// simulate DELETE and PUT
+app.use(express.static(staticDir));                                  // set the static files location
+app.use(bodyParser.urlencoded({ extended: "true" }));               // parse application/x-www-form-urlencoded
+app.use(bodyParser.json());                                         // parse application/json
+app.use(bodyParser.json({ type: "application/vnd.api+json" }));     // parse application/vnd.api+json as json
+app.use(methodOverride());										    // simulate DELETE and PUT
 app.use(busboy());
 
-app.use(function errorHandler(err, req, res, next) {
-    console.log("Error handler launched", err);
-    res.json(err);
-});
+require("./lib/Middleware")(app);
 
-require('./server/routes.js')(app);
+require("./server/routes.js")(app);
+
+app.use((err, req, res, next) => {
+    
+    console.log(err.stack);
+    
+    if (err.code === "ENOENT") {
+        return next();
+    }
+     
+    res.status(err.statusCode || 500);
+    res.json({
+        status: err.status,
+        error: err.data
+    });
+
+});
 
 var httpServer = http.createServer(app);
 var httpPort = process.env.PORT || settings.HTTP_PORT || 8080;
@@ -56,7 +79,7 @@ console.log("Starting up on port "+httpPort);
  *
 
 if(fs.existsSync(__dirname+'/keys')) {
-	
+
 	var privateKey  = fs.readFileSync(__dirname+'/keys/server-key.pem', 'utf8');
 	var certificate = fs.readFileSync(__dirname+'/keys/server-cert.pem', 'utf8');
 

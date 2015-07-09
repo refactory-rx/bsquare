@@ -1,11 +1,12 @@
-controllers.controller('event.back.info.ManageInfoCtrl', 
-		['$rootScope', '$scope', '$routeParams', '$http', '$log', '$timeout', 'stringUtils', 'validationService',
-		 function($rootScope, $scope, $routeParams, $http, $log, $timeout, stringUtils, validationService) {
+controllers.controller(
+    'event.back.info.ManageInfoCtrl', 
+    ['$rootScope', '$scope', '$routeParams', '$http', '$log', '$timeout', 'stringUtils', 'validationService',
+        ($rootScope, $scope, $routeParams, $http, $log, $timeout, stringUtils, validationService) => {
 	
     $scope.imageUploadStatus = 'upload';
     $scope.infoStatus = 'none';
     
-    $scope.init = function() {
+    $scope.init = () => {
         
         if(!$scope.event) {
             return;
@@ -37,7 +38,7 @@ controllers.controller('event.back.info.ManageInfoCtrl',
         
     };
     
-    $scope.$watch('info', function(info) {
+    $scope.$watch('info', (info) => {
         
         console.log('info changed', info);
         
@@ -51,7 +52,7 @@ controllers.controller('event.back.info.ManageInfoCtrl',
         
     }, true);
     
-    $scope.$watch('eventStatus', function(eventStatus) {
+    $scope.$watch('eventStatus', (eventStatus) => {
     	
     	if(eventStatus == 'loaded') {
         	
@@ -63,15 +64,15 @@ controllers.controller('event.back.info.ManageInfoCtrl',
     		
     }, true);
         
-    $scope.enableImageUpload = function() {
+    $scope.enableImageUpload = () => {
         $scope.imageUploadStatus = 'upload';
     };
     
-    $scope.finishImageUpload = function() {
+    $scope.finishImageUpload = () => {
         $scope.imageUploadStatus = 'inactive';
     };
     
-    $scope.selectPlace = function(ac) {
+    $scope.selectPlace = (ac) => {
     	
     	console.log('select place...');
     	var place = autocomplete[ac].getPlace();
@@ -80,7 +81,7 @@ controllers.controller('event.back.info.ManageInfoCtrl',
     };
     
     
-    $scope.submit = function() {
+    $scope.submit = () => {
         
         if($scope.validationErrors) {
     		delete $scope.validationErrors;
@@ -97,7 +98,7 @@ controllers.controller('event.back.info.ManageInfoCtrl',
     	    info: $scope.info
     	};
         
-        $scope.saveEvent(event, function(response) {
+        $scope.saveEvent(event, (response) => {
             if(response.status == 'eventSaved') {
                 $scope.infoStatus = 'saved';
                 $scope.event.info = angular.copy($scope.info);
@@ -106,13 +107,13 @@ controllers.controller('event.back.info.ManageInfoCtrl',
         
     };
     
-    $scope.$watch('eventStartTime', function(startTime) {
+    $scope.$watch('eventStartTime', (startTime) => {
         if(startTime) {
     		$scope.info.timeStart = startTime.getTime();
     	}
     }, true);
     
-    $scope.$watch('eventEndTime', function(endTime) {
+    $scope.$watch('eventEndTime', (endTime) => {
         if(endTime) {
     		$scope.info.timeEnd = endTime.getTime();
     	}
@@ -130,16 +131,19 @@ controllers.controller('event.back.info.ManageInfoCtrl',
         var xhr = new XMLHttpRequest();
         
         xhr.open("POST", url, true);
+        xhr.setRequestHeader("session-token", requestHeaders["session-token"]); 
+        xhr.setRequestHeader("bsquare-user", requestHeaders["bsquare-user"]); 
         xhr.send(formData);
         
         xhr.onreadystatechange = () => { 
             if(xhr.readyState == 4 && xhr.status == 200) {
                 var response = JSON.parse(xhr.responseText);
                 $scope.$apply(() => {
+                    console.log("img upload respons", response);
                     $scope.imageUploadStatus = "inactive";
                     $scope.info.eventImage = response.eventImage;
-                    $("#eventImageThumbnail").attr("src", `img/${response.eventImage}?changed=${(new Date()).getTime()}`);
-                    $("#eventImage").attr("src", `img/${response.eventImage}?changed=${(new Date()).getTime()}`);
+                    $("#eventImageThumbnail").attr("src", `img${response.eventImage}?changed=${(new Date()).getTime()}`);
+                    $("#eventImage").attr("src", `img${response.eventImage}?changed=${(new Date()).getTime()}`);
                 });
             }
         };

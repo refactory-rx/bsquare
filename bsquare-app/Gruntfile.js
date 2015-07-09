@@ -32,7 +32,7 @@ module.exports = function(grunt) {
                 script: "server.js",
                 options: {
                     exec: "npm run babel-node",
-                    watch: ["server.js", "server"]
+                    watch: ["server.js", "server", "lib"]
                 }
             },
         },

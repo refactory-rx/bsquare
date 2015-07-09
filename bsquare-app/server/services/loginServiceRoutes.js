@@ -2,10 +2,9 @@ module.exports = {
 
     init: (app) => {
 		
-        app.post('/api/login', (req, res) => {
+        app.post('/api/login', (req, res, next) => {
 		
-			let user = req.body;
-			
+            let user = req.body;
             app.authService.logregUser(user, (response) => {
 				res.json(response);
 			});

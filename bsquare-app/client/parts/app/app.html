@@ -32,7 +32,7 @@
 	                         
 	                        <div class="promoFull" style="width: 100%; height: 100%; position: relative;" ng-click="navigate('#/event/'+promoEvents[0]._id)">
 		                        <div style="width: 100%; height: 60%; overflow-y: hidden;">
-                                    <img ng-src="{{imgBaseUrl}}{{promoEvents[0].info.eventImage}}" style="max-width: 96%;">
+                                    <img ng-src="img{{promoEvents[0].info.eventImage}}" style="max-width: 96%;">
 		                        </div>
 		                        <div style="height: 20%; border: 1px solid black;">
 		                        	<a href="#/event/{{promoEvents[0]._id}}"><span style="font-size: 1.5em;">{{promoEvents[0].info.title}}</span></a> in {{promoEvents[0].info.place.vicinity}}
@@ -57,7 +57,7 @@
 	                        
 	                        <div class="promoFull" style="width: 100%; height: 100%; position: relative;" ng-click="navigate('#/event/'+promoEvents[1]._id)">
 		                        <div style="width: 100%; height: 60%; overflow-y: hidden;">
-                                    <img ng-src="{{imgBaseUrl}}{{promoEvents[1].info.eventImage}}" style="max-width: 96%;">
+                                    <img ng-src="img{{promoEvents[1].info.eventImage}}" style="max-width: 96%;">
 		                        </div>
 		                        <div style="height: 20%; border: 1px solid black;">
 		                        	<a href="#/event/{{promoEvents[1]._id}}"><span style="font-size: 1.5em;">{{promoEvents[1].info.title}}</span></a> in {{promoEvents[1].info.place.vicinity}}

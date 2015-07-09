@@ -21,109 +21,39 @@ class EventService {
 
 	getEvents(params, callback) {	
         
-        let kind = params.kind;
-		let q = params.q;
-	    let user = params.user;
-            
-		if (kind) {
-			
-			delete params.kind;
-			
-			if (kind === "own") {
-                
-                if (user) {
+        let deferred = Q.defer();    
+        Event.find(params, (err, events) => {
+            if (err) {
+                return deferred.reject(err);
+            }
+            deferred.resolve(events);
+        });
 
-                    params.user = user.id;
-                    this.getEventsByParams(params, (response) => {
-                        if (user.email === "vhalme@gmail.com") {
-                            response.myEventsTemplate = 'parts/app/myEvents_private.html';
-                        } else {
-                            response.myEventsTemplate = 'parts/app/myEvents_blocked.html';
-                        }
-                        callback(response);
-                    });
+        return deferred.promise;
 
-                } else {
-                    callback({ success: 0, status: "unauthorized" });
-                }
-
-				
-			} else {
-			     
-                this.getEventsByParams(params, (response) => {
-					callback(response);
-				});
-				
-			}
-					
-		} else if (q) {
-			
-			delete params.q;
-			
-            this.searchEventsByText(q, (response) => {
-				callback(response);
-			});
-			
-		} else {
-			
-			params['info.timeEnd'] = {
-				$gt: (new Date()).getTime()
-			};
-			
-            this.getEventsByParams(params, (response) => {
-				callback(response);
-			});
-			
-		}
-    
     }
 	
-	getPromoEvents(params, callback) {
-			
-		params['info.timeEnd'] = {
-			$gt: (new Date()).getTime()
-		};
-		
-        this.getEventsByParams(params, (response) => {
-			callback(response);
-		});
-		
-	}
-	
-	getEventsByParams(params, callback) {
+	getPromoEvents() {
         
-        console.log("getEventsByParams", params);
-		let response = {
-			success: 0,
-			status: 'none'
-		};
-        
-        Event.find(params, (err, events) => {
-		    
-            if(err) {
-                
-                response.status = 'error';
-                response.message = 'Error reading data.';
-                response.error = err;
-            
-            } else {
-                
-                if(events) {
-                    response.success = 1;
-                    response.status = 'eventsFound';
-                    response.events = events;
-                } else {
-                    response.status = 'eventsNotFound';
-                    response.message = 'Events not found.';
-                }
+        let deferred = Q.defer();
+         
+        let params = {
+            "info.timeEnd": {
+                $gt: (new Date()).getTime()
             }
-				
-		    callback(response);
-        
+		};
+		
+        Event.find(params, (err, events) => {
+            if (err) {
+                return deferred.reject(err);
+            }
+            deferred.resolve(events);
         });
+
+        return deferred.promise;
 		
 	}
-	
+		
 	searchEventsByText(searchText, callback) {
 		
 		let response = {
