@@ -1,6 +1,7 @@
-controllers.controller('event.back.tickets.ManageTicketsCtrl', 
-		['$rootScope', '$scope', '$routeParams', '$http', '$log', '$timeout', 'stringUtils', 'validationService',
-		 function($rootScope, $scope, $routeParams, $http, $log, $timeout, stringUtils, validationService) {
+controllers.controller(
+    "event.back.tickets.ManageTicketsCtrl", 
+    ['$rootScope', '$scope', '$routeParams', '$http', '$log', '$timeout', 'stringUtils', 'validationService',
+        ($rootScope, $scope, $routeParams, $http, $log, $timeout, stringUtils, validationService) => {
 	
 	
     $scope.addTicketsOpen = false;
