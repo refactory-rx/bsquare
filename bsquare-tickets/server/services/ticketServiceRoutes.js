@@ -1,25 +1,18 @@
 import url from "url";
 
 module.exports = {
-
+    
     init: (app) => {
 
-        app.get("/api/tickets", (req, res) => {
+        let { isLoggedIn } = require("../../../shared/lib/RouteFilters")(app);
+        
+        app.get("/api/tickets", isLoggedIn, (req, res, next) => {
 
             console.log("get tickets");
 
-            app.authService.screenRequest(req, true, (result) => {
-
-                let url_parts = url.parse(req.url, true);
-                let params = url_parts.query;                
-                if (result.status === "authorized") {
-                    params.user = result.user;
-                }
-
-                app.ticketService.getTickets(params, (response) => {
-                    res.json(response);
-                });
-
+            app.ticketService.getTickets({ user: req.auth.user }, (err, tickets) => {
+                if (err) { return next(err); }
+                res.json({ status: "ok", tickets: tickets });
             });
 
         });
@@ -42,21 +35,30 @@ module.exports = {
 
         });
 
-        app.get("/api/tickets/:id", (req, res) => {
+        app.get("/api/tickets/:id", (req, res, next) => {
+            
+            let params = {
+                id: req.params.id,
+                user: req.auth ? req.auth.user : null
+            };
 
-            app.authService.screenRequest(req, true, (result) => {
+            app.ticketService.getTicket(params, (err, ticket) => { 
+                if (err) { return next(err); }
+                res.json({ status: "ok", ticket: ticket });
+            });
+        
+        });
+        
+        app.put("/api/tickets/:id", isLoggedIn, (req, res, next) => {
 
-                let url_parts = url.parse(req.url, true);
-                let params = url_parts.query;
-                params.id = req.params.id;
-                if (result.status === "authorized") {
-                    params.user = result.user;
-                }
+            let params = {
+                id: req.params.id,
+                user: req.auth.user
+            };
 
-                app.ticketService.getTickets(params, (response) => {
-                    res.json(response);
-                });
-
+            app.ticketService.admitTicket(params, () => {
+                if (err) { return next(err); }
+                res.json({ status: "ok" });
             });
 
         });

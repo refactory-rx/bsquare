@@ -3,9 +3,9 @@
     <div class="panel panel-default" style="width: 100%; height: 100%;">
     
         <div class="panel-heading columnHeader">
-            <div class="right">Purchased tickets</div>
-            <div ng-show="order.tickets.length > 0" class="left">
-                <a href="" ng-click="setRootView('orderFront')">Order</a>
+            <div class="left">{{ "order.back.purchasedTickets" | translate }}</div>
+            <div ng-show="order.tickets.length > 0" class="right">
+                <a href="" ng-click="setRootView('orderFront')">{{ "order.back.viewOrder" | translate }}</a>
             </div>
         </div>
         
@@ -20,7 +20,7 @@
                     </div>
                     <div style="display: inline-block; width: 49%; text-align: right; vertical-align: top;">
                         <div>{{ticket.price}} €</div>
-                        <div><a href="{{appBaseUrl}}/ticket/{{ticket._id}}">{{ticket._id}}</a></div>
+                        <div><a href="{{appBaseUrl}}/#/ticket/{{ticket._id}}">{{ "order.back.openTicket" | translate }}</a></div>
                     </div>
                 </div>
                 

@@ -141,22 +141,22 @@ div.inputForm div.inputRow div.inputRowCell {
 }
 
 div.inputForm div.inputRow div.labelContainer {
-		width: 30%;
-		text-align: right;
-		margin-right: 8px;
-		margin-top: 6px;
-	}
-	
-	div.inputForm div.inputRow div.inputContainer {
-		width: 14em;
-		text-align: left;
-	}
-	
-	div.inputForm div.inputRow div.eventInputContainer {
-		width: 67%;
-		max-width: 20em;
-		text-align: left;
-	}
+    width: 30%;
+    text-align: right;
+    margin-right: 8px;
+    margin-top: 6px;
+}
+
+div.inputForm div.inputRow div.inputContainer {
+    width: 14em;
+    text-align: left;
+}
+
+div.inputForm div.inputRow div.eventInputContainer {
+    width: 67%;
+    max-width: 20em;
+    text-align: left;
+}
 
 
 @media (min-width: 650px) and (max-width: 860px) {
@@ -1129,6 +1129,7 @@ div.ticket {
     height: 40px;
     width: 90px;
     margin: 6px;
+    padding: 8px;
     text-align: center;
     cursor: pointer;
 }
@@ -1781,12 +1782,17 @@ div.minView1 div.listEventImage {
 		margin-left: -70px;
 		padding-top: 55px;
 		border: 1px dashed #000;
-	}
-	
-	
+	}	
 	
 }
 
+@media (min-width: 420px) and (max-width: 600px) {
+	
+	div.inputForm div.inputRow div.labelContainer {
+		width: initial;
+	}
+
+}
 
 div.date {
     width: 100%;

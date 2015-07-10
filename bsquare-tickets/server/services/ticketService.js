@@ -5,6 +5,8 @@ import fs from "fs";
 import url from "url";
 import moment from "moment";
 
+import Errors from "../../../shared/lib/Errors";
+
 let Ticket, TicketResource, Event, Order;
 let APP_BASE_URL, SENDGRID_FROM, SENDGRID_USERNAME, SENDGRID_PASSWORD;
 
@@ -17,122 +19,110 @@ class TicketService {
         this.sendgrid = require("sendgrid")(SENDGRID_USERNAME, SENDGRID_PASSWORD);
     }
 
-    getTickets(params, callback) {
+    _checkTicketAdmissability(user, ticket) {
 
-        console.log("get tickets, screen req");
+        let deferred = Q.defer();
 
-        let findParams = {};
+        if (!user) {
+            return deferred.resolve(false);
+        }
 
-        if(params.id) {
+        TicketResource.findOneQ({ _id: ticket.ticketResourceId })
+        .then((ticketResource) => {
 
-            findParams._id = params.id;
-
-        } else {
-
-            if(params.user) {
-                findParams.userId = params.user.id;
+            if(ticketResource.authorizedInvalidation) {
+                console.log("check event of the tkt rsrc");
+                return Event.findOneQ({ _id: ticketResource.event });
             } else {
-                callback({ success: 0, status: "unauthrized" });
+                deferred.resolve(false);
+            }
+
+        })
+        .then((event) => {
+            console.log("check event ownership", event, user);
+            ticket.allowInvalidation = event.user.toString() === user.id;
+            deferred.resolve(ticket);
+        });
+
+        return deferred.promise;
+
+    }
+
+    getTicket(id, user) {
+
+        let deferred = Q.defer();
+
+        console.log("check tkt invalidation auth");
+        
+        let ticket;
+
+        Ticket.findOneQ({ _id: id })
+        .then((ticket) => {
+
+            if (!ticket) {
+                return deferred.reject(new Errors.NotFound(null, { message: "ticket_not_found" }));
+            }
+            
+            return this._checkTicketAdmissability(user, ticket);
+
+        })
+        .then((ticket) => {
+            deferred.resolve(ticket);
+        })
+        .catch((err) => {
+            deferred.reject(err);
+        });
+
+        return deferred.promise;
+
+    }
+
+    admitTicket(id, user) {
+
+        let deferred = Q.defer();
+
+        Ticket.findOneQ({ _id: id })
+        .then((ticket) => {
+
+            if (!ticket) {
+                deferred.reject(new Errors.NotFound(null, { message: "no_admissible_ticket_found" }));
                 return;
             }
 
-        }
+            return this._checkTicketAdmissability(user, ticket);
 
-        if(findParams._id && params.use === "admit") {
+        })
+        .then((ticket) => {
+            if (ticket.allowInvalidation) {
+                ticket.status = "used";
+                ticket.save((err) => {
+                    if (err) { return deferred.reject(err); }
+                    deferred.resolve();
+                });
+            } else {
+                deferred.reject(new Errors.Unauthorized(null, { message: "not_authorized_to_invalidate_ticket" }));
+            }
+        })
+        .catch((err) => {
+            deferred.reject(err);
+        });
 
-            Ticket.update( { _id: findParams._id }, { status: "used" }, (err, numAffected) => {
+        return deferred.promise;
 
-                let response = { success: 0 };
+    }
 
-                if(err) {
-                    response.status = "errorUpdatingTicketStatus";
-                    response.error = err;
-                } else {
-                    if(numAffected != 1) {
-                        response.status = "ticketNotFound";
-                    } else {
-                        response.success = 1;
-                        response.status = "ticketUsed";
-                    }
-                }
+    getTickets(user) {
 
-                callback(response);
+        console.log("get tktss, screen req");
 
-            });
+        let deferred = Q.defer();
 
-        } else {
-
-            console.log("tickets findParams", findParams);
-
-            Ticket.find(findParams, (err, tickets) => {
-
-                let response = { success: 0 };
-
-                if(err) {
-
-                    response.status = "errorFindingTickets";
-                    response.error = err;
-                    callback(response);
-
-                } else {
-
-                    tickets = JSON.parse(JSON.stringify(tickets));
-
-                    response.success = 1;
-                    response.status = "ticketsFound";
-                    response.data = tickets;
-
-                    if(findParams._id) {
-
-                        console.log("check tkt invalidation auth");
-
-                        TicketResource.findOneQ({ _id: tickets[0].ticketResourceId })
-                        .then((ticketResource) => {
-
-                            if(ticketResource.authorizedInvalidation) {
-                                if(result.status === "authorized") {
-                                    console.log("check event of the tkt rsrc");
-                                    return Event.findOneQ({ _id: ticketResource.event });
-                                } else {
-                                    tickets[0].allowInvalidation = false;
-                                    callback(response);
-                                }
-
-                            } else {
-
-                                tickets[0].allowInvalidation = true;
-                                callback(response);
-
-                            }
-
-                        })
-                        .then((event) => {
-
-                            console.log("check event ownership");
-
-                            if(event.user.toHexString() == result.user.id) {
-                                tickets[0].allowInvalidation = true;
-                            } else {
-                                tickets[0].allowInvalidation = false;
-                            }
-
-                            callback(response);
-
-                        });
-
-                    } else {
-
-                        callback(response);
-
-                    }
-
-                }
-
-            });
-
-
-        }
-
+        Ticket.find({ userId: user.id }, (err, tickets) => {
+            if (err) { return deferred.reject(err); }
+            deferred.resolve(tickets);
+        });
+        
+        return deferred.promise;
 
     }
 
@@ -198,7 +188,7 @@ class TicketService {
             } else {
 
                 createdTickets = createdTickets[0];
-                
+
                 let qtyByResource = {};
                 tickets.forEach(ticket => {
 
@@ -248,7 +238,7 @@ class TicketService {
                 emailContent +=
                     `<br/><br/>
                     B SQUARED`;
-                
+
                 let phantomService = this.app.phantomService;
                 phantomService.createTickets(createdTickets, (result) => {
 

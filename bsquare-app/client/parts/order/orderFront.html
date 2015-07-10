@@ -1,9 +1,8 @@
 <div class="panel panel-default order">
-
 <div class="panel-heading columnHeader">
     <div class="left">{{ 'order.front.title' | translate }}</div>
     <div ng-show="order.tickets.length > 0 && order.signupStatus == 'complete'" class="right">
-        <a href="" ng-click="setRootView('orderBack')">Tickets</a>
+        <a href="" ng-click="setRootView('orderBack')">{{ "order.front.viewTickets" | translate }}</a>
     </div>
 </div>
 
@@ -16,11 +15,11 @@
         {{formatTime(event.info.timeStart)}}
     </div>
     
-    <div ng-show="order.status != 'fulfilled' && order.status != 'timedout' && order.status != 'refunded'" style="width: 100%; margin-bottom: 12px; color: red; text-align: center;">
+    <div ng-show="order.status != 'fulfilled' && order.status != 'timedout' && order.status != 'refunded'" style="width: 100%; margin-bottom: 12px; color: #e86850; text-align: center;">
         {{ 'order.front.orderTimeText' | translate }}: {{formatRemainingTime(remainingTime)}}.
     </div>
     
-    <div ng-show="order.status == 'timedout'" style="width: 100%; margin-bottom: 12px; color: red; text-align: center;">
+    <div ng-show="order.status == 'timedout'" style="width: 100%; margin-bottom: 12px; color: #e86850; text-align: center;">
         {{ 'order.front.orderTimedOutText' | translate }}.
     </div>
     
@@ -72,10 +71,25 @@
         
         <div ng-show="!invoice || invoice.status !== 'pending'">
             
+            <div style="display: inline-block;">
+                Siirry maksamaan
+            </div>
+            
+            <!--
+            <div style="display: inline-block; margin-left: 6px;">
+                <a href="{{checkoutInvoice.url}}">{{ 'order.front.otherPaymentMethods' | translate }}</a>
+            </div>
+            -->
+
             <div ng-click="payBtc()" class="orderBankButton" style="background: #D0A800;">
                 BITCOIN
             </div>
-
+            
+            <div class="orderBankButton" style="background: #6063DF; width: initial;"  ng-click="goToCheckoutPage()">
+                {{ "order.front.bankOrCard" | translate }}
+            </div>
+            
+            <!--
             <div class="orderBankButton" style="background: #6063DF;"  ng-click="payCheckout('nordea')">
                 NORDEA
                 <form id="payment-nordea" action="{{getTrustedUrl(banks.nordea.action)}}" method="post">
@@ -100,6 +114,7 @@
             <div style="display: inline-block; margin-left: 6px;">
                 <a href="{{checkoutInvoice.url}}">{{ 'order.front.otherPaymentMethods' | translate }}</a>
             </div>
+            -->
 
         </div>
         
@@ -110,7 +125,10 @@
             {{ 'order.front.status.paid' | translate }}
         </div>
         <div style="display: inline-block; height: 40px; margin: 6px; text-align: center;">
-            <a href="" ng-click="setRootView('orderBack')">{{ 'order.front.viewTickets' | translate }}</a>
+            <a href="" ng-click="setRootView('orderBack')">{{ 'order.back.purchasedTickets' | translate }} &raquo;</a>
+        </div>
+        <div style="width: 100%; text-align: center;">
+            {{ "order.front.fulfilledMessage" | translate }} <b>{{order.signupFields[0].value}}</b>.
         </div>
     </div>
     
@@ -141,6 +159,7 @@
     					    <div style="display: inline; float: right;">
     						    <button class="btn btn-default" ng-disabled="order.signupStatus != 'formFilled'" ng-click="submitSignupFields()">{{ 'order.front.btn-order' | translate }}</button>
     						</div>
+                            <div style="display: inline; float: right; margin-right: 20px; margin-top: 12px;"><b>*</b> <i>{{ "order.front.ticketsWillBeSent" | translate }}</i></div> 
     					</div>
     				</div>
     			</div>

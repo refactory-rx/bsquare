@@ -1,20 +1,21 @@
-controllers.controller('OrderEntryCtrl', 
-		['$rootScope', '$scope', '$routeParams', '$http', '$log', '$sce', '$interval', '$translate',
-		 function($rootScope, $scope, $routeParams, $http, $log, $sce, $interval, $translate) {
+controllers.controller(
+    "OrderEntryCtrl", 
+    ['$rootScope', '$scope', '$routeParams', '$http', '$log', '$sce', '$interval', '$translate',
+        ($rootScope, $scope, $routeParams, $http, $log, $sce, $interval, $translate) => {
 	
-	$rootScope.setRootView('order');
+	$rootScope.setRootView("order");
 	
 	$scope.orderId = $routeParams.id;
 	$scope.event = {};
 	
-	$scope.$watch('savedOrder', function(value) {
+    $scope.$watch("savedOrder", (value) => {
     	
-    	if(value !== undefined) {
+    	if(value) {
     		
-    		if($scope.order !== undefined) {
-    			$log.debug('order changed');
+    		if($scope.order) {
+    			$log.debug("order changed");
     			$scope.orderChanged = true;
-    			$scope.orderStatus = 'changed';
+    			$scope.orderStatus = "changed";
     		}
     		
     		$scope.order = angular.copy(value);
@@ -22,16 +23,16 @@ controllers.controller('OrderEntryCtrl',
     		$scope.getEvent($scope.order.event);
 			$scope.getInvoice($scope.order);
 			
-			if($scope.order.status != 'fulfilled' && $scope.order.status != 'timedout' && $scope.order.status != 'refunded') {
+			if($scope.order.status != "fulfilled" && $scope.order.status != "timedout" && $scope.order.status != "refunded") {
 				
 				var now = (new Date()).getTime();
 				$scope.remainingTime = 15*60*1000 - (now - $scope.order.timePlaced);
 				
-				console.log('remainingTime', $scope.remainingTime);
-				$scope.timeCountingInterval = $interval(function() {
+				console.log("remainingTime", $scope.remainingTime);
+                $scope.timeCountingInterval = $interval(() => {
 					$scope.remainingTime -= 1000;
 					if($scope.remainingTime <= 0) {
-						$scope.order.status = 'timedout';
+						$scope.order.status = "timedout";
 						$interval.cancel($scope.timeCountingInterval);
 					}
 				}, 1000);
@@ -44,142 +45,137 @@ controllers.controller('OrderEntryCtrl',
 	}, true);
 	
 	
-	$scope.$on('destroy', function() {
+    $scope.$on("destroy", () => {
 		if($scope.timeCountingInterval) {
 			$interval.cancel($scope.timeCountingInterval);
 		}
 	});
     
     
-    $scope.$watch('orderId', function(value) {
+    $scope.$watch("orderId", (value) => {
         
-        var orderId = $scope.orderId;
+        let orderId = $scope.orderId;
         
-        if(orderId !== undefined) {
-            
-            $log.debug('orderId set: '+orderId);
+        if(orderId) { 
+            $log.debug("orderId set: "+orderId);
             $scope.getOrder(orderId);
-            
         }
         
     }, true);
     
     
-	$scope.getOrder = function(id) {
+    $scope.getOrder = (id) => {
 		
 		$scope.showOrderError = false;
 		
-		$log.debug('getting order...');
+		$log.debug("getting order...");
 		
-		$http.get('/api/orders/'+id, { headers: requestHeaders } )
-		
-			.success(function(response) {
+		$http.get("/api/orders/"+id+"?time="+(new Date()).getTime(), { headers: requestHeaders } )
+        .success((response) => {
 				
-			    $log.debug(response);
-				
-				if(response.status == 'orderFound' || response.status == 'orderCreated') {
-					
-					$scope.savedOrder = response.order;
-					
-				} else {
-				    $scope.showOrderError = true;
-					$scope.orderStatus = 'error';
-					$scope.orderErrorMessage = response.message;
-				}
-				
-			})
-			
-			.error(function(data) {
-			    
-				$log.debug('Error: ' + data);
-			    $scope.showOrderError = true;
-				$scope.orderStatus = 'error';
-				$scope.orderErrorMessage = 'Network error while getting order.';
-				
-			});
+            $log.debug(response);
+            
+            if(response.status == "orderFound" || response.status == "orderCreated") {
+                
+                $scope.savedOrder = response.order;
+                
+            } else {
+                $scope.showOrderError = true;
+                $scope.orderStatus = "error";
+                $scope.orderErrorMessage = response.message;
+            }
+            
+        })  
+        .error((data) => {
+            
+            $log.debug("Error: ", data);
+            $scope.showOrderError = true;
+            $scope.orderStatus = "error";
+            $scope.orderErrorMessage = "Network error while getting order.";
+            
+        });
 			
 			
 	};
 	
 	
-	$scope.getEvent = function(id) {
+    $scope.getEvent = (id) => {
 		
-		$log.debug('getting event '+id);
+		$log.debug("getting event "+id);
 		
-		$http.get('/api/events/'+id, { headers: requestHeaders } )
-			.success(function(response) {
-				
-				$log.debug(response);
-				
-				if(response.status == 'eventFound') {
-					
-    				$scope.event = response.event;
-    				
-				} else {
-					$scope.orderStatus = 'error';
-					$scope.orderErrorMessage = response.message;
-				}
-				
-			})
-			.error(function(data) {
-				$log.debug('Error: ' + data);
-			});
+		$http.get("/api/events/"+id, { headers: requestHeaders } )
+        .success((response) => {
+            
+            $log.debug(response);
+            
+            if(response.status == "eventFound") {
+                
+                $scope.event = response.event;
+                
+            } else {
+                $scope.orderStatus = "error";
+                $scope.orderErrorMessage = response.message;
+            }
+            
+        })
+        .error((data) => {
+            $log.debug("Error: ", data);
+        });
 			
 	};
 	
 	
-	$scope.getInvoice = function(order) {
+    $scope.getInvoice = (order) => {
 		
-		if(order.invoiceId !== undefined) {
+		if(order.invoiceId) {
 		    
-		    $log.debug('getting invoice');
+		    $log.debug("getting invoice");
 		    
-    		$http.get('/api/invoices/'+order.invoiceId, { headers: requestHeaders } )
-    			.success(function(response) {
-    				
-    				$log.debug(response);
-    				
-    				if(response.status == 'invoiceFound') {
-    					
-    					var invoice = response.invoice;
-    					if(invoice.status === 'expired' || invoice.status === 'failed') {
-    						$scope.getCheckoutInvoice(order);	
-    					} else {
-        					$scope.invoice = response.invoice;
-    					}
-		    
-    				} else if(response.status == 'invoicePaid') {
-    				    
-    				    $scope.invoice = response.invoice;
-    				    $scope.order.tickets = response.tickets;
-    				    $scope.order.status = 'fulfilled';
-    				    
-    				}
-    				
-    			})
-    			.error(function(data) {
-    				$log.debug('Error: ' + data);
-    			});
+    		$http.get("/api/invoices/"+order.invoiceId, { headers: requestHeaders } )
+            .success((response) => {
+                
+                $log.debug(response);
+                
+                if(response.status === "invoiceFound") {
+                    
+                    let invoice = response.invoice;
+                    if(invoice.status === "expired" || invoice.status === "failed") {
+                        $scope.getCheckoutInvoice(order);	
+                    } else {
+                        $scope.invoice = response.invoice;
+                    }
+        
+                } else if(response.status === "invoicePaid") {
+                    
+                    $scope.invoice = response.invoice;
+                    $scope.order.tickets = response.tickets;
+                    $scope.order.status = "fulfilled";
+                    
+                }
+                
+            })
+            .error((data) => {
+                $log.debug("Error: ", data);
+            });
     			
 		} else {
 		    
-		    $log.debug('no invoice id');
-		    
+		    $log.debug("no invoice id");
 		    $scope.getCheckoutInvoice(order);
-    			
 		    
 		}
 			
 	};
 	
-	$scope.getCheckoutInvoice = function(order) {
+    $scope.getCheckoutInvoice = (order) => {
 		
-		$http.get('/api/invoices/checkout/'+order._id, { headers: requestHeaders } )
-		.success(function(response) {
+		$http.get("/api/invoices/checkout/"+order._id, { headers: requestHeaders } )
+        .success((response) => {
 			
-			console.log('invoice response', response);
+			console.log("invoice response", response);
 				
-			if(response.status == 'invoiceProvided') {
+            if(response.status === "invoiceProvided") {
+
 				var banks = response.invoice.extData.trade.payments[0].payment[0].banks[0];
 				console.log(banks);
 				
@@ -192,7 +188,7 @@ controllers.controller('OrderEntryCtrl',
 					var inputNames = Object.getOwnPropertyNames(bank);
 					var inputs = [];
 					for(var j=0; j < inputNames.length; j++) {
-						if(inputNames[j] !== '$') {
+						if(inputNames[j] !== "$") {
 							inputs.push({
 								name: inputNames[j],
 								value: bank[inputNames[j]][0]
@@ -210,31 +206,29 @@ controllers.controller('OrderEntryCtrl',
 			}
 				
 		})
-		.error(function(data) {
-			$log.debug('Error: ' + data);
+        .error((data) => {
+			$log.debug("Error: ", data);
 		});
     		
 	};
     		
 	
-	$scope.getTrustedUrl = function(url) {
-		//console.log('get trusted url: '+url);
+    $scope.getTrustedUrl = (url) => {
 		var trusted = $sce.trustAsResourceUrl(url);
-		//console.log(trusted);
 		var trustedUrl = $sce.getTrustedUrl(trusted);
-		//console.log(trustedUrl);
 		return trusted;
 	}
 	
 	
 }]);
 
-controllers.controller('OrderFrontCtrl', 
-		['$rootScope', '$scope', '$routeParams', '$http', '$log', '$filter', '$translate',
-		 function($rootScope, $scope, $routeParams, $http, $log, $filter, $translate) {
+controllers.controller(
+    "OrderFrontCtrl", 
+    ['$rootScope', '$scope', '$routeParams', '$http', '$log', '$filter', '$translate',
+    ($rootScope, $scope, $routeParams, $http, $log, $filter, $translate) => {
 	
 	
-	$rootScope.setRootView('orderFront');
+	$rootScope.setRootView("orderFront");
 	
     $scope.orderChanged = false;
     $scope.showOrderError = false;
@@ -253,16 +247,16 @@ controllers.controller('OrderFrontCtrl',
         }
     };
 
-    $scope.$watch('event', function(event) {
+    $scope.$watch("event", (event) => {
     	
     	if(event) {
 
     		if($scope.event.signupFields) {
                 
-                var signupFields = angular.copy($scope.event.signupFields);
+                let signupFields = angular.copy($scope.event.signupFields);
                   
-                if($rootScope.logregStatus !== 'loggedIn' || 
-                   $rootScope.loggedUser.emailVerified != 'true') {
+                if($rootScope.logregStatus !== "loggedIn" || 
+                   $rootScope.loggedUser.emailVerified !== "true") {
                     
                     $scope.confirmEmail = true;    
                     
@@ -271,7 +265,7 @@ controllers.controller('OrderFrontCtrl',
 
                 }
 
-                if($rootScope.logregStatus === 'loggedIn') {
+                if($rootScope.logregStatus === "loggedIn") {
     				signupFields[0].value = $rootScope.loggedUser.email;
                 }
 
@@ -345,50 +339,69 @@ controllers.controller('OrderFrontCtrl',
 	    
 	};
 	
-	
-	$scope.payCheckout = function(method) {
-	    
-	    var createInvoiceRequest = {
-	        type: 'checkout',
-	        provider: 'checkout',
+    $scope.createCheckoutInvoice = (callback) => {
+        
+        let createInvoiceRequest = {
+	        type: "checkout",
+	        provider: "checkout",
 	        invoice: $scope.checkoutInvoice,
 	        orderId: $scope.order._id
 	    };
-	    
-	    console.log('payCheckout');
-	    
-	    $http.post('/api/invoices', createInvoiceRequest, { headers: requestHeaders } )
-		.success(function(response) {
+        
+        $http.post("/api/invoices", createInvoiceRequest, { headers: requestHeaders } )
+        .success((response) => {
 			
-			console.log('invoice response', response);
+			console.log("invoice response", response);
 			
-			if(response.status == 'invoiceCreated') {
-				
+			if(response.status == "invoiceCreated") {
+                callback(null, response);
+            } else {
+                $scope.showOrderError = true;
+				$scope.orderStatus = "error";
+				$scope.orderErrorMessage = err.response.message;
+                callback({ response: response });
+            }	
+			
+		})
+        .error((data) => {
+			console.log("Error: ", data);
+			$scope.showOrderError = true;
+			$scope.orderStatus = "error";
+			$scope.orderErrorMessage = "Network error while creating invoice.";
+            callback(data);
+        });
+    
+    };
+
+    $scope.payCheckout = (method) => {
+	    
+	    console.log("payCheckout");
+	    
+	    $scope.createCheckoutInvoice((err, response) => {
+            
+            if (!err) {
 				$scope.showError = false;
 				var invoice = response.invoice;
 				var form = $("#payment-"+method);
-				console.log('form:', form);
+				console.log("form:", form);
 				form.submit();
-				
-			} else {
-				$scope.showOrderError = true;
-				$scope.orderStatus = 'error';
-				$scope.orderErrorMessage = response.message;
 			}
-			
-			
-		})
-		.error(function(data) {
-			console.log('Error: ' + data);
-			$scope.showOrderError = true;
-			$scope.orderStatus = 'error';
-			$scope.orderErrorMessage = 'Network error while creating invoice.';
-		});
-		
+        
+        });    
 	    
 	};
 	
-	
+    $scope.goToCheckoutPage = () => {
+        
+	    $scope.createCheckoutInvoice((err, response) => { 
+            if (!err) {
+				$scope.showError = false;
+                window.location.href = $scope.checkoutInvoice.url;
+            } 
+        });
+
+    };
+
 	$scope.saveOrder = function(order, callback) {
 		
 		$scope.showOrderError = false;
@@ -437,35 +450,25 @@ controllers.controller('OrderFrontCtrl',
 	};
 	
 	
-	$scope.validateForm = function() {
+    $scope.validateForm = () => {
     	
-    	console.log('validating...');
+    	console.log("validating...");
     	console.log($scope.order);
     	
-    	if(!$scope.order || $scope.order.signupStatus == 'complete') {
+    	if(!$scope.order || $scope.order.signupStatus === "complete") {
     		return;
     	}
     	
-    	console.log('validating');
+    	console.log("keep validating");
     	
-    	var fields = $scope.order.signupFields;
+    	let fields = $scope.order.signupFields;
     	
     	if(fields && fields.length > 0) {
-			
-	    	for(var i=0; i < fields.length; i++) {
-	    		if(fields[i].required == 'true') {
-	    			if(fields[i].value === undefined || fields[i].value == '*') {
-	    				$scope.order.signupStatus = 'formNotFilled';
-	    				return;
-	    			}
-	    		}
-		    }
-		    
-		    $scope.order.signupStatus = 'formFilled';
-            
-            if($rootScope.logregStatus != 'loggedIn' || $rootScope.loggedUser.emailVerified != 'true') {
+
+            if($rootScope.logregStatus != "loggedIn" || $rootScope.loggedUser.emailVerified != "true") {
                 $scope.confirmEmail = true;
             } else {
+                console.log("confirmEmail="+$scope.confirmEmail, $rootScope.loggedUser.email+"/"+fields[0].value);
                 if($rootScope.loggedUser.email != fields[0].value) {
                     if(!$scope.confirmEmail) {
                         fields.splice(1, 0, $scope.confirmEmailField);
@@ -479,35 +482,46 @@ controllers.controller('OrderFrontCtrl',
                 }
 
             }
-
+            
             if($scope.confirmEmail) {
                 var emailField = fields[0];
                 var confirmEmailField = fields[1];
                 
                 if(emailField.value != confirmEmailField.value) {
-                    $scope.order.signupStatus = 'formNotFilled';
+                    $scope.order.signupStatus = "formNotFilled";
                     return;
                 }
 
             }
-                
+            
+	    	for(let i=0; i < fields.length; i++) {
+	    		if(fields[i].required == "true") {
+	    			if(!fields[i].value || fields[i].value === "*") {
+                        $scope.order.signupStatus = "formNotFilled";
+                        return;
+	    			}
+	    		}
+		    }
+		    
+		    $scope.order.signupStatus = "formFilled";
+             
     	} else {
     		
-    		$scope.order.signupStatus = 'complete';
+    		$scope.order.signupStatus = "complete";
     	
     		
     	}
     	
     };
 	
-	$scope.submitSignupFields = function() {
+    $scope.submitSignupFields = () => {
 		
-		$scope.saveOrder($scope.order, function(response) {
+        $scope.saveOrder($scope.order, (response) => {
 			
-			if(response.status == 'orderSaved' || response.status == 'orderFulfilled') {
-				$scope.order.signupStatus = 'complete';
-				if(response.status == 'orderFulfilled') {
-					$scope.order.status = 'fulfilled';
+			if(response.status === "orderSaved" || response.status === "orderFulfilled") {
+				$scope.order.signupStatus = "complete";
+				if(response.status === "orderFulfilled") {
+					$scope.order.status = "fulfilled";
 					$scope.getOrder($scope.order._id);
 				}
 			}

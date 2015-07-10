@@ -10,7 +10,7 @@ let bodyParser = require("body-parser");
 let methodOverride = require("method-override");
 let mongoose = require("mongoose-q")(require("mongoose"));
 
-let Errors = require("./lib/Errors");
+let Errors = require("../shared/lib/Errors");
 
 let settings = env.getSettings();
 mongoose.connect(settings.DATABASE_URL);
@@ -49,7 +49,7 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" }));     // parse app
 app.use(methodOverride());										    // simulate DELETE and PUT
 app.use(busboy());
 
-require("./lib/Middleware")(app);
+require("../shared/lib/Middleware")(app);
 
 require("./server/routes.js")(app);
 
@@ -57,15 +57,13 @@ app.use((err, req, res, next) => {
     
     console.log(err.stack);
     
-    if (err.code === "ENOENT") {
-        return next();
-    }
-     
+    let response = Object.assign({
+        status: err.status
+    }, err.data ? { error: err.data } : {});
+
     res.status(err.statusCode || 500);
-    res.json({
-        status: err.status,
-        error: err.data
-    });
+    res.json(response);
+
 
 });
 

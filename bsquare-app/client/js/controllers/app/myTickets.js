@@ -39,9 +39,9 @@ controllers.controller('MyTicketsCtrl',
 					
 				$scope.ticketsStatus = response.status;
 				
-				if(response.status == 'ticketsFound') {
+				if(response.status == "ok") {
 					
-					var tickets = response.data;
+					var tickets = response.tickets;
 					$scope.updateTickets(tickets);
 					
 				} else {

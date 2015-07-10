@@ -4,7 +4,7 @@ module.exports = {
 
     init: (app) => {
 
-        let { isLoggedIn } = require("../../lib/RouteFilters")(app);
+        let { isLoggedIn } = require("../../../shared/lib/RouteFilters")(app);
         
         app.get("/some/url", isLoggedIn, (req, res, next) => {   
             res.json({ status: "ok" });

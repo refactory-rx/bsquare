@@ -14,11 +14,39 @@ module.exports = (app) => {
         },
 
         getTicket: (params, callback) => {
-            ticketService.getTickets(params, callback);
+
+            ticketService.getTicket(params.id, params.user)
+            .then((ticket) => {
+                callback(null, ticket);
+            })
+            .catch((err) => {
+                callback(err);
+            });
+
         },
 
         getTickets: (params, callback) => {
-            ticketService.getTickets(params, callback);
+            
+            ticketService.getTickets(params.user)
+            .then((tickets) => {
+                callback(null, tickets);
+            })
+            .catch((err) => {
+                callback(err);
+            });
+            
+        },
+        
+        admitTicket: (params, callback) => {
+
+            ticketService.admitTicket(params.id, params.user)
+            .then(() => {
+                callback();
+            })
+            .catch((err) => {
+                callback(err);
+            });
+
         },
 
         createTickets: (params, callback) => {

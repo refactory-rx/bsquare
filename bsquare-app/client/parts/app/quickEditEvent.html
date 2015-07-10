@@ -45,7 +45,7 @@
 						<div class="inputRowCell eventInputContainer">
 							
 							<div class="dropdown" style="margin-top: 6px; text-align: center;">
-							  <span ng-show="validationErrors && validationErrors.timeStart" style="color: red;">! </span>
+							  <span ng-show="validationErrors && validationErrors.timeStart" style="color: #e86850;">! </span>
 		                      <a class="dropdown-toggle" id="startDateSelector" role="button" data-toggle="dropdown" data-target="" href="" ng-cloak>
 		                      	<span ng-show="eventStartTime == undefined" ng-cloak>{{ 'event.back.info.placeholder-starts' | translate }}</span>
 		                        {{eventStartTime|date:'EEE, MMM d, y @ HH:mm' || event.back.info.placeholder-starts|translate}}
@@ -62,7 +62,7 @@
 						<div class="inputRowCell eventInputContainer">
 							
 							<div class="dropdown" style="margin-top: 6px; text-align: center;">
-							  <span ng-show="validationErrors && validationErrors.timeEnd" style="color: red;">! </span>
+							  <span ng-show="validationErrors && validationErrors.timeEnd" style="color: #e86850;">! </span>
 		                      <a class="dropdown-toggle" id="endDateSelector" role="button" data-toggle="dropdown" data-target="" href="">
 		                      	<span ng-show="eventEndTime == undefined">{{ 'event.back.info.placeholder-ends' | translate }}</span>
 		                      	{{eventEndTime|date:'EEE, MMM d, y @ HH:mm'}}
