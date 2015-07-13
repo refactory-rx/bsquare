@@ -1,21 +1,9 @@
 let passwordHash = require("password-hash");
 let crypto = require("crypto");
 
+import translations from "../../../shared/translations";
+
 let User, Profile;
-
-let confirmEmailText =
-	"<p>Thanks for registering. Please, confirm your e-mail by clicking the following link:"+
-	"<br/><br/>"+
-	"{{link}}"+
-	"<br/><br/>"+
-	"Keikkapalvelu Ax</p>";
-
-let recoverPasswordEmailText =
-	"<p>You have requested to reset your password. Click the following link to proceed:"+
-	"<br/><br/>"+
-	"{{link}}"+
-	"<br/><br/>"+
-	"Keikkapalvelu Ax</p>";
 
 let APP_BASE_URL, SENDGRID_FROM, SENDGRID_USERNAME, SENDGRID_PASSWORD;
 
@@ -137,10 +125,27 @@ class LoginService {
 			
 	}	
 	
+	sendEmail(emailAddress, emailSubject, emailText, emailHtml) {
+		
+		console.log("sending password reset email...", emailAddress, emailSubject);
+		
+		this.sendgrid.send({
+    		to: emailAddress,
+		  	from: SENDGRID_FROM,
+		  	subject: emailSubject,
+		  	text: emailText,
+		  	html: emailHtml
+        }, (err, json) => {
+		  	if (err) { return console.error(err); }
+		  	console.log(json);
+		});
+			
+    }
+
 	sendPendingEmails() {
 		
 		console.log("run send pending emails");
-		
+	    
         User.find({ sendVerificationEmail: "true" }, (err, users) => {
 		    
             if(err) {
@@ -152,16 +157,22 @@ class LoginService {
                 for(let i=0; i < users.length; i++) {
                     
                     let user = users[i];
+
+                    Profile.findOne({ user: user._id }, (err, profile) => {
+
+                        let verifyUrl = APP_BASE_URL+"/#/verify/"+user._id;
+                        let link = `<a href="${verifyUrl}">${verifyUrl}</a>`;
+                        let emailText = translations[profile.language || "fi"].confirmEmail;
+                        emailText = emailText.replace("{link}", link);
                     
-                    let verifyUrl = APP_BASE_URL+"/#/verify/"+user._id;
-                    let link = `<a href="${verifyUrl}">${verifyUrl}</a>`;
-                    let emailText = confirmEmailText.replace("{{link}}", link);
+                        user.sendVerificationEmail = "false";
+                        user.save();
+                        
+                        console.log("Text to send", profile.language, emailText);
+                        this.sendEmail(user.emailAddress, "Email verification request", emailText, emailText);
                     
-                    user.sendVerificationEmail = "false";
-                    user.save();
-                    
-                    this.sendEmail(user.emailAddress, "Email verification request", emailText, emailText);
-                    
+                    });
+
                 }
 
             }	
@@ -182,15 +193,20 @@ class LoginService {
                     
                     let user = users[i];
                     
-                    let recoverUrl = APP_BASE_URL+"/#/recover/"+user.pwdRecoveryToken;
-                    let link = `<a href="${recoverUrl}">${recoverUrl}</a>`;
-                    let emailText = recoverPasswordEmailText.replace("{{link}}", link);
+                    Profile.findOne({ user: user._id }, (err, profile) => {
+                        
+                        let recoverUrl = APP_BASE_URL+"/#/recover/"+user.pwdRecoveryToken;
+                        let link = `<a href="${recoverUrl}">${recoverUrl}</a>`;
+                        let emailText = translations[profile.language || "fi"].recoverPassword;
+                        emailText = emailText.replace("{link}", link);
                     
-                    user.sendRecoveryEmail = "false";
-                    user.save();
+                        user.sendRecoveryEmail = "false";
+                        user.save();
                     
-                    this.sendEmail(user.emailAddress, "Password recovery", emailText, emailText);
+                        this.sendEmail(user.emailAddress, "Password recovery", emailText, emailText);
                     
+                    });
+
                 }
 
             }
@@ -199,24 +215,7 @@ class LoginService {
 			
 		
 	}
-	
-	sendEmail(emailAddress, emailSubject, emailText, emailHtml) {
 		
-		console.log("sending password reset email...", emailAddress, emailSubject);
-		
-		this.sendgrid.send({
-    		to: emailAddress,
-		  	from: SENDGRID_FROM,
-		  	subject: emailSubject,
-		  	text: emailText,
-		  	html: emailHtml
-        }, (err, json) => {
-		  	if (err) { return console.error(err); }
-		  	console.log(json);
-		});
-			
-	}
-	
 	start() {
 		
 		let expTime = 1000 * 60; // 1 hour
@@ -224,8 +223,8 @@ class LoginService {
 		this.expireTimedOutSessions();
 		this.sendPendingEmails();
 		
-		setInterval(this.sendPendingEmails, 60000);
-		setInterval(this.expireTimedOutSessions, expTime);
+        setInterval(() => { this.sendPendingEmails() }, 60000);
+        setInterval(() => { this.expireTimedOutSessions() }, expTime);
 		
 	}	
     

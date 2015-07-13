@@ -28,16 +28,18 @@ filters.filter('truncate', function () {
     
 });
 
-controllers.controller("MainCtrl", 
+controllers.controller(
+    "MainCtrl", 
     ["$rootScope", "$scope", "$route", "$routeParams", "$location", "$http", "$cookies", "$log", "$timeout", "$locale", "$translate",
     ($rootScope, $scope, $route, $routeParams, $location, $http, $cookies, $log, $timeout, $locale, $translate) => {
     
     let lang = $locale.id.split('-')[0];
-    
-    if(lang === 'fi' || lang === 'en') {
-        $translate.use('fi');
+        
+    if(lang === "fi" || lang === "en") {
+        $translate.use("fi");
+        $rootScope.language = "fi";
     }
-
+    
     $scope.name = "Main Application";
     
     $rootScope.appUrl = 'http://bsq.co/#';
@@ -53,17 +55,18 @@ controllers.controller("MainCtrl",
     $scope.accountDropdownStatus = 'closed';
     
     $rootScope.app = {
-    		views: {
-    			findEvents: 0,
-    			myEvents: 1,
-    			myTickets: 2,
-    			selectedView: 'findEvents'
-    		}
-    	};
+        views: {
+            findEvents: 0,
+            myEvents: 1,
+            myTickets: 2,
+            selectedView: 'findEvents'
+        }
+    };
     
 	requestHeaders["session-token"] = $cookies.evxSesssionToken;
 	requestHeaders["bsquare-user"] = $cookies.bsqUser;
-	
+	requestHeaders["bsquare-language"] = $rootScope.language;
+    	
     $rootScope.screenResponse = (response, callback) => {
 		
 		if(response.status === "unauthorized") {

@@ -13,8 +13,8 @@
                     
                     <div class="eventLogo">
                         
-			    <img ng-show="event.info.eventImage != undefined" id="eventImage" align="right" ng-src="img{{event.info.eventImage}}" style="width: 100%; display: inline;"/>
-                        <img ng-show="event.info.eventImage == undefined" align="right" data-src="holder.js/100%x150/#dad34d:#000000/text:EVENT LOGO" style="width: 100%; display: inline;"/>
+                        <img ng-show="event.info.eventImage != undefined" id="eventImage" align="right" ng-src="img{{event.info.eventImage}}"/>
+                        <img ng-show="event.info.eventImage == undefined" align="right" data-src="holder.js/100%x150/#dad34d:#000000/text:EVENT LOGO"/>
                         
                     </div>
                     
@@ -48,13 +48,13 @@
                     
                 </div>
                 
-                <div style="display: inline-block; width: 100%; margin-top: 24px; margin-bottom: 24px;" 
+                <div style="display: inline-block; width: 100%; margin-top: 24px; margin-bottom: 12px;" 
                     ng-show="event.groupRewards.conditions.length > 0 || event.refRewards.pointRewards.length > 0">
                     
                             <div class="groupRewardsBlock">
                                 <div style="width: 100%; display: inline-block; position: relative;">
                                     
-                                    <div class="panel panel-default" style="width: 100%; display: inline-block;">
+                                    <div class="panel panel-default" style="width: 100%; display: inline-block; margin-bottom: 6px;">
                                         <div class="panel-heading columnHeader">
                                             <div style="display: inline;">
                                                 {{ 'event.front.rewards.groupRewards' | translate }}
@@ -63,7 +63,7 @@
                                                 [<a class="a2a_dd" href="http://www.addtoany.com/share_save">{{ 'event.front.rewards.shareToGet' | translate }}</a>]
                                             </div>
                                             <div style="display: inline;" ng-show="refTrackerUrls['group'] == undefined">
-                                                [<a href="">{{ 'event.front.rewards.logIn' | translate }}</a> {{ 'event.front.rewards.startSharingGroup' | translate }}]
+                                                [<a href="/#/app?view=logreg">{{ 'event.front.rewards.logIn' | translate }}</a> {{ 'event.front.rewards.startSharingGroup' | translate }}]
                                             </div>
                                         </div>
                                         <div class="panel-body" style="width: 100%; display: inline-block; padding-top: 6px;">
@@ -90,7 +90,7 @@
                             
                                 <div style="width: 100%; display: inline-block; position: relative;">
                                 
-                                    <div class="panel panel-default" style="width: 100%; display: inline-block;">
+                                    <div class="panel panel-default" style="width: 100%; display: inline-block; margin-bottom: 6px;">
                                         <div class="panel-heading columnHeader">
                                             <div style="display: inline;">
                                                 {{ 'event.front.rewards.referralRewards' | translate }}
@@ -99,7 +99,7 @@
                                                 [<a class="a2a_dd" href="http://www.addtoany.com/share_save">{{ 'event.front.rewards.shareToGet' | translate }}</a>]
                                             </div>
                                             <div style="display: inline;" ng-show="shareRef == undefined">
-                                                [<a href="">{{ 'event.front.rewards.logIn' | translate }}</a> {{ 'event.front.rewards.startSharingRef' | translate }}]
+                                                [<a href="/#/app?view=logreg">{{ 'event.front.rewards.logIn' | translate }}</a> {{ 'event.front.rewards.startSharingRef' | translate }}]
                                             </div>
                                         </div>
 
@@ -143,7 +143,7 @@
                         </div>
                 
                 
-                <div style="margin-bottom: 24px;">
+                <div style="margin-bottom: 24px; margin-top: 12px;">
                     
                     <div class="orderTickets" ng-show="publicTicketResources.length > 0">
                         
@@ -152,7 +152,7 @@
                             <div class="panel-heading">{{ 'event.front.tickets.title' | translate }}</div>
                             
                             <!-- Table -->
-                            <table class="table">
+                            <table class="table" style="margin-top: 6px; margin-left: 1%;">
                                 <thead>
                                     <tr>
                                         <th>{{ 'event.front.tickets.type' | translate }}</th>
@@ -209,7 +209,7 @@
                                     <b>{{ 'event.front.tickets.total' | translate }}:</b> {{order.totalPrice}} €
                                 </div>
                                 <div style="display: inline-block; width: 49%; text-align: right;">
-                                    <button class="btn btn-default" ng-click="placeOrder()">{{ 'order.front.btn-order' | translate }}</a>
+                                    <button ng-disabled="ticketsQty === 0" class="btn btn-default" ng-click="placeOrder()">{{ 'order.front.btn-order' | translate }}</a>
                                 </div>
                                 
                             </div>

@@ -4,7 +4,11 @@ import request from "request";
 import fs from "fs";
 import mongoose from "mongoose";
 
+import translations from "../../../shared/translations";
+
 let responseUtil = require('../utils/responseUtil');
+
+let APP_BASE_URL;
 
 let Profile,
     User,
@@ -18,6 +22,8 @@ class OrderService {
 
     constructor(app) {
 
+        ({ APP_BASE_URL } = app.settings);
+        
         ({
             Profile,
             User,
@@ -46,7 +52,7 @@ class OrderService {
 
         this.authService.screenRequest(req, true, (screenResult) => {
 
-			if(screenResult.status != "authorized") {
+			if(screenResult.status !== "authorized") {
 				callback(screenResult);
 			} else {
 
@@ -279,44 +285,57 @@ class OrderService {
 
 		let response = {
 			success: 0,
-			status: 'none'
+			status: "none"
 		};
 
 		let order = saveOrderRequest.order;
 
         this.authService.screenRequest(req, true, (screenResult) => {
 
-    		if(action != 'new') {
+    		if(action !== "new") {
 
     		    let orderId = order._id;
 
     		    delete order._id;
 
-    		    if(order.signupStatus == 'formFilled') {
-    		    	order.signupStatus = 'complete';
-    		    }
+    		    if(order.signupStatus === "formFilled") {
+                    order.signupStatus = "complete";
+                }
 
                 Order.update( { _id: orderId }, order, (err, numAffected) => {
 
     			    if(err) {
 
-    				    response.status = 'error';
-    					response.message = 'Failed to save order.';
+    				    response.status = "error";
+    					response.message = "Failed to save order.";
     					response.error = err;
     					callback(response);
 
     			    } else {
 
     					response.success = 1;
-    					response.status = 'orderSaved';
-    					response.message = 'Order saved.';
+    					response.status = "orderSaved";
+    					response.message = "Order saved.";
 
     					//console.log('saved order: ');
     					console.log(order);
 
-    					if(order.signupStatus == 'complete' && order.status != 'orderFulfilled') {
+    					if(order.signupStatus === "complete" && order.status !== "orderFulfilled") {
 
-	    					if(order.orderTotal === 0 || order.orderTotal > 300) {
+                            let orderLink = APP_BASE_URL+"/#/order/"+orderId;
+                            let emailContent = translations[req.headers["bsquare-language"]].orderEmail;
+                            emailContent = emailContent.replace(/{orderLink}/g, orderLink);
+                                                                
+                            this.app.mailer.sendMail({
+                                to: order.signupFields[0].value,
+                                subject: "[B^2] Order created",
+                                html: emailContent,
+                                text: emailContent
+                            }, (err, response) => {
+                                console.log("mailer response", err, response);
+                            });
+                            
+                            if(order.orderTotal === 0 || order.orderTotal > 300) {
                                 this.fulfillOrder(orderId, (response) => {
 		                			callback(response);
 		                		});
@@ -343,7 +362,7 @@ class OrderService {
    				//console.log('create new order:');
    				//console.log(screenResult);
 
-    			if(screenResult.status == 'authorized') {
+    			if(screenResult.status === "authorized") {
     			    order.user = screenResult.user.id;
     			}
 
@@ -366,16 +385,16 @@ class OrderService {
 
     			    if(err) {
 
-    				    response.status = 'error';
-                		response.message = 'Could not read ticket data.';
+    				    response.status = "error";
+                		response.message = "Could not read ticket data.";
                 		response.error = err;
 
     				} else {
 
     				    if(ticketResources.length != itemIds.length) {
 
-    				        response.status = 'invalidItems';
-                		    response.message = 'Order request contains invalid information.';
+    				        response.status = "invalidItems";
+                		    response.message = "Order request contains invalid information.";
 
     				    } else {
 
@@ -384,8 +403,8 @@ class OrderService {
         				        let idString = ticketResources[i]._id.toHexString();
 
         				        if(qtyById[idString] > ticketResources[i].qtyAvailable - ticketResources[i].qtyReserved) {
-        				        	response.status = 'soldOut';
-        				        	response.message = 'There are not enough tickets of type '+ticketResources[i].name+' to satisfy this order.';
+        				        	response.status = "soldOut";
+        				        	response.message = `There are not enough tickets of type ${ticketResources[i].name} to satisfy this order.`;
         				        	response.ticketResource = idString;
         				        	callback(response);
         				        	return;
@@ -400,77 +419,75 @@ class OrderService {
                             Event.findOne({ _id: order.event }, (err, event) => {
 
         				    	if(!event.signupFields || event.signupFields.length === 0) {
-        				    		order.signupStatus = 'complete';
+        				    		order.signupStatus = "complete";
         				    	}
 
-        				    	order.status = 'new';
+        				    	order.status = "new";
 
                                 Order.create(order, (err, createdOrder) => {
 
-		                				if(err) {
+                                    if(err) {
 
-		                					response.status = 'error';
-		                					response.message = 'Failed to create order.';
-		                					response.error = err;
+                                        response.status = 'error';
+                                        response.message = 'Failed to create order.';
+                                        response.error = err;
 
-		                					callback(response);
+                                        callback(response);
 
-		                				} else {
+                                    } else {
 
-		                					response.success = 1;
-		                					response.status = 'orderCreated';
-		                					response.message = 'Order created.';
-		                					response.order = createdOrder;
+                                        response.success = 1;
+                                        response.status = 'orderCreated';
+                                        response.message = 'Order created.';
+                                        response.order = createdOrder;
 
-                                            let qtyUpdates = ticketResources.map((ticketResource) => {
+                                        let qtyUpdates = ticketResources.map((ticketResource) => {
 
-                                                return (() => {
+                                            return (() => {
 
-		                							let deferred = Q.defer();
+                                                let deferred = Q.defer();
 
-		                							let idString = ticketResource._id.toHexString();
-					        				        let qtyReserved = ticketResource.qtyReserved + qtyById[idString];
-					        				        console.log('qtyreserved', qtyReserved);
+                                                let idString = ticketResource._id.toHexString();
+                                                let qtyReserved = ticketResource.qtyReserved + qtyById[idString];
+                                                console.log('qtyreserved', qtyReserved);
 
-                                                    TicketResource.update( { _id: ticketResource._id }, { qtyReserved: qtyReserved }, (err, numAffected) => {
-					        				        	deferred.resolve(numAffected);
-					        				        });
+                                                TicketResource.update( { _id: ticketResource._id }, { qtyReserved: qtyReserved }, (err, numAffected) => {
+                                                    deferred.resolve(numAffected);
+                                                });
 
-					        				        return deferred.promise;
+                                                return deferred.promise;
 
-		                						})();
+                                            })();
 
-		                					});
+                                        });
 
-		                					Q.all(qtyUpdates)
-                                            .then((updateResults) => {
-		                						console.log('qty update results', updateResults);
-		                					});
-
-
-		                					this.updateOrderMap(createdOrder, ticketResources);
-
-		                					if(order.signupStatus == 'complete') {
-		                						if(orderTotal === 0 || orderTotal > 300) {
-                                                    this.fulfillOrder(createdOrder._id.toHexString(), (response) => {
-                                                        callback(response);
-
-		                							});
-		                						} else {
-		                							callback(response);
-		                						}
-	                						} else {
-	                							callback(response);
-	                						}
+                                        Q.all(qtyUpdates)
+                                        .then((updateResults) => {
+                                            console.log('qty update results', updateResults);
+                                        });
 
 
-		                				}
+                                        this.updateOrderMap(createdOrder, ticketResources);
+                                        
+                                        if(order.signupStatus === "complete") {
+                                            
+                                            if(orderTotal === 0 || orderTotal > 300) {
+                                                this.fulfillOrder(createdOrder._id.toHexString(), (response) => {
+                                                    callback(response);
+
+                                                });
+                                            } else {
+                                                callback(response);
+                                            }
+                                        } else {
+                                            callback(response);
+                                        }
 
 
-	                				});
+                                    }
 
 
-	                			//});
+                                });
 
 
         				    });

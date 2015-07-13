@@ -1,12 +1,15 @@
 controllers.controller(
     "LogregCtrl", 
-    ["$rootScope", "$scope", "$routeParams", "$http", "$cookies", "$location", "$log", 
-        ($rootScope, $scope, $routeParams, $http, $cookies, $location, $log) => {
+    ["$rootScope", "$scope", "$routeParams", "$locale", "$http", "$cookies", "$location", "$log", 
+        ($rootScope, $scope, $routeParams, $locale, $http, $cookies, $location, $log) => {
 	
 	$scope.appName = $scope.$parent.name;
     
 	$scope.logregUser = {};
-	$scope.logregProfile = {};
+    $scope.logregProfile = {
+        language: $rootScope.language
+    };
+
     $scope.pwdField = {
         hidden: true
     };
@@ -78,8 +81,8 @@ controllers.controller(
     	$log.debug("register user:");
     	$log.debug($scope.logregUser);
     	
-    	var profile = $scope.logregProfile;
-    	
+    	var profile = $scope.logregProfile;    
+
     	var registration = {
     		user: $scope.logregUser,
         	profile: $scope.logregProfile,
@@ -105,7 +108,7 @@ controllers.controller(
                 $cookies.evxSesssionToken = loggedUser.token;
                 $cookies.bsqUser = loggedUser.email;
                 requestHeaders['session-token'] = loggedUser.token;
-                requestHeaders['bsq-user'] = loggedUser.email;
+                requestHeaders['bsquare-user'] = loggedUser.email;
                 
                 console.log("regged user", loggedUser);
                 

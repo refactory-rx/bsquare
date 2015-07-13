@@ -28,6 +28,8 @@ app.db = mongoose;
 app.model = require("../bsquare-model")(app.db);
 
 app.settings = settings;
+app.sendgrid = require("sendgrid")(settings.SENDGRID_USERNAME, settings.SENDGRID_PASSWORD);
+app.mailer = require("../shared/lib/Mailer")(app);
 
 app.phantomService = require("../bsquare-phantom")(app);
 app.ticketService = require("../bsquare-tickets")(app);

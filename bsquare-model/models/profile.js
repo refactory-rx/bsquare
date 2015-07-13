@@ -10,8 +10,9 @@ module.exports = (db) => {
         addressStreet: String,
         addressPostalCode: String,
         addressCity: String,
-        addressCountry: String
-        
+        addressCountry: String,
+        language: String
+         
     });
 
 };

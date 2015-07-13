@@ -969,7 +969,15 @@ div.ticket {
 .eventInfo .eventLogo {
 	width: 32%; 
 	display: inline-block; 
-	position: relative;	
+	position: relative;
+    overflow: hidden;    
+}
+
+.eventInfo .eventLogo img {
+    height: 250px;
+    width: auto;
+    display: inline;
+    float: left;
 }
 
 .eventInfo .eventDescription {
@@ -986,6 +994,30 @@ div.ticket {
 	display: inline-block; 
 	text-align: right; 
 	vertical-align: top;
+}
+
+@media (max-width: 660px) {
+     
+    .eventInfo .eventLogo {
+		width: 99%;
+        height: initial;
+    }
+
+    .eventInfo .eventLogo img {
+        width: 100%;
+        height: auto;
+        position: initial; 
+    }
+	
+    .eventInfo .eventDescription {
+		width: 99%;
+	}
+	
+	.eventInfo .eventMap {
+		width: 99%;
+		margin-top: 12px;
+	}
+
 }
 
 .ticketResourceItem {
@@ -1302,7 +1334,7 @@ div.minView1 div.listEventImage {
 @media (max-width: 850px) {
     
     .event .orderTickets {
-        width: 100%; 
+        width: 99%; 
         display: block;
     }
     
@@ -1565,18 +1597,6 @@ div.minView1 div.listEventImage {
 		padding: 0px;
 	}
 	
-	.eventInfo .eventLogo {
-		width: 99%;
-	}
-	
-	.eventInfo .eventDescription {
-		width: 99%;
-	}
-	
-	.eventInfo .eventMap {
-		width: 99%;
-		margin-top: 12px;
-	}
 	
 	div.editEventSettings {
 		width: 90%;
