@@ -115,7 +115,7 @@
                     <div style="display: table; width: 100%; text-align: right;">
                         <a href="" ng-click="cancelTicketResourceEdit()" style="margin-right: 12px;">{{ 'forms.general.cancel' | translate }}</a>
                         <button ng-click="saveTicketResource()" class="btn btn-default" style="margin-right: 6px;" type="button">{{ 'forms.general.save' | translate }}</button>
-                        <button ng-show="newTicketResource.status != 'undeletable'" ng-click="deleteTicketResource(newTicketResource)" class="btn btn-default" style="margin-right: 6px;" type="button">{{ 'forms.general.delete' | translate }}</button>
+                        <button ng-show="newTicketResource.status !== 'undeletable'" ng-click="deleteTicketResource(newTicketResource)" class="btn btn-default" style="margin-right: 6px;" type="button">{{ 'forms.general.delete' | translate }}</button>
                     </div>
                 </div>
                 

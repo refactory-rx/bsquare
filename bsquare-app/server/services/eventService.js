@@ -354,7 +354,7 @@ class EventService {
 					}
 					
 					console.log(`undeletable = ${(salesStart < now)}`);
-					if(salesStart < now) {
+                    if(salesStart < now || ticketResources[i].qtySold > 0) {
 						ticketResources[i].status = "undeletable";
 					}
 					

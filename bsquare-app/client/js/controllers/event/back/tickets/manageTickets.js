@@ -33,7 +33,7 @@ controllers.controller(
     		} else {
     			$scope.salesEndTime = new Date($scope.event.info.timeStart);
     		}
-    		
+
     	} else {
     		
     		var startTime = new Date();
