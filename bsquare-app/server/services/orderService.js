@@ -557,12 +557,11 @@ class OrderService {
 
 				    		if(response.success == 1) {
 
-                                let params = {
-                                    orderId: order._id.toHexString(),
-                                    userId: order.user.toHexString(),
+                                let params = Object.assign({
+                                    orderId: order._id.toString(),
                                     qtysByResource: qtyById
-                                };
-                                
+                                }, order.user ? { userId: order.user.toString() } : {});
+
                                 this.ticketService.createTickets(params, (result) => {
 
                                     if(result.success === 0) {
