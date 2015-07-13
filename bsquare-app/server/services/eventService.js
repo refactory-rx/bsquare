@@ -338,7 +338,7 @@ class EventService {
 				
 				ticketResources = JSON.parse(JSON.stringify(ticketResources));
 				
-				let now = (new Date()).getTime() - 10000;
+				let now = (new Date()).getTime() - 60000;
 				
 				for(let i=0; i < ticketResources.length; i++) {
 					
