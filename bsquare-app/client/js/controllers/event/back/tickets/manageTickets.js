@@ -1,7 +1,7 @@
 controllers.controller(
     "event.back.tickets.ManageTicketsCtrl", 
     ['$rootScope', '$scope', '$routeParams', '$http', '$log', '$timeout', 'stringUtils', 'validationService',
-        ($rootScope, $scope, $routeParams, $http, $log, $timeout, stringUtils, validationService) => {
+    ($rootScope, $scope, $routeParams, $http, $log, $timeout, stringUtils, validationService) => {
 	
 	
     $scope.addTicketsOpen = false;
@@ -9,13 +9,12 @@ controllers.controller(
     $scope.newTicketResource = {
         bundledProducts: []
     };
-    
-    $scope.init = function() {
+
+    $scope.init = () => {
         $scope.getTicketResources();
-    };
+    };    
     
-    
-    $scope.editTicketResource = function(ticketResource) {
+    $scope.editTicketResource = (ticketResource) => {
     	
     	$scope.editingTicketResource = true;
     	
@@ -49,15 +48,19 @@ controllers.controller(
         		authorizedInvalidation: false,
         		salesStart: startTime.getTime(),
         		salesEnd: endTime.getTime(),
-        		status: 'undeletable'
-    		};
+        		status: "undeletable"
+            };
+
+            if (!$scope.event.payout || !$scope.event.payout.iban) {
+                $scope.newTicketResource.price = 0;
+            }
     		
     	}
     	
     };
     
     
-    $scope.cancelTicketResourceEdit = function() {
+    $scope.cancelTicketResourceEdit = () => {
     	
     	if($scope.validationErrors) {
     		delete $scope.validationErrors;
@@ -67,7 +70,7 @@ controllers.controller(
     
     };
     
-    $scope.saveTicketResource = function() {
+    $scope.saveTicketResource = () => {
     	
     	var ticketResource = $scope.newTicketResource;
     	
@@ -89,55 +92,55 @@ controllers.controller(
         
         $log.debug(saveTicketResourceRequest);
         	
-        $http.post('/api/ticketresources', saveTicketResourceRequest, { headers: requestHeaders } )
-    		.success(function(response) {
+        $http.post("/api/ticketresources", saveTicketResourceRequest, { headers: requestHeaders } )
+        .success((response) => {
     			
-    			$log.debug(response);
-    			
-    			$rootScope.screenResponse(response, function() {
-    				
-    				
-    				if(response.status == 'ticketResourceSaved') {
-    					
-    					$scope.getTicketResources();
-    					
-    				} else if(response.status == 'ticketResourceCreated') {
-    					
-    					$scope.getTicketResources();
-    					
-    					//var createdTicketResource = response.ticketResource;
-    					//$scope.ticketResources.push(createdTicketResource);
-    					
-    					$scope.newTicketResource = {
-    					    bundledProducts: []
-    					};
-    					
-    				} else {
-    					$scope.showError = true;
-    					$scope.errorMessage = response.message;
-    				}
-    				
-    				$scope.editingTicketResource = false;
-    				
-    			});
-    		
-    		})
-    		.error(function(data) {
-    			$log.debug('Error: ' + data);
-    		});
+            $log.debug(response);
+            
+            $rootScope.screenResponse(response, () => {
+                
+                
+                if(response.status === "ticketResourceSaved") {
+                    
+                    $scope.getTicketResources();
+                    
+                } else if(response.status === "ticketResourceCreated") {
+                    
+                    $scope.getTicketResources();
+                    
+                    //var createdTicketResource = response.ticketResource;
+                    //$scope.ticketResources.push(createdTicketResource);
+                    
+                    $scope.newTicketResource = {
+                        bundledProducts: []
+                    };
+                    
+                } else {
+                    $scope.showError = true;
+                    $scope.errorMessage = response.message;
+                }
+                
+                $scope.editingTicketResource = false;
+                
+            });
+        
+        })
+        .error((data) => {
+            $log.debug("Error: ", data);
+        });
     	
     };
     
-    $scope.deleteTicketResource = function(ticketResource) {
+    $scope.deleteTicketResource = (ticketResource) => {
     	
-    	$http.delete('/api/ticketresources/'+ticketResource._id, { headers: requestHeaders } )
-	   	.success(function(response) {
+    	$http.delete("/api/ticketresources/"+ticketResource._id, { headers: requestHeaders } )
+        .success((response) => {
 				
 			$log.debug(response);
 				
-			$rootScope.screenResponse(response, function() {
+            $rootScope.screenResponse(response, () => {
 					
-				if(response.status == 'ticketResourceDeleted') {
+				if(response.status === "ticketResourceDeleted") {
 				    
 				    $scope.getTicketResources();
 				    $scope.addTicketsOpen = false;
@@ -154,14 +157,14 @@ controllers.controller(
 			});
 		
 		})
-		.error(function(data) {
-			$log.debug('Error: ' + data);
+        .error((data) => {
+			$log.debug("Error: ", data);
 		});
 			
     };
     
 	
-	$scope.bundleProduct = function(ticketResource) {
+    $scope.bundleProduct = (ticketResource) => {
 	    
 	    
 	    var bundleProductRequest = {
@@ -169,41 +172,41 @@ controllers.controller(
 	        productUrl: ticketResource.newProductUrl    
 	    };
 	    
-	    $log.debug('Bundle product:');
+	    $log.debug("Bundle product:");
 	    $log.debug(bundleProductRequest);
 	    
-	    $http.post('/api/bundleproduct', bundleProductRequest, { headers: requestHeaders } )
-	        .success(function(response) {
+	    $http.post("/api/bundleproduct", bundleProductRequest, { headers: requestHeaders } )
+        .success((response) => {
 				
-				$log.debug(response);
-				
-				$rootScope.screenResponse(response, function() {
-					
-					if(response.status == 'productBundled') {
-					    
-					    var bundledProduct = response.product;
-					    ticketResource.bundledProducts.push(bundledProduct);
-					    
-					} else {
-						$scope.showError = true;
-						$scope.errorMessage = response.message;
-					}
-					
-				});
-			
-			})
-			.error(function(data) {
-				$log.debug('Error: ' + data);
-			});
+            $log.debug(response);
+            
+            $rootScope.screenResponse(response, () => {
+                
+                if(response.status === "productBundled") {
+                    
+                    var bundledProduct = response.product;
+                    ticketResource.bundledProducts.push(bundledProduct);
+                    
+                } else {
+                    $scope.showError = true;
+                    $scope.errorMessage = response.message;
+                }
+                
+            });
+        
+        })
+        .error((data) => {
+            $log.debug("Error: ", data);
+        });
 	
 	    
 	};
 	
 	
-	$scope.removeBundledProduct = function(product, ticketResource) {
+    $scope.removeBundledProduct = (product, ticketResource) => {
 	    
-	    var updatedProducts = [];
-	    for(var i=0; i < ticketResource.bundledProducts.length; i++) {
+	    let updatedProducts = [];
+	    for(let i=0; i < ticketResource.bundledProducts.length; i++) {
 	        if(product.productUrl != ticketResource.bundledProducts[i].productUrl) {
 	            updatedProducts.push(ticketResource.bundledProducts[i]);
 	        }
@@ -214,13 +217,13 @@ controllers.controller(
 	};
     
     
-    $scope.$watch('salesStartTime', function(startTime) {
+    $scope.$watch("salesStartTime", (startTime) => {
         if(startTime) {
     		$scope.newTicketResource.salesStart = startTime.getTime();
     	}
     }, true);
     
-    $scope.$watch('salesEndTime', function(endTime) {
+    $scope.$watch("salesEndTime", (endTime) => {
         if(endTime) {
     		$scope.newTicketResource.salesEnd = endTime.getTime();
     	}
@@ -228,7 +231,5 @@ controllers.controller(
     
 	
 	$scope.init();
-	
-    
     
 }]);

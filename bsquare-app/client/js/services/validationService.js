@@ -45,7 +45,7 @@ mainApp.factory('validationService', [function() {
         		validationErrorKeys.push('name');
         	}
         	
-        	if(!ticketResource.price && ticketResource.price !== 0) {
+        	if(!ticketResource.price && ticketResource.price != 0) {
         		validationErrors.price = 'Price is missing.';
         		validationErrorKeys.push('price');
         	} else if(ticketResource.price < 0) {
@@ -56,7 +56,7 @@ mainApp.factory('validationService', [function() {
         		validationErrorKeys.push('price');
         	}
         	
-        	if(!ticketResource.quantity || ticketResource.quantity === 0) {
+        	if(!ticketResource.quantity || ticketResource.quantity == 0) {
         		validationErrors.quantity = 'Quantity is missing or 0.';
         		validationErrorKeys.push('quantity');
         	} else if(ticketResource.quantity < 0) {
@@ -67,7 +67,7 @@ mainApp.factory('validationService', [function() {
         		validationErrorKeys.push('quantity');
         	}
         	
-        	if(!ticketResource.allowedPerOrder || ticketResource.allowedPerOrder === 0) {
+        	if(!ticketResource.allowedPerOrder || ticketResource.allowedPerOrder == 0) {
         		validationErrors.allowedPerOrder = 'Max/order is missing or 0.';
         		validationErrorKeys.push('allowedPerOrder');
         	} else if(ticketResource.allowedPerOrder < 0) {

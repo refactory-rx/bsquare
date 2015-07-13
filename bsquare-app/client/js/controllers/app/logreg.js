@@ -98,17 +98,17 @@ controllers.controller(
             
             $rootScope.logregStatus = response.status;
             
-            if(response.status == 'registered') {
+            if(response.status === 'registered') {
                 // CONTINUE TO POST-REG
-            } else if(response.status == 'loggedIn') {
+            } else if(response.status === 'loggedIn') {
                  
                 $rootScope.logregView = 'loggedIn';
                 loggedUser = response.user;
                 $rootScope.loggedUser = loggedUser;
                 $cookies.evxSesssionToken = loggedUser.token;
                 $cookies.bsqUser = loggedUser.email;
-                requestHeaders['session-token'] = loggedUser.token;
-                requestHeaders['bsquare-user'] = loggedUser.email;
+                requestHeaders["session-token"] = loggedUser.token;
+                requestHeaders["bsquare-user"] = loggedUser.email;
                 
                 console.log("regged user", loggedUser);
                 

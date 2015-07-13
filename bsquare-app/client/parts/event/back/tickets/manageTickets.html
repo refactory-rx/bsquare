@@ -1,11 +1,16 @@
 <div class="editEventTickets" style=" position: absolute;" ng-controller="event.back.tickets.ManageTicketsCtrl">
     
+    <div ng-show="!event.payout || !event.payout.iban" style="margin-bottom: 6px">
+        WARNING: <a href="" ng-click="setView('payout')">Payout info</a>
+        is missing. You can only create free tickets before you
+        <a href="" ng-click="setView('payout')">set the payout info</a>.
+    </div>
+
     <div ng-show="validationErrors" style="width: 100%;">
-        <div ng-repeat="errorKey in validationErrors.keys" style="color: #CC1111;">
+        <div ng-repeat="errorKey in validationErrors.keys" style="color: #e86850;">
             {{validationErrors[errorKey]}}
         </div>
     </div>
-    
     <div id="addTicketsContainer" style="width: 100%; position: relative;">
         
         <div ng-show="editingTicketResource" class="editTicketResource">
@@ -21,7 +26,8 @@
                 <div class="addTicketsPrice">
                     <div>{{ 'event.back.tickets.price' | translate }}</div>
                     <div>
-                        <input type="text" class="form-control" ng-model="newTicketResource.price"/> €
+                        <input ng-disabled="!event.payout || !event.payout.iban"
+                            type="text" class="form-control" ng-model="newTicketResource.price"/> €
                     </div>
                 </div>
                 <div class="addTicketsQty">
@@ -89,6 +95,8 @@
                     </div>
                     
                 </div>
+
+                <!--
                 <div>
                     <div class="addTicketsProductUrl">
                         <div>&nbsp;</div>
@@ -101,7 +109,8 @@
                         </div>
                     </div>
                 </div>
-                
+                -->
+
                 <div style="margin-top: 12px;">
                     <div style="display: table; width: 100%; text-align: right;">
                         <a href="" ng-click="cancelTicketResourceEdit()" style="margin-right: 12px;">{{ 'forms.general.cancel' | translate }}</a>
