@@ -89,7 +89,7 @@ controllers.controller(
         				    
         				    $scope.stats.sold = soldTotal;
         				    $scope.stats.reserved = reservedTotal;
-        				    $scope.stats.remains = remainsTotal;
+        				    $scope.stats.remains = remainsTotal - reservedTotal;
         			       
             	        }
             	        

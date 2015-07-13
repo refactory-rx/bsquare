@@ -236,7 +236,7 @@ controllers.controller(
     	
     	$log.debug('Arrange items: '+items.length);
     	
-    	for(var i=0; i<items.length; i++) {
+    	for(var i=0; i < items.length; i++) {
     		
     		if(items[i]) {
 	    		var itemElement = $('#'+items[i]._id);
@@ -281,7 +281,7 @@ controllers.controller(
     	
     	$scope.editEvent = id;
     	
-    	for(var i=0; i<items.length; i++) {
+    	for(var i=0; i < items.length; i++) {
     		
     		var itemElement = $('#'+items[i]._id);
     		
