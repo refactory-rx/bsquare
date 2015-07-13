@@ -126,9 +126,9 @@
                             <div>{{ticketResource.price}} €</div>
                             <div>x {{ticketResource.quantity}}</div>
                             <div><a href="" ng-click="editTicketResource(ticketResource)">{{ 'forms.general.edit' | translate }}</a></div>
-                            <div ng-show="ticketResource.status != 'undeletable'"><a ng-click="deleteTicketResource(ticketResource)">Delete</a></div>
-                            <div ng-show="ticketResource.visibility == 'hidden'" style="color: #A0A0A0;">{{ 'event.back.tickets.hidden' | translate }}</div>
-                            <div ng-show="ticketResource.visibility == 'visible'" style="color: #11CC11;">{{ 'event.back.tickets.visible' | translate }}</div>
+                            <div ng-show="ticketResource.status !== 'undeletable'"><a ng-click="deleteTicketResource(ticketResource)">Delete</a></div>
+                            <div ng-show="ticketResource.visibility === 'hidden'" style="color: #A0A0A0;">{{ 'event.back.tickets.hidden' | translate }}</div>
+                            <div ng-show="ticketResource.visibility === 'visible'" style="color: #11CC11;">{{ 'event.back.tickets.visible' | translate }}</div>
                         </div>
                     </div>
                     <div class="fadeout"></div>

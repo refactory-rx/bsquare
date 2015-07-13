@@ -1,11 +1,11 @@
-controllers.controller('EventEntryCtrl', 
-		['$rootScope', '$scope', '$location', '$routeParams', '$http', '$log', '$timeout',
-		 function($rootScope, $scope, $location, $routeParams, $http, $log, $timeout) {
+controllers.controller(
+    "EventEntryCtrl", 
+    ['$rootScope', '$scope', '$location', '$routeParams', '$http', '$log', '$timeout',
+    ($rootScope, $scope, $location, $routeParams, $http, $log, $timeout) => {
 	
 	$scope.eventId = $routeParams.id;
 	$scope.action = $routeParams.action;
 	
-	$scope.event = undefined;
 	$scope.eventStatus = '';
     $scope.showEventError = false;
     $scope.eventErrorMessage = '';
@@ -18,20 +18,20 @@ controllers.controller('EventEntryCtrl',
     $scope.ticketResources = [];
     $scope.publicTicketResources = [];
     
-    $scope.$watch('event', function(value) {
+    $scope.$watch("event", (value) => {
     	
-    	console.log('eventEntry->$watch(event): '+$scope.eventStatus);
+    	console.log("eventEntry->$watch(event): "+$scope.eventStatus);
     	
-    	if(value !== undefined) {
+    	if(value) {
     		
-    		if($scope.eventStatus === 'loaded' || $scope.eventStatus === 'saved') {
+    		if($scope.eventStatus === "loaded" || $scope.eventStatus === "saved") {
     
-	    		$log.debug('event changed');
-	        	$scope.eventStatus = 'changed';
+	    		$log.debug("event changed");
+	        	$scope.eventStatus = "changed";
 	        	
-    		} else if($scope.eventStatus == 'loading' || $scope.eventStatus == 'preloaded') {
+    		} else if($scope.eventStatus == "loading" || $scope.eventStatus == "preloaded") {
        			
-        		$scope.eventStatus = 'loaded';
+        		$scope.eventStatus = "loaded";
     			
     		} 
     		
@@ -42,11 +42,11 @@ controllers.controller('EventEntryCtrl',
     }, true);
     
     
-    $scope.$watch('eventId', function(value) {
+    $scope.$watch("eventId", (value) => {
         
-        if(value !== undefined) {
+        if(value) {
             
-            $log.debug('eventId set: '+value);
+            $log.debug("eventId set: "+value);
             $scope.getEvent($scope.eventId);
             
         }
@@ -54,127 +54,127 @@ controllers.controller('EventEntryCtrl',
     }, true);
     
     
-    $rootScope.changeEditViewHeight = function(editViewHeight) {
+    $rootScope.changeEditViewHeight = (editViewHeight) => {
         $rootScope.editViewHeight = editViewHeight;
     };
     
-    $scope.setEventStatus = function(status) {
+    $scope.setEventStatus = (status) => {
 		$scope.eventStatus = status;
-		console.log('set event status: '+status);
+		console.log("set event status: "+status);
 	};
     
-    $scope.getEvent = function(id) {
+    $scope.getEvent = (id) => {
 		
 		$scope.showError = false;
 		
-		$log.debug('getting event '+id);
+		$log.debug("getting event "+id);
 		
 		var queryParams = $location.search();
-		var getUrl = '/api/events/'+id;
-		var queryStr = '';
+		var getUrl = `/api/events/${id}`;
+		var queryStr = "";
 		
-		if(queryParams.group !== undefined) {
-		    queryStr += '&group='+queryParams.group;
+		if (queryParams.group) {
+		    queryStr += `&group=${queryParams.group}`;
 		}
 		
-		if(queryParams.ref !== undefined) {
-		    queryStr += '&ref='+queryParams.ref;
+		if (queryParams.ref) {
+		    queryStr += `&ref=${queryParams.ref}`;
 		}
 		
-		if(queryStr.length > 0) {
-		    queryStr = '?'+queryStr.substring(1);
+		if (queryStr.length > 0) {
+		    queryStr = "?"+queryStr.substring(1);
 		    getUrl += queryStr;
 		}
 		
-		$scope.eventStatus = 'loading';
+		$scope.eventStatus = "loading";
 		
 		$http.get(getUrl, { headers: requestHeaders } )
-			.success(function(response) {
-				
-				$log.debug(response);
-				
-				if(response.status == 'eventFound') {
-					
-    				$scope.event = response.event;
-    				
-    				if(response.ownEvent == 'true') {
-    			        
-                        $scope.ownEvent = true;
-    					if($scope.action == 'edit') {
-                            $rootScope.setRootView('edit');
-    					}
-                        
-    				} else {
-    					
-    					$scope.ownEvent = false;
-    					
-    				}
-		            
-                    $('.event-content').css('height', ($('.event').height() - $('.columnHeader').height() - 15)+'px');
-                    			
-				} else {
-					$scope.eventStatus = 'loadError';
-					$scope.eventErrorMessage = response.message;
-				}
-				
-			})
-			.error(function(data) {
-				$log.debug('Error: ' + data);
-			});
+        .success((response) => {
+            
+            $log.debug(response);
+            
+            if (response.status === "eventFound") {
+                
+                $scope.event = response.event;
+                
+                if (response.ownEvent === 'true') {
+                    
+                    $scope.ownEvent = true;
+                    if($scope.action === "edit") {
+                        $rootScope.setRootView("edit");
+                    }
+                    
+                } else {
+                    
+                    $scope.ownEvent = false;
+                    
+                }
+                
+                $(".event-content").css("height", ($(".event").height() - $(".columnHeader").height() - 15)+"px");
+                            
+            } else {
+                $scope.eventStatus = "loadError";
+                $scope.eventErrorMessage = response.message;
+            }
+            
+        })
+        .error((data) => {
+            $log.debug("Error: ", data);
+        });
 			
 	};
 	
-	 $scope.getTicketResources = function(callback) {
+    $scope.getTicketResources = (callback) => {
         
-        $log.debug('getting resources for:');
+        $log.debug("getting resources for:");
         $log.debug($scope.event);
         
-        if($scope.event === undefined) {
+        if(!$scope.event) {
             return;
         }
         
-        $log.debug('GET /api/ticketresources/'+$scope.event._id);
+        $log.debug(`GET /api/ticketresources/${$scope.event._id}`);
         
-        $http.get('/api/ticketresources/'+$scope.event._id, { headers: requestHeaders } )
-			.success(function(response) {
+        $http.get(`/api/ticketresources/${$scope.event._id}`, { headers: requestHeaders } )
+        .success((response) => {
 				
-				$log.debug(response);
-				
-				if(response.status == 'ticketResourcesFound') {
-				    
-				    var ticketResources = response.ticketResources;
-				    $scope.publicTicketResources = [];
-				    
-				    for(var i=0; i<ticketResources.length; i++) {
-				        ticketResources[i].orderQty = 0;
-				        if(ticketResources[i].visibility != 'hidden') {
-				        	$scope.publicTicketResources.push(ticketResources[i]);
-				        }
-				    }
-				    
-					$scope.ticketResources = ticketResources;
-					
-					if(callback) {
-						callback();
-					}
-					
-				} else {
-					$scope.eventStatus = 'error';
-					$scope.eventErrorMessage = response.message;
-				}
-				
-			})
-			.error(function(data) {
-				$log.debug('Error: ' + data);
-			});
+            $log.debug(response);
+            
+            if(response.status === "ticketResourcesFound") {
+                
+                var ticketResources = response.ticketResources;
+                $scope.publicTicketResources = [];
+                
+                ticketResources.forEach(ticketResource => { 
+                    ticketResource.orderQty = 0;
+                    if(ticketResource.visibility !== "hidden") {
+                        $scope.publicTicketResources.push(ticketResource);
+                    }
+                });
+                
+                $scope.ticketResources = ticketResources;
+                
+                if(callback) {
+                    callback();
+                }
+                
+            } else {
+                $scope.eventStatus = "error";
+                $scope.eventErrorMessage = response.message;
+            }
+            
+        })
+        .error((data) => {
+            $log.debug("Error: ", data);
+        });
         
         
     };
     
     
-	$scope.initMap = function() {
+    $scope.initMap = () => {
 		
-		var mapCanvas = document.getElementById('map_canvas');
+		var mapCanvas = document.getElementById("map_canvas");
                         
         var mapOptions = {
         	center: new google.maps.LatLng($scope.event.info.place.coords.lat, $scope.event.info.place.coords.lng),

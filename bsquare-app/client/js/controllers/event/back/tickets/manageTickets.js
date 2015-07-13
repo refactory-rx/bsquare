@@ -203,7 +203,7 @@ controllers.controller(
 	$scope.removeBundledProduct = function(product, ticketResource) {
 	    
 	    var updatedProducts = [];
-	    for(var i=0; i<ticketResource.bundledProducts.length; i++) {
+	    for(var i=0; i < ticketResource.bundledProducts.length; i++) {
 	        if(product.productUrl != ticketResource.bundledProducts[i].productUrl) {
 	            updatedProducts.push(ticketResource.bundledProducts[i]);
 	        }
