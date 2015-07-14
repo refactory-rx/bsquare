@@ -1,0 +1,53 @@
+<div class="panel-body panelContent">
+    
+    <div class="eventSearch">
+        
+        <!--
+        <div class="eventSearchLeft">
+            <a href="">{{ 'app.findEvents.searchFilters' | translate }}</a>
+        </div>
+        -->
+        
+        <div class="eventSearchLeft">
+            {{ 'app.findEvents.searchText' | translate }}
+        </div>
+        
+        <div class="eventSearchRight">
+            <div class="input-group" style="width: 100%;">
+                <input type="text" class="form-control" ng-model="searchField.text" ng-change="searchEvents()">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-search"></span>
+                </span>
+            </div>
+        </div>
+
+    </div>
+    
+    <div ng-class="{ listEvent: event.promo != true }" id="listEvent_{{event._id}}" ng-repeat="event in events" ng-click="openEvent(event)" style="text-align: left;">
+        
+        <div ng-show="event.promo != true" style="height: 100%; position: relative; display: inline-block; width: 100%; cursor: pointer;">
+            
+        <div ng-show="event.info.eventImage" class="listEventImage">
+        <img ng-src="img{{event.info.eventImage}}" style="width: 100%; margin-top: -6px;">
+        <div class="imageShader"></div>
+        </div>
+            
+            <div class="listEventInfo">
+                <div class="header">
+                    <div class="headerBg" style="padding: 6px; margin-right: 6px; display: inline;">{{formatTime(event.info.timeStart)}}</div>
+                    <div class="title">{{event.info.title}}</div>
+                </div>
+                <div class="descriptionBox" ng-show="app.views.findEvents == 0">
+                    {{event.info.description}}
+                </div>
+                <!-- <div class="fadeoutListEvent"></div> -->
+            </div>
+            
+        </div>
+        
+        <div ng-show="event.promo == true && app.views.findEvents == 0" class="panel panel-defaul ad ad-f1">
+            PROMO SPACE F1
+        </div>
+        
+    </div>
+</div>

@@ -108,18 +108,15 @@ controllers.controller(
             
             $log.debug(response);
             
-            if(response.status == "eventFound") {
-                
+            if(response.status === "ok") {
                 $scope.event = response.event;
-                
-            } else {
-                $scope.orderStatus = "error";
-                $scope.orderErrorMessage = response.message;
             }
-            
+
         })
-        .error((data) => {
-            $log.debug("Error: ", data);
+        .error((err) => {
+            $scope.orderStatus = "error";
+            $scope.orderErrorMessage = err.message;
+            $log.debug("Error", err);
         });
 			
 	};
@@ -251,10 +248,10 @@ controllers.controller(
     	
     	if(event) {
 
-    		if($scope.event.signupFields) {
+    		if($scope.event.signupFields && $scope.order.signupStatus !== "complete") {
                 
                 let signupFields = angular.copy($scope.event.signupFields);
-                  
+                
                 if($rootScope.logregStatus !== "loggedIn" || 
                    $rootScope.loggedUser.emailVerified !== "true") {
                     

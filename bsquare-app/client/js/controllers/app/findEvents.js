@@ -1,29 +1,40 @@
 controllers.controller(
-    'FindEventsCtrl', 
+    "FindEventsCtrl", 
     ['$rootScope', '$scope', '$location', '$routeParams', '$http', '$log', '$timeout', '$filter',
-        ($rootScope, $scope, $location, $routeParams, $http, $log, $timeout, $filter) => {
+    ($rootScope, $scope, $location, $routeParams, $http, $log, $timeout, $filter) => {
 	
-	$scope.events = [];
-	
+    $scope.events = [];
+    $scope.eventStats = {
+        "Barcelona": 10,
+        "Helsinki": 12,
+        "Moscow": 5,
+        "Acapulco": 15,
+        "Perähikiä": 7,
+        "New York": 8
+    };
+
 	$scope.showEventsError = false;
 	
 	$scope.eventsStatus = '';
 	$scope.eventsView = '';
     $scope.eventsErrorMessage = '';
     
-    $scope.params = undefined;
-    
     $scope.searchField = {};
     
     $scope.init = () => {
     	$scope.getEvents();
     };
-    
-    $scope.$watch('app.views.selectedView', (value) => {
+
+    $scope.templateUrl = "parts/app/findEventsFull.html";
+
+    $scope.$watch("app.views.selectedView", (value) => {
     	
-    	if(value && value != 'findEvents') {
-    		$scope.searchField.text = '';
+        if (value === "findEvents") {
+            $scope.templateUrl = "parts/app/findEventsFull.html";
+    		$scope.searchField.text = "";
     		$scope.getEvents();
+        } else {
+            $scope.templateUrl = "parts/app/findEventsMin.html";
     	}
     	
     }, true);

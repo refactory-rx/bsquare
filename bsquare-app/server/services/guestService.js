@@ -10,9 +10,6 @@ class GuestService {
         ({ Order, User, Profile, Message } = app.model); 
         this.app = app;
 
-        let { SENDGRID_USERNAME, SENDGRID_PASSWORD } = app.settings;
-        this.sendgrid = require("sendgrid")(SENDGRID_USERNAME, SENDGRID_PASSWORD);
-    
     }
 
 	getGuests(eventId, query) {
@@ -146,55 +143,47 @@ class GuestService {
 		
 		let deferred = Q.defer();
 		
-		let emailContent = message.text+"<br><br>";
-        
-    	emailContent += 
+        let emailContent = 
+            message.text +
     		"<br><br>"+
     		"B SQUARED";
-    		
-    	let email = new sendgrid.Email();
-    	email.from = SENDGRID_FROM;
-    	email.subject = message.subject;
-    	email.text = emailContent;
-    	email.html = emailContent;
-    	
+    
+        let email = {
+            to: `event-${message.eventId}@bsq.co`,
+            bcc: [],
+    	    subject: message.subject,
+    	    text: emailContent,
+    	    html: emailContent
+        };
+
     	for(let i=0; i < message.to.length; i++) {
-    		email.addTo(message.to[i]);	
-    	}
-		
-		message.type = "email";
-		message.from = email.from;
-		message.html = email.html;
-		
-		let response = { success: 0 };
-		
-        this.sendgrid.send(email, (err, json) => { 
-			
-			if(err) { 
-				console.error(err);
-				response.error = err;
-				response.status = "sendgridError";
-				deferred.resolve(response);
-			} else {
+            email.bcc.push(message.to[i]);
+        }
+
+        Object.assign(message, {
+            type: "email",
+		    from: email.from,
+		    html: email.html
+        });
+	    
+        this.app.mailer.sendMail(email, (err, response) => { 
+            
+            console.log("Mailer response", err, response);
+            if(err) { return deferred.reject(err); }
 		  		
-		  		console.log(json);
-		  		response.success = 1;
-		  		response.status = "messageSent";
-		  		
-		  		message.status = "sent";
-		  		message.time = (new Date()).getTime();
-		  		
-                Message.create(message, (error, createdMessage) => {
-		  			if(err) {
-		  				console.log(err);
-		  			} else {
-		  				console.log("saved message");
-		  			}
-		  		});
-		  		
-		  		deferred.resolve(response);
-		  		
-			}
+            message = new Message(Object.assign(message, {
+                status: "sent",
+		        time: (new Date()).getTime()
+            }));
+
+            message.saveQ()
+            .then((message) => {
+                deferred.resolve();
+            })
+            .catch((err) => {
+                deferred.reject(err);
+            });
+
 			
 		});
 		
