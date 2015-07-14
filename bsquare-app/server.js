@@ -57,10 +57,11 @@ require("./server/routes.js")(app);
 
 app.use((err, req, res, next) => {
     
-    console.log(err.stack);
+    console.log("Error handler:", err, err.stack);
     
     let response = Object.assign({
-        status: err.status
+        status: err.status,
+        message: err.message
     }, err.data ? { error: err.data } : {});
 
     res.status(err.statusCode || 500);

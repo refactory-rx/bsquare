@@ -4,6 +4,7 @@ let BaseError = exports.BaseError = class BaseError extends Error {
     constructor(status, data = null) {
         let message = data ? data.message : null;
         super(message);
+        this.message = message;
         this.status = status;
         this.data = data;
     }

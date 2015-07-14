@@ -93,21 +93,17 @@ controllers.controller(
             
             $log.debug(response);
             
-            if (response.status === "eventFound") {
+            if (response.status === "ok") {
                 
                 $scope.event = response.event;
                 
-                if (response.ownEvent === 'true') {
-                    
+                if (response.ownEvent === "true") {
                     $scope.ownEvent = true;
                     if($scope.action === "edit") {
                         $rootScope.setRootView("edit");
                     }
-                    
                 } else {
-                    
                     $scope.ownEvent = false;
-                    
                 }
                 
                 $(".event-content").css("height", ($(".event").height() - $(".columnHeader").height() - 15)+"px");

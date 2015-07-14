@@ -20,10 +20,14 @@ module.exports = {
             
             if (req.query.q) {
                 
-                app.eventService.searchEventsByText(q, (response) => {
-                    res.json(response);
+                app.eventService.searchEventsByText(req.query.q)
+                .then((events) => {
+                    res.json({ status: "ok", events: events });
+                })
+                .catch((err) => {
+                    next(err);
                 });
-                
+                 
                 return;
 
             }
@@ -36,7 +40,6 @@ module.exports = {
 			    };
             }
             
-            console.log(params, req.auth);
             app.eventService.getEvents(params)
             .then((events) => {
                 
@@ -69,34 +72,25 @@ module.exports = {
         });
 
         app.get("/api/events/:id", (req, res, next) => {
-
-            let params = req.query;
-
-            params._id = req.params.id;
-
-            params.tracking = {
+            
+            let tracking = Object.assign({ 
                 fwd: req.headers["x-forwarded-for"],
                 remoteIp: req.connection.remoteAddress
-            };
+            }, req.query, req.auth ? {
+                token: req.headers["session-token"],
+                user: req.auth.user
+            } : {});
 
-            if (params.group) {
-                params.tracking.group = params.group;
-                delete params.group;
-            }
-            if (params.ref) {
-                params.tracking.ref = params.ref;
-                delete params.ref;
-            }
-
-            if(req.auth) {
-                Object.assign(params.tracking, {
-                    token: req.headers['session-token'],
-                    user: req.auth.user
-                });
-            }
-
-            app.eventService.getEvent(params, (result) => {
-                res.json(result);
+            app.eventService.getEvent(req.params.id)
+            .then((event) => {
+                app.eventService.updateImpressions(event._id, tracking);
+                res.json(Object.assign(
+                    { status: "ok", event: event },
+                    req.auth && event.user.equals(req.auth.user.id) ? { ownEvent: "true" } : {}
+                ));
+            })
+            .catch((err) => {
+                next(err);
             });
 
         });

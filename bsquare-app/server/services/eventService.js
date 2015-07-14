@@ -6,6 +6,7 @@ let merge = require('merge');
 
 let mailUtil = require('../utils/mailUtil');
 let httpUtil = require('../utils/httpUtil');
+let Errors = require("../../../shared/lib/Errors");
 
 let Event, ImpressionTracker, TicketResource, Ticket;
 let WEB_CONTENT_PATH;
@@ -54,183 +55,93 @@ class EventService {
 		
 	}
 		
-	searchEventsByText(searchText, callback) {
+	searchEventsByText(searchText) {
 		
-		let response = {
-			success: 0,
-			status: 'none'
-		};
-		
-		//console.log('events params:');
-		//console.log(params);
-		
-		let conditions = [ { 'info.title': new RegExp(searchText, 'i') } ];
+        let deferred = Q.defer();
+            
+		let conditions = [ { "info.title": new RegExp(searchText, "i") } ];
 		
 		if(searchText && searchText.length > 3) {
-			conditions.push({ 'info.description': new RegExp(searchText, 'i') });
-			conditions.push({ 'info.place.address': new RegExp(searchText, 'i') });
+			conditions.push({ "info.description": new RegExp(searchText, "i") });
+			conditions.push({ "info.place.address": new RegExp(searchText, "i") });
 		}
 		
-        Event.find({ $or: conditions }, (err, events) => {
-			
-    		if(err) {
-				
-				response.status = 'error';
-				response.message = 'Error reading data.';
-				response.error = err;
-			
-			} else {
-				
-				if(events) {
-					response.success = 1;
-					response.status = 'eventsFound';
-					response.events = events;
-				} else {
-					response.status = 'eventsNotFound';
-					response.message = 'Events not found.';
-				}
-			}
-			
-			callback(response);
-			
-		
-		});
-		
+        Event.findQ({ $or: conditions })
+        .then((events) => {
+            deferred.resolve(events);
+        })
+        .catch((err) => {
+            deferred.reject(err);
+        });
+
+        return deferred.promise;
 		
 	}
 	
-	getEvent(params, callback) {
-		
-		let response = {
-			success: 0,
-			status: 'none'
-		};
+	getEvent(id) {
+        
+        let deferred = Q.defer();
 
-        let tracking = params.tracking; 
-        if (tracking) {
-            delete params.tracking;
-        }
-
-        this.getEventByParams(params, (response) => {
-		    
-			let impressionParams = {};
-			let refTrackerId = tracking.group || tracking.ref;
+        Event.findOneQ({ _id: id })
+        .then((event) => {
             
-            if (refTrackerId) {
-				impressionParams.refTrackerId = refTrackerId;
-			}
-
-            if (tracking.user) {
-                
-                impressionParams.userId = tracking.user.id;
-                if(response.event) {
-                    if(response.event.user.equals(tracking.user.id)) {
-                        response.ownEvent = 'true';
-                    }
-                }
-
-            } else {
-                
-                let fwd = (tracking.fwd || '').split(',')[0];
-                let remoteIp = fwd || tracking.remoteIp;
-                impressionParams.remoteIp = remoteIp;
-            
+            if (!event) {
+                return deferred.reject(new Errors.NotFound(null, { message: "event_not_found" }));
             }
-                
-            this.updateEventImpressions(params._id, impressionParams);
-            callback(response);
-				
-				
-		});
+
+            deferred.resolve(event);
+        
+        })
+        .catch((err) => {
+            deferred.reject(err);
+        });
+
+        return deferred.promise;
+
 		
 	}
     
-	updateEventImpressions(eventId, impressionParams) {
+	updateImpressions(eventId, tracking) {
 		
-		let findParams = {
-			viewType: 'event',
-			entityId: eventId
-		};
-		
-		findParams = merge(findParams, impressionParams);
-		
-        ImpressionTracker.find(findParams, (err, impressionTrackers) => {
-				
-			if(err) {
-				//console.log(err);
-			} else {
-				
-				//console.log('found ' + impressionTrackers.length + ' impr trackers for event ' + eventId);
-				
-				if(impressionTrackers && impressionTrackers.length === 0) {
-				
-					findParams.count = 0;
-                    ImpressionTracker.create(findParams, (err, savedImpressionTracker) => {
-						if (err) {
-							//console.log(err);
-						}
-					});
-				
-					
-				} else {
-					
-					let impressionTracker = impressionTrackers[0];
-					ImpressionTracker.update(
-						{ _id: impressionTracker._id }, 
-						{ count: impressionTracker.count + 1 },
-                        (err, numAffected) => {
-							if(err) {
-								//console.log(err);
-							} else {
-								//console.log('increased counter to ' + (impressionTracker.count + 1) + ' for imprtracker:');
-								//console.log(impressionTracker);
-							}
-						});
-				
-					
-				}
-			
-				
-			}
-		
-			
-		});
-	
+        let params = {
+            viewType: "event",
+            entityId: eventId
+        };
+
+        let refTrackerId = tracking.group || tracking.ref;
+        
+        if (refTrackerId) {
+            params.refTrackerId = refTrackerId;
+        }
+
+        if (tracking.user) {
+            params.userId = tracking.user.id;
+        } else {
+            let fwd = (tracking.fwd || '').split(',')[0];
+            let remoteIp = fwd || tracking.remoteIp;
+            params.remoteIp = remoteIp;
+        }
+        	
+        ImpressionTracker.findOneQ(params)
+        .then((impressionTracker) => {
+            
+            if (!impressionTracker) {
+                impressionTracker = new ImpressionTracker(Object.assign(params, { count: 0 }));
+            }
+
+            impressionTracker.count += 1;
+            return impressionTracker.saveQ(); 
+            
+        })
+        .then((impressionTracker) => {
+            console.log("Saved impression tracker", impressionTracker);
+        })
+        .catch((err) => {
+            console.log("Error in updateEventImpressions", err);
+        });	
 		
 	}
-	
-	getEventByParams(params, callback) {
 		
-		let response = {
-			success: 0,
-			status: "none"
-		};
-	    	
-		let queryParams = { _id: params._id } ? params._id : params;
-		
-        Event.findOne(queryParams, (err, event) => {
-			
-			if(err) {
-				response.status = "error";
-				response.message = "Error reading data.";
-				response.error = err;
-				callback(response);
-			} else {
-				if(event) {
-					response.success = 1;
-					response.status = "eventFound";
-					response.event = event;
-					callback(response);
-				} else {
-					response.status = "eventNotFound";
-					response.message = "Event not found.";
-					callback(response);
-				}
-			}
-		});
-		
-	}
-	
 	saveEvent(req, callback) {
 		
         this.authService.screenRequest(req, true, (result) => {
