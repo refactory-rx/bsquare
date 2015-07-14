@@ -15,25 +15,23 @@ controllers.controller(
     $scope.myEventsTemplate = "parts/app/myEvents_blocked.html";
 
     $rootScope.editViewHeight = 420;
-
     
     $scope.init = () => {
     	$scope.getMyEvents();
     };
     
-    
-    $scope.$watch('app.views.selectedView', function(value) {
+    $scope.$watch("app.views.selectedView", (value) => {
     	
     	if(value) {
-    		if(value !== 'myEvents') {
-    			$scope.newEventStatus = '';
-    			$log.debug('view changed ('+value+'), newEventStatus -> '+$scope.newEventStatus);
+    		if(value !== "myEvents") {
+    			$scope.newEventStatus = "";
+    			$log.debug("view changed ('+value+'), newEventStatus -> "+$scope.newEventStatus);
     		}
     	}
     	
     }, true);
     
-    $scope.$watch('app.route', (value) => {
+    $scope.$watch("app.route", (value) => {
     	
     	if(value) {
     		$scope.updateView(value.params);

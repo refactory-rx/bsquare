@@ -2,7 +2,7 @@
     <div style="display: inline;">
         {{ 'app.myEvents.title' | translate }}
     </div>
-    <div style="display: inline; margin-left: 4px;" ng-show="editEvent != 'new'">
+    <div class="addNew" ng-show="editEvent !== 'new'">
         <a href="#/app?view=myEvents&action=new">[{{ 'app.myEvents.add' | translate }}]</a>
     </div>
 </div>
