@@ -4,14 +4,7 @@ controllers.controller(
     ($rootScope, $scope, $location, $routeParams, $http, $log, $timeout, $filter) => {
 	
     $scope.events = [];
-    $scope.eventStats = {
-        "Barcelona": 10,
-        "Helsinki": 12,
-        "Moscow": 5,
-        "Acapulco": 15,
-        "Perähikiä": 7,
-        "New York": 8
-    };
+    $scope.eventStats = {};
 
 	$scope.showEventsError = false;
 	
@@ -32,14 +25,15 @@ controllers.controller(
         if (value === "findEvents") {
             $scope.templateUrl = "parts/app/findEventsFull.html";
     		$scope.searchField.text = "";
-    		$scope.getEvents();
+    		$scope.getEvents($routeParams.q);
         } else {
             $scope.templateUrl = "parts/app/findEventsMin.html";
+    		$scope.getEventStats();
     	}
     	
     }, true);
     
-    $scope.$watch('params', (value) => {
+    $scope.$watch("params", (value) => {
     	
     	var params = $scope.params;
     	
@@ -97,6 +91,23 @@ controllers.controller(
     	
     };
     
+    $scope.getEventStats = () => {
+    	
+        $http.get("/api/events/stats", { headers: requestHeaders } )
+        .success((response) => {
+			
+            $log.debug(response);
+            
+            if(response.status === "ok") {
+                $scope.eventStats = response.eventStats;
+            } 
+		
+		})
+        .error((data) => {
+			$log.debug("Error: ", data);
+		});
+    	
+    };
     
     $scope.formatTime = function(time) {
     	

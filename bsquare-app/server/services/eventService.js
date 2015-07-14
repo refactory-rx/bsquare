@@ -20,7 +20,7 @@ class EventService {
         this.authService = app.authService;
     }
 
-	getEvents(params, callback) {	
+	getEvents(params) {	
         
         let deferred = Q.defer();    
         Event.find(params, (err, events) => {
@@ -28,6 +28,32 @@ class EventService {
                 return deferred.reject(err);
             }
             deferred.resolve(events);
+        });
+
+        return deferred.promise;
+
+    }
+    
+    getEventStats() {	
+        
+        let deferred = Q.defer();    
+        Event.find({}, (err, events) => {
+            
+            if (err) {
+                return deferred.reject(err);
+            }
+            
+            let eventStats = { max: 0 };
+            events.forEach(event => {
+                let city = event.info.place.vicinity;
+                eventStats[city] = eventStats[city] ? eventStats[city] + 1 : 1;
+                if (eventStats[city] > eventStats.max) {
+                    eventStats.max = eventStats[city];
+                }
+            });
+
+            deferred.resolve(eventStats);
+
         });
 
         return deferred.promise;

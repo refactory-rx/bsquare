@@ -70,6 +70,16 @@ module.exports = {
                 next(err);
             });
         });
+        
+        app.get("/api/events/stats", (req, res, next) => {
+            app.eventService.getEventStats()
+            .then((eventStats) => {
+                res.json({ status: "ok", eventStats: eventStats });
+            })
+            .catch((err) => {
+                next(err);
+            });
+        });
 
         app.get("/api/events/:id", (req, res, next) => {
             
