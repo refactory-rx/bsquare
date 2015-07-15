@@ -77,36 +77,21 @@ controllers.controller(
 	};
 
     $scope.useTicket = () => {
-
-	    $http.get("/api/tickets/"+$scope.ticket._id+"?use=admit", { headers: requestHeaders } )
+        console.log("adm ticket headers", requestHeaders);
+	    $http.put("/api/tickets/"+$scope.ticket._id, null, { headers: requestHeaders } )
         .success((response) => {
-
 			$log.debug(response);
-
-			if(response.status === "ticketUsed") {
-
-				$scope.ticketStatus = "used";
-				$scope.ticket.status = "used";
-
-			} else {
-
-				$scope.showTicketError = true;
-				$scope.ticketStatus = "error";
-				$scope.ticketErrorMessage = response.message;
-
-			}
-
-
+            $scope.ticketStatus = "used";
+            $scope.ticket.status = "used";
 		})
         .error((data) => {
 			$log.debug("Error: ", data);
 			$scope.showTicketError = true;
 			$scope.ticketStatus = "error";
-			$scope.ticketErrorMessage = "Network error while saving ticket.";
+			$scope.ticketErrorMessage = data.message;
 		});
 
 	};
-
 
 }]);
 

@@ -23,10 +23,6 @@ class TicketService {
 
         let deferred = Q.defer();
 
-        if (!user) {
-            return deferred.resolve(false);
-        }
-
         TicketResource.findOneQ({ _id: ticket.ticketResourceId })
         .then((ticketResource) => {
 
@@ -34,13 +30,13 @@ class TicketService {
                 console.log("check event of the tkt rsrc");
                 return Event.findOneQ({ _id: ticketResource.event });
             } else {
-                deferred.resolve(false);
+                ticket.allowInvalidation = false;
+                deferred.resolve(ticket);
             }
 
         })
         .then((event) => {
-            console.log("check event ownership", event, user);
-            ticket.allowInvalidation = event.user.toString() === user.id;
+            ticket.allowInvalidation = event.user.equals(user.id);
             deferred.resolve(ticket);
         });
 
@@ -52,17 +48,22 @@ class TicketService {
 
         let deferred = Q.defer();
 
-        console.log("check tkt invalidation auth");
-        
         let ticket;
 
         Ticket.findOneQ({ _id: id })
         .then((ticket) => {
-
+            
             if (!ticket) {
                 return deferred.reject(new Errors.NotFound(null, { message: "ticket_not_found" }));
             }
             
+            ticket = JSON.parse(JSON.stringify(ticket));
+             
+            if (!user) {
+                ticket.allowInvalidation = false;
+                return ticket;
+            }
+             
             return this._checkTicketAdmissability(user, ticket);
 
         })
@@ -95,7 +96,7 @@ class TicketService {
         .then((ticket) => {
             if (ticket.allowInvalidation) {
                 ticket.status = "used";
-                ticket.save((err) => {
+                Ticket.update({ _id: ticket._id }, { status: "used" }, (err) => {
                     if (err) { return deferred.reject(err); }
                     deferred.resolve();
                 });

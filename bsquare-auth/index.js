@@ -475,13 +475,13 @@ class AuthService {
 	screenRequest(req, updateTime, callback) {
 
 		let response = {
-			status: 'unauthorized'
+			status: "unauthorized"
 		};
 		
-		let token = req.headers['session-token'];
-		let emailAddress = req.headers['bsquare-user'];
-	    	
-		if(token === undefined || token === '') {
+		let token = req.headers["session-token"];
+		let emailAddress = req.headers["bsquare-user"];
+        
+        if(!token || token === "") {
 			callback(response);
 			return;
 		}

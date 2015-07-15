@@ -37,6 +37,8 @@ module.exports = {
 
         app.get("/api/tickets/:id", (req, res, next) => {
             
+            console.log("get one ticket");
+             
             let params = {
                 id: req.params.id,
                 user: req.auth ? req.auth.user : null
@@ -56,7 +58,7 @@ module.exports = {
                 user: req.auth.user
             };
 
-            app.ticketService.admitTicket(params, () => {
+            app.ticketService.admitTicket(params, (err) => {
                 if (err) { return next(err); }
                 res.json({ status: "ok" });
             });
