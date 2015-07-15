@@ -330,7 +330,7 @@ class TrackerService {
                         order.items.forEach(item => {    
 							numTickets += item.quantity;
 						});	
-						revenue += orders[i].orderTotal;
+						revenue += order.orderTotal;
 						numOrders += 1;
 					});
 						
