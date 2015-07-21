@@ -16,7 +16,8 @@ controllers.controller(
     $scope.showError = false;
     $scope.errorMessage = "";
     $scope.pwdInputType = "password";
-    
+    $scope.tosAccepted = false;
+
     $scope.init = () => {
 		
 		$log.debug("init logreg ctrl ("+$rootScope.logregStatus+")");
@@ -73,9 +74,12 @@ controllers.controller(
     	
     };
     
-    
+    $scope.toggleTosCheckbox = () => {
+        $scope.tosAccepted = !$scope.tosAccepted;
+    };
+
     $scope.register = () => {
-    	
+        
     	var user = $scope.logregUser;
     	
     	$log.debug("register user:");

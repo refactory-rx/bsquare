@@ -1,0 +1,16 @@
+<div ng-show="myEvents.length == 0" style="height: 100%; width: 100%;">
+    <div class="noContent" style="position: absolute; top: 50%; margin-top: -18px; width: 100%;">
+        {{ 'app.myEvents.noEventsText' | translate }}
+        <br>
+        <a href="#/app?view=myEvents&action=new">{{ 'app.myEvents.noEventsNew' | translate }}</a>
+    </div>
+</div>
+
+<div ng-show="myEvents.length > 0" id="myEventListContainer" style="position: relative;">
+    <div style="width: 100%; padding-left: 6px; padding-right: 6px; padding-top: 4px; text-align: right;" ng-repeat="myEvent in myEvents">
+        <div style="display: inline-block; float: left;">
+            <a href="/#/event/{{myEvent._id}}">{{myEvent.info.title}}</a>
+        </div>
+        <div style="display: inline-block; color: #808080;">{{myEvent.eventStatus}}</div>
+    </div>
+</div>

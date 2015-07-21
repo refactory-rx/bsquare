@@ -105,11 +105,20 @@
 								<input type="text" class="form-control" ng-model="logregProfile.lastName"/>
 							</div>
 						</div>
+						<div class="inputRow form-group">
+							<div class="inputRowCell labelContainer"></div>
+							<div class="inputRowCell inputContainer">
+                                <input type="checkbox" ng-click="toggleTosCheckbox()" ng-model="tosAccepted"/>
+                                {{ "app.logreg.agreedToTos1" | translate }}
+                                <a href="/#/tos" target="_blank">{{ "app.logreg.tos" | translate }}</a>
+                                {{ "app.logreg.agreedToTos2" | translate }}
+                            </div>
+						</div>
 						<div class="inputRow">
 							<div class="inputRowCell labelContainer">&nbsp;</div>
 							<div class="inputRowCell inputContainer">
 								<br/>
-								<button class="btn btn-default" ng-click="register()">{{ 'app.logreg.register' | translate }}</button>
+								<button class="btn btn-default" ng-disabled="!tosAccepted" ng-click="register()">{{ 'app.logreg.register' | translate }}</button>
 							</div>
 						</div>
 					</form>

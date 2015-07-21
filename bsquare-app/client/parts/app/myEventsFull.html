@@ -1,0 +1,13 @@
+<div ng-show="myEvents.length == 0" style="height: 100%; width: 100%;">
+    <div class="noContent" style="position: absolute; top: 50%; margin-top: -18px; width: 100%;">
+        {{ 'app.myEvents.noEventsText' | translate }}
+        <br>
+        <a href="#/app?view=myEvents&action=new">{{ 'app.myEvents.noEventsNew' | translate }}</a>
+    </div>
+</div>
+
+<div ng-show="myEvents.length > 0" id="myEventListContainer" style="position: relative;">
+    <div class="panel panel-default myListEvent" ng-repeat="myEvent in myEvents" id="{{myEvent._id}}">
+        <div ng-include="getTemplate(myEvent)"></div>
+    </div>
+</div>

@@ -13,6 +13,7 @@ controllers.controller(
     
     $scope.myEvents = [];
     $scope.myEventsTemplate = "parts/app/myEvents_blocked.html";
+    $scope.contentTemplate = "parts/app/myEventsFull.html";
 
     $rootScope.editViewHeight = 420;
     
@@ -22,13 +23,13 @@ controllers.controller(
     
     $scope.$watch("app.views.selectedView", (value) => {
     	
-    	if(value) {
-    		if(value !== "myEvents") {
-    			$scope.newEventStatus = "";
-    			$log.debug("view changed ('+value+'), newEventStatus -> "+$scope.newEventStatus);
-    		}
-    	}
-    	
+        if (value === "myEvents") {
+            $scope.contentTemplate = "parts/app/myEventsFull.html";    
+        } else {
+            $scope.contentTemplate = "parts/app/myEventsMin.html";    
+            $scope.newEventStatus = "";
+        }
+    
     }, true);
     
     $scope.$watch("app.route", (value) => {
@@ -63,70 +64,47 @@ controllers.controller(
     
     $scope.updateView = (params) => {
     	
-    	$log.debug('view='+params.view+', action='+params.action);
+    	$log.debug("view="+params.view+", action="+params.action);
     	
-    	if(params.view == 'myEvents') {
+    	if (params.view === "myEvents") {
     		
     		var action = params.action;
     		
     		$scope.currentAction = action;
     		
-    		if(action == 'new') {
+    		if (action === "new") {
 	    		
-    			if($scope.editEvent === '' && $scope.eventsStatus === '') {
+    			if ($scope.editEvent === "" && $scope.eventsStatus === "") {
     				
-    				$scope.editEvent = 'new';
+    				$scope.editEvent = "new";
     			
     			} else {
     				
-    				$scope.editEvent = 'new';
+    				$scope.editEvent = "new";
     				$scope.getMyEvents();
-    				
-    				/*
-    				var newEvent = {};
-    				newEvent._id = 'new';
-    				newEvent.layout = 'bw';
-	    			$scope.editEvent = 'new';
 	    			
-    				var myEvents = $scope.myEvents;
-    				myEvents.push(newEvent);
-    				
-    				$scope.myEvents = myEvents;
-					
-					
-    				$timeout(function() {
-    					$scope.selectItem('new');
-    				});
-    				*/
-	    			
-    			}
-    			
+                }
+                
 	    	} else {
 	    			
-	    		if(action) {
+	    		if (action) {
 	    			$scope.editEvent = action;
 	    		} else {
-	    			$scope.editEvent = '';
+	    			$scope.editEvent = "";
 	    		}
 	    		
-	    		$scope.resetItems();
-	    		
-	    		//$timeout(function() {	
-	    			
-	    			$scope.selectItem($scope.editEvent);
-	    			
-	    		//});
-	    		
+	    		$scope.resetItems();	
+	    	    $scope.selectItem($scope.editEvent);
 	    		
 	    	}
     		
-    	} else if(params.view == 'myTickets' || params.view == 'findEvents') {
+    	} else if (params.view === "myTickets" || params.view === "findEvents") {
     		
     		$scope.resetItems();
     		
     		//$timeout(function() {
     			
-    			$scope.editEvent = '';
+    			$scope.editEvent = "";
     			$scope.arrangeItems();
     			
     		//});
@@ -173,7 +151,7 @@ controllers.controller(
     };
     
     $scope.getMyEvents = () => {
-    	
+        
     	$http.get("/api/events?kind=own", { headers: requestHeaders } )
         .success((response) => {
 			
@@ -183,35 +161,44 @@ controllers.controller(
 				
 				$scope.eventsStatus = response.status;
 				
-				if(response.status === "ok") {
+				if (response.status === "ok") {
 					
 					var myEvents = response.events;
 				    	
-					if($scope.editEvent == "new") {
+					if ($scope.editEvent === "new") {
 						var newEvent = {};
 		    			newEvent._id = "new";
 		    			newEvent.layout = "bw";
 		    			myEvents.push(newEvent);
 					}
 
-                    $scope.myEventsTemplate = response.myEventsTemplate;
 					$scope.myEvents = myEvents;
+                    $scope.myEventsTemplate = response.myEventsTemplate;
 					
-                    $timeout(() => {
-						
-						//$scope.selectItem($scope.editEvent);
-						
-						//$scope.arrangeItems();
-						$scope.selectItem($scope.editEvent);
-						
-						/*
-						if($scope.editEvent !== '') {
-							$scope.selectItem($scope.editEvent, 'loaded');
-						}
-						*/
-						
-					});
-					
+    	            var now = (new Date()).getTime();
+    	            
+                    $scope.myEvents.forEach(event => {
+
+                        if (event.status) {
+                            event.eventStatus = event.status.toUpperCase();
+                        } else {
+                            
+                            if (event.info) { 
+                                if (event.info.timeStart > now) {
+                                    event.eventStatus = "COMING";
+                                } else if(event.info.timeEnd < now) {
+                                    event.eventStatus = "ENDED";
+                                } else if(event.info.timeStart < now < event.info.timeEnd) {
+                                    event.eventStatus = "HAPPENING";
+                                }
+                            }
+
+                        }
+                    
+                    });
+                    
+                    $scope.selectItem($scope.editEvent);
+
 				} else {
 					$scope.profileStatus = "error";
 				}
@@ -226,7 +213,8 @@ controllers.controller(
     };
     
     $scope.arrangeItems = function() {
-    	
+        
+        /*    
     	var items = $scope.myEvents;
     	
     	var top = 4;
@@ -249,60 +237,24 @@ controllers.controller(
     	$('#eventScrollContainer').slimScroll({
 	    	height: 'auto'
 	    });
-    	
+        */
+
     };
     
 
-    $scope.selectItem = function(id, rearrange) {
-    	
-    	if(rearrange !== true) {
-    	    $rootScope.editViewHeight = 420;
-    	}
-    	
-    	var top = 4;
-    	var itemHeight = $rootScope.app.views.myEvents === 0 ? 66 : 40;
-    	
-    	var items = $scope.myEvents;
-    	
-    	if(id && id !== '') {
-    		
-	    	var selectedItem = $('#'+id);
-	    	
-	    	selectedItem.css('z-index', '1');
-	    	selectedItem.css('top', top+'px');
-	    	selectedItem.css('height', $rootScope.editViewHeight+'px');
-	    	
-	    	top += $rootScope.editViewHeight + 4;
-	    	$log.debug('Add edit view height: '+$rootScope.editViewHeight);
-	    	
-    	}
-    	
+    $scope.selectItem = function(id) {
+        
     	$scope.editEvent = id;
-    	
-    	for(var i=0; i < items.length; i++) {
-    		
-    		var itemElement = $('#'+items[i]._id);
-    		
-    		if(items[i]._id != id) {
-    			
-    			itemElement.css('z-index', '0');
-    			itemElement.css('top', top+'px');
-    			itemElement.css('height', itemHeight+'px');
-    			top += itemHeight + 4;
-    			
-    			$log.debug('Add 44');
-    			
-    		}
-    		
-    	}
-    	
-    	$log.debug('set total height: '+(top+4));
-    	$('#myEventListContainer').css('height', (top+4)+'px');
-    	$('#eventScrollContainer').slimScroll({
-	    	height: 'auto'
-	    });
-    	$('#eventScrollContainer').slimScroll({ scrollTo: '0px' });
-    	
+        
+        let delay = 100;
+        if (id === "new") {
+            delay = 1000;
+        }
+
+        $timeout(() => {
+            $("#myEventsContent").scrollTop($("#"+id).position().top);
+        }, delay);
+
     };
     
     $scope.getTemplate = function(event) {

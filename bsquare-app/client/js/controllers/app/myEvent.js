@@ -38,28 +38,14 @@ controllers.controller(
     	
     	if(myEvent) {
     		
+    	    $scope.event = myEvent;
+            
             $timeout(() => {
-    			
-    			$scope.event = myEvent;
-    	        
+    			 
     	        if($scope.event._id && $scope.event._id !== 'new') {
-    	            
-    	            var now = (new Date()).getTime();
-    	            
-    	            if($scope.event.status) {
-    	                $scope.eventStatus = $scope.event.status.toUpperCase();
-    	            } else {
-    	                
-    	                if($scope.event.info.timeStart > now) {
-    	                    $scope.eventStatus = "COMING";
-    	                } else if($scope.event.info.timeEnd < now) {
-    	                    $scope.eventStatus = "ENDED";
-    	                } else if($scope.event.info.timeStart < now < $scope.event.info.timeEnd) {
-    	                    $scope.eventStatus = "HAPPENING";
-    	                }
-    	                
-    	            }
-    	            
+                    
+                    $scope.eventStatus = $scope.event.eventStatus;
+
     	            $http.get("/api/ticketresources/"+$scope.event._id, { headers: requestHeaders } )
                     .success((response) => {
         				

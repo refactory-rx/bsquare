@@ -40,6 +40,9 @@ mainApp.config(($translateProvider) => {
         "app.logreg.register": "Register",
         "app.logreg.thanks": "Thank you for registering. Check your e-mail to verify your e-mail address and proceed to log-in.",
         "app.logreg.loggedIn": "You are logged in.",
+        "app.logreg.agreedToTos1": "I have read the",
+        "app.logreg.tos": "terms of service",
+        "app.logreg.agreedToTos2": "and I agree to them by registering",
         
         "pwdRecovery.explanationText": "Password recovery involves two steps:",
         "pwdRecovery.step1Text": "1) Request recovery link to the address you registered with",
@@ -262,6 +265,9 @@ mainApp.config(($translateProvider) => {
         "app.logreg.register": "Rekisteröi",
         "app.logreg.thanks": "Kiitos rekisteröitymisestä. Tarkista sähköpostisi varmentaaksesi sähköpostiosoitteesi.",
         "app.logreg.loggedIn": "Olet kirjautunut sisään.",
+        "app.logreg.agreedToTos1": "Olen lukenut",
+        "app.logreg.tos": "käyttöehdot",
+        "app.logreg.agreedToTos2": "ja hyväksyn ne rekisteröitymällä",
       
         "pwdRecovery.explanationText": "Salasanan vaihdossa on kaksi vaihetta:",
         "pwdRecovery.step1Text": "1) Tilaa salasananvaihtolinkki sähköpostiosoitteeseen, jolla olet rekisteröitynyt",

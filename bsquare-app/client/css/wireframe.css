@@ -471,6 +471,12 @@ div.listEventImage {
 	vertical-align: top;
 }
 
+.listEventImage img {
+    margin-top: -6px;
+    max-height: 120px;
+    max-width: 100%;
+}
+
 .listEventImage .imageShader {
     width: 100%;
     height: 100%;

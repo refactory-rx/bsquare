@@ -301,22 +301,22 @@ class CheckoutService {
 
         var requestXml = 
             '<?xml version="1.0"?>'+
-                '<checkout>'+
-                    '<identification>'+
-                        '<merchant>'+CHECKOUT_MERCHANT_ID+'</merchant>'+
-                        '<stamp>'+nonce+'</stamp>'+
-                    '</identification>'+
-                    '<message>'+
-                        '<refund>'+
-                            '<stamp>'+stamp+'</stamp>'+
-                            '<reference>'+ref+'</reference>'+
-                            '<amount>'+amount+'</amount>'+
-                            '<receiver>'+
-                                '<email>email@osoi.te</email>'+
-                            '</receiver>'+
-                        '</refund>'+
-                    '</message>'+
-                '</checkout>';
+            '<checkout>'+
+                '<identification>'+
+                    '<merchant>'+CHECKOUT_MERCHANT_ID+'</merchant>'+
+                    '<stamp>'+nonce+'</stamp>'+
+                '</identification>'+
+                '<message>'+
+                    '<refund>'+
+                        '<stamp>'+stamp+'</stamp>'+
+                        '<reference>'+ref+'</reference>'+
+                        '<amount>'+amount+'</amount>'+
+                        '<receiver>'+
+                            '<email>email@osoi.te</email>'+
+                        '</receiver>'+
+                    '</refund>'+
+                '</message>'+
+            '</checkout>';
             
          
         var hmac = crypto.createHmac('SHA256', CHECKOUT_MERCHANT_SECRET);
@@ -331,7 +331,7 @@ class CheckoutService {
             'data': encoded,
             'mac': hash
         };
-         
+
         var encodedData = formUrlEncoded.encode(requestContent);
         
         request.post({ headers: headers, url: REFUND_URL, body: encodedData }, (err, response, data) => {
@@ -346,7 +346,6 @@ class CheckoutService {
             } else {
                 
                 var result = { success: 0 };
-                
                 xml2js.parseString(data, (err, obj) => {
                     
                     if(err) {
