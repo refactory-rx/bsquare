@@ -241,7 +241,6 @@ controllers.controller(
 
     };
     
-
     $scope.selectItem = function(id) {
         
     	$scope.editEvent = id;

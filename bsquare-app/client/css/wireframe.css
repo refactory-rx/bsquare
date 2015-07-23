@@ -473,7 +473,7 @@ div.listEventImage {
 
 .listEventImage img {
     margin-top: -6px;
-    max-height: 120px;
+    /*max-height: 120px;*/
     max-width: 100%;
 }
 
