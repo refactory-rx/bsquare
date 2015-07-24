@@ -28,9 +28,18 @@ class PaymentService {
 			} else {
 				
 				if(order) {
+                    
+                    if (order.orderTotal === 0) {
+                        response.status = "freeOrder";
+                        response.message = "Order does not require invoice";
+                        deferred.resolve(response);
+                        return; 
+                    }
+
                     this.provideInvoice('checkout', order, null, (response) => {
 						deferred.resolve(response);
-					});
+                    });
+
 				} else {
 					response.status = 'orderNotFound';
 					deferred.resolve(response);
@@ -64,9 +73,16 @@ class PaymentService {
             	callback(response);
             			    
 		    } else {
-		        
+
 		        if(order) {
-		            
+
+                    if (order.orderTotal === 0) {
+                        response.status = "freeOrder";
+                        response.message = "Order does not require invoice";
+                        callback(response);
+                        return; 
+                    }
+
 		            let provideNewInvoice = false;
 		            let invoice = createInvoiceRequest.invoice;
 		            

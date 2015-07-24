@@ -461,6 +461,7 @@ div.findEvents div.listEvent {
 	margin-left: 1%;
 	min-height: 80px;
     max-height: 120px;
+    overflow-y: hidden;
     margin-bottom: 16px;
 }
 

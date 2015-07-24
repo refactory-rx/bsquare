@@ -245,11 +245,15 @@ controllers.controller(
         
     	$scope.editEvent = id;
         
+        if (!id) {
+            return;
+        }
+
         let delay = 100;
         if (id === "new") {
             delay = 1000;
         }
-
+        
         $timeout(() => {
             $("#myEventsContent").scrollTop($("#"+id).position().top);
         }, delay);

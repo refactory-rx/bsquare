@@ -109,6 +109,28 @@ controllers.controller(
     	
     };
     
+    $scope.adjustVerticalImages = () => {
+        
+        $scope.events.forEach(event => {
+             
+            let eventImage = $("#event-img-"+event._id);
+            eventImage.load(() => {
+                
+                let img = eventImage.get(0);
+                let imgWidth = img.naturalWidth;
+                let imgHeight = img.naturalHeight;
+                console.log("loaded event image: ", imgWidth+" x "+imgHeight); 
+                
+                if (imgWidth < imgHeight) {
+                    eventImage.css({ "max-height": "120px" });
+                }
+
+            });
+        
+        });     
+                    
+    };
+
     $scope.formatTime = function(time) {
     	
     	var date = new Date(time);

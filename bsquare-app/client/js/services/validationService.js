@@ -1,4 +1,4 @@
-mainApp.factory('validationService', [function() {
+mainApp.factory("validationService", ["$translate", function($translate) {
    
     return  {
      
@@ -41,59 +41,59 @@ mainApp.factory('validationService', [function() {
         	var validationErrorKeys = [];
         	
         	if(!ticketResource.name || ticketResource.name.length === 0) {
-        		validationErrors.name = 'Ticket name is missing.';
-        		validationErrorKeys.push('name');
+        		validationErrors.name = $translate.instant("event.back.tickets.ticketNameMissing");
+        		validationErrorKeys.push("name");
         	}
         	
         	if(!ticketResource.price && ticketResource.price != 0) {
-        		validationErrors.price = 'Price is missing.';
-        		validationErrorKeys.push('price');
+        		validationErrors.price = $translate.instant("event.back.tickets.priceMissing");
+        		validationErrorKeys.push("price");
         	} else if(ticketResource.price < 0) {
-        		validationErrors.price = 'Price is negative.';
-        		validationErrorKeys.push('price');
+        		validationErrors.price = $translate.instant("event.back.tickets.priceNegative");
+        		validationErrorKeys.push("price");
         	} else if(isNaN(ticketResource.price)) {
-        		validationErrors.price = 'Price is not a number.';
-        		validationErrorKeys.push('price');
+        		validationErrors.price = $translate.instant("event.back.tickets.priceIsNaN");
+        		validationErrorKeys.push("price");
         	}
         	
         	if(!ticketResource.quantity || ticketResource.quantity == 0) {
-        		validationErrors.quantity = 'Quantity is missing or 0.';
-        		validationErrorKeys.push('quantity');
+        		validationErrors.quantity = $translate.instant("event.back.tickets.qtyMissingOr0");
+        		validationErrorKeys.push("quantity");
         	} else if(ticketResource.quantity < 0) {
-        		validationErrors.quantity = 'Quantity is negative.';
-        		validationErrorKeys.push('quantity');
-        	} else if(isNaN(ticketResource.quantity)) {
-        		validationErrors.quantity = 'Quantity is not a number.';
-        		validationErrorKeys.push('quantity');
+        		validationErrors.quantity = $translate.instant("event.back.tickets.qtyNegative");
+        		validationErrorKeys.push("quantity");
+        	} else if(isNaN(ticketResource.quantity) || ticketResource.quantity % 1 !== 0) {
+        		validationErrors.quantity = $translate.instant("event.back.tickets.qtyIsNaN");
+        		validationErrorKeys.push("quantity");
         	}
         	
         	if(!ticketResource.allowedPerOrder || ticketResource.allowedPerOrder == 0) {
-        		validationErrors.allowedPerOrder = 'Max/order is missing or 0.';
-        		validationErrorKeys.push('allowedPerOrder');
+        		validationErrors.allowedPerOrder = $translate.instant("event.back.tickets.maxOrderMissingOr0");
+        		validationErrorKeys.push("allowedPerOrder");
         	} else if(ticketResource.allowedPerOrder < 0) {
-        		validationErrors.allowedPerOrder = 'Max/order is negative.';
-        		validationErrorKeys.push('allowedPerOrder');
-        	} else if(isNaN(ticketResource.allowedPerOrder)) {
-        		validationErrors.allowedPerOrder = 'Max/order is not a number.';
-        		validationErrorKeys.push('allowedPerOrder');
+        		validationErrors.allowedPerOrder = $translate.instant("event.back.tickets.maxOrderNegative");
+        		validationErrorKeys.push("allowedPerOrder");
+        	} else if(isNaN(ticketResource.allowedPerOrder) || ticketResource.allowedPerOrder % 1 !== 0) {
+        		validationErrors.allowedPerOrder = $translate.instant("event.back.tickets.maxOrderIsNaN");
+        		validationErrorKeys.push("allowedPerOrder");
         	}
         	
         	if(!ticketResource.salesStart) {
-        		validationErrors.salesStart = 'Sales start time is missing.';
-        		validationErrorKeys.push('salesStart');
+        		validationErrors.salesStart = $translate.instant("event.back.tickets.salesStartMissing");
+        		validationErrorKeys.push("salesStart");
         	}
         	
         	if(!ticketResource.salesEnd) {
-        		validationErrors.salesEnd = 'Sales end time is missing.';
-        		validationErrorKeys.push('salesEnd');
+        		validationErrors.salesEnd = $translate.instant("event.back.tickets.salesEndMissing");
+        		validationErrorKeys.push("salesEnd");
         	} else if(ticketResource.salesStart && ticketResource.salesEnd && ticketResource.salesStart > ticketResource.salesEnd) {
-        		validationErrors.salesEnd = 'Sales end time is before the start time.';
-        		validationErrorKeys.push('salesEnd');
+        		validationErrors.salesEnd = $translate.instant("event.back.tickets.salesEndBeforeStart");
+        		validationErrorKeys.push("salesEnd");
         	}
         	
         	if(ticketResource.price > 0 && (!event.payout || !event.payout.iban)) {
-        		validationErrors.payout = 'Event payout info missing for chargeable tickets.';
-        		validationErrorKeys.push('payout');
+        		validationErrors.payout = $translate.instant("event.back.tickets.payoutInfoMissing");
+        		validationErrorKeys.push("payout");
         	}
         	
         	validationErrors.keys = validationErrorKeys;

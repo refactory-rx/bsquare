@@ -189,7 +189,7 @@
                                                 </span>
                                             </div>
                                             <div style="width: 100px;" ng-show="ticketResource.qtyAvailable-ticketResource.qtyReserved <= 0">
-                                                Sold out
+                                                {{ "event.front.tickets.soldOut" | translate }}
                                             </div>
                                             
                                         </td>
@@ -218,10 +218,10 @@
                     </div>
                     
                     <div class="orderTickets" ng-show="publicTicketResources.length === 0" style="text-align: center; padding: 24px;">
-                        <span>There are no publically available tickets for this event at the moment.</span>
+                        <span>{{ "event.front.tickets.noAvailableTickets" | translate }}</span>
                         <br>
                         <span ng-show="ownEvent == true">
-                            To add tickets and/or adjust their sales dates and visibility, go to <a href="" ng-click="setRootView('edit')">event management</a>.
+                            {{ "event.front.tickets.addEditTickets" | translate }} <a href="" ng-click="setRootView('edit')">{{ "event.front.tickets.eventManagement" | translate }}</a>.
                         </span>
                         
                     </div>

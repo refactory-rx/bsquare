@@ -1,69 +1,70 @@
-controllers.controller('MyTicketsCtrl', 
+controllers.controller(
+        "MyTicketsCtrl", 
 		['$rootScope', '$scope', '$location', '$routeParams', '$http', '$log', '$timeout', '$filter',
-		 function($rootScope, $scope, $location, $routeParams, $http, $log, $timeout, $filter) {
+            ($rootScope, $scope, $location, $routeParams, $http, $log, $timeout, $filter) => {
 	
 	$scope.tickets = [];
 	$scope.ticketsByEvent = [];
 	
 	$scope.showTicketsError = false;
 	
-	$scope.ticketsStatus = '';
-	$scope.ticketsView = '';
-    $scope.ticketsErrorMessage = '';
-    
-    $scope.params = undefined;
-    
-    $scope.init = function() {
-    	$scope.getTickets();
+	$scope.ticketsStatus = "";
+	$scope.ticketsView = "";
+    $scope.ticketsErrorMessage = "";
+     
+    $scope.init = () => {
+        if ($rootScope.logregStatus === "loggedIn") {
+            $scope.getTickets();
+        }
     };
     
-    $scope.$watch('logregStatus', function(value) {
+    $scope.$watch("logregStatus", (value) => {
     	
     	console.log('myTickets:logregStatus = '+value);
-    	if(value == 'loggedIn') {
+    	if(value === "loggedIn") {
     		$scope.getTickets();
     	}
     		
     });
     
-    $scope.getTickets = function() {
+    $scope.getTickets = () => {
         
         $log.debug("loading my tickets");
 
-    	$http.get('/api/tickets', { headers: requestHeaders } )
-			.success(function(response) {
+    	$http.get("/api/tickets", { headers: requestHeaders } )
+        .success((response) => {
 			
-			$log.debug("tickets response", response);
-			
-			$rootScope.screenResponse(response, function() {
-					
-				$scope.ticketsStatus = response.status;
-				
-				if(response.status == "ok") {
-					
-					var tickets = response.tickets;
-					$scope.updateTickets(tickets);
-					
-				} else {
-					$scope.profileStatus = 'error';
-				}
-				
-			});
-		
-		})
-		.error(function(data) {
-			$log.debug('Error: ' + data);
-		});
+            $log.debug("tickets response", response);
+            
+            $rootScope.screenResponse(response, () => {
+                    
+                $scope.ticketsStatus = response.status;
+                
+                if(response.status === "ok") {
+                    
+                    var tickets = response.tickets;
+                    $scope.updateTickets(tickets);
+                    
+                } else {
+                    $scope.profileStatus = "error";
+                }
+                
+            });
+    
+        })
+        .error((data) => {
+            $log.debug("Error", data);
+        });
     	
     };
     
-    $scope.updateTickets = function(tickets) {
+    $scope.updateTickets = (tickets) => {
     	
     	$scope.tickets = tickets;
     	
     	var ticketsByEventName = {};
     	
-    	for(var i=0; i<tickets.length; i++) {
+    	for(var i = 0; i < tickets.length; i++) {
     		
     		var orderTickets = ticketsByEventName[tickets[i].eventName];
     		if(!orderTickets) {
@@ -84,7 +85,7 @@ controllers.controller('MyTicketsCtrl',
     	
     	var eventNames = Object.getOwnPropertyNames(ticketsByEventName);
     	$scope.ticketsByEvent = [];
-    	for(var i=0; i<eventNames.length; i++) {
+    	for(var i = 0; i < eventNames.length; i++) {
     	    
             var eventTicketsInfo = {};
 
@@ -93,7 +94,7 @@ controllers.controller('MyTicketsCtrl',
     		
     		console.log('eventTickets', eventTickets);
     		
-    		for(var j=0; j<eventTickets.tickets.length; j++) {
+    		for(var j = 0; j < eventTickets.tickets.length; j++) {
     			
     			var ticketsByResource = ticketsByResourceMap[eventTickets.tickets[j].ticketResourceId];
     			
@@ -119,7 +120,7 @@ controllers.controller('MyTicketsCtrl',
     		//console.log(ticketsByResourceMap)
     		//console.log(ticketResourceIds);
     		
-    		for(var j=0; j<ticketResourceIds.length; j++) {
+    		for(var j = 0; j < ticketResourceIds.length; j++) {
     			eventTickets.ticketsByName.push(ticketsByResourceMap[ticketResourceIds[j]]);
     		}
     		
@@ -133,13 +134,13 @@ controllers.controller('MyTicketsCtrl',
     };
     
     
-    $scope.openTicket = function(ticket) {
+    $scope.openTicket = (ticket) => {
     	
     	$rootScope.navigate('#/ticket/'+ticket._id);
     	
     };
     
-    $scope.formatTime = function(time) {
+    $scope.formatTime = (time) => {
     	
     	var date = new Date(parseInt(time));
     	var formattedTime = 

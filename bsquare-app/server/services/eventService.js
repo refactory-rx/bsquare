@@ -14,10 +14,13 @@ let WEB_CONTENT_PATH;
 class EventService {
     
     constructor(app) {
+        
         ({ Event, ImpressionTracker, TicketResource, Ticket } = app.model);
         ({ WEB_CONTENT_PATH } = app.settings);
+        
         this.app = app;
         this.authService = app.authService;
+    
     }
 
 	getEvents(params) {	
