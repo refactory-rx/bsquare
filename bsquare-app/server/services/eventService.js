@@ -223,7 +223,7 @@ class EventService {
 
         return deferred.promise;
     
-    },
+    }
 
 	getTicketResources(req, callback) {
 		
