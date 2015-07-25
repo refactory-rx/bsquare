@@ -171,88 +171,60 @@ class EventService {
 		
 	}
 		
-	saveEvent(req, callback) {
-		
-        this.authService.screenRequest(req, true, (result) => {
-			
-			if(result.status === "authorized") {
+	createEvent(event, user) {
+	    
+        let deferred = Q.defer();     
 				
-				let response = {
-					success: 0,
-					status: "none"
-				};
-				
-				let saveEventRequest = req.body;
-				let event = saveEventRequest.event;
-				let eventId = event._id;
-				//console.log(event);
-				delete event._id;
-				
-				if(eventId && eventId !== "new") {
-					
-					delete event._id;
-					
-                    Event.update({ _id: eventId }, event, (err, numAffected) => {
-						
-						if(err) {
-							response.status = "error";
-							response.message = "Failed to save event.";
-							response.error = err;
-						} else {
-							response.success = 1;
-							response.status = "eventSaved";
-							response.message = "Event saved.";
-						}
-						
-						callback(response);
-					});
-					
-				} else {
-					
-					event.user = result.user.id;
-					
-					let emailSignupField = {
-						type: {
-							name: "email",
-							title: "E-mail"
-						},
-						name: "email",
-						title: "E-mail",
-						required: "true"
-					};
-					
-					event.signupFields = [emailSignupField];
-                    let eventName = event.info.title.toLowerCase();
-                    event.slug = eventName.split(" ").join("-");
-                    console.log(`generated event slug: ${event.slug}`);
+        delete event._id;				
+        event.user = user.id;
+        
+        let emailSignupField = {
+            type: {
+                name: "email",
+                title: "E-mail"
+            },
+            name: "email",
+            title: "E-mail",
+            required: "true"
+        };
+                
+        event.signupFields = [emailSignupField];
+        let eventName = event.info.title.toLowerCase();
+        event.slug = eventName.split(" ").join("-");
+        console.log(`generated event slug: ${event.slug}`);
 
-                    Event.create(event, (err, createdEvent) => {
-						if(err) {
-							response.status = "error";
-							response.message = "Failed to create event.";
-							response.error = err;
-						} else {
-							response.success = 1;
-							response.status = "eventCreated";
-							response.message = "Event created.";
-							response.event = createdEvent;
-						}
-						callback(response);
+        Event.create(event, (err, createdEvent) => {
+            if (err) { return deferred.reject(err); }
+            deferred.resolve(createdEvent); 
+        });
 					
-					});
-					
-				}
-				
-			} else {
-				
-				callback(result);
-			
-			}
-			
-		});
+	    return deferred.promise;
 		
 	}
-	
+    
+    updateEvent(event) {
+        
+        let deferred = Q.defer();
+
+        let eventId = event._id;
+        delete event._id; 
+            
+        Event.update({ _id: eventId }, event, (err, numAffected) => {
+            
+            if (!err && numAffected === 0) {
+                err = new Errors.NotFound(null, { message: "event_not_found" }); 
+            }
+
+            if (err) { return deferred.reject(err); }
+            
+            deferred.resolve(event);
+
+        });
+
+        return deferred.promise;
+    
+    },
+
 	getTicketResources(req, callback) {
 		
 		let url_parts = url.parse(req.url, true);

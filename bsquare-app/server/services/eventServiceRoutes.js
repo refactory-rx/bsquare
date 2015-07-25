@@ -105,10 +105,28 @@ module.exports = {
 
         });
         
-		app.post('/api/events', isLoggedIn, (req, res, next) => {
-            app.eventService.saveEvent(req, (result) => {
-                res.json(result);
+		app.post("/api/events", isLoggedIn, (req, res, next) => {
+            
+            app.eventService.createEvent(req.body, req.user)
+            .then((event) => {
+                res.json({ status: "ok", event: event });
+            })
+            .catch((err) => {
+                next(err);
             });
+
+		});
+        
+        app.put("/api/events", isLoggedIn, (req, res, next) => {
+            
+            app.eventService.updateEvent(req.body)
+            .then((event) => {
+                res.json({ status: "ok", event: event });
+            })
+            .catch((err) => {
+                next(err);
+            });
+
 		});
 
 		app.get('/api/ticketresources/:eventId', (req, res, next) => {

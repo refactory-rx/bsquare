@@ -71,60 +71,57 @@ controllers.controller('ManageEventCtrl',
     };
    
     
-    $scope.saveEvent = function(event, callback) {
+    $scope.saveEvent = (event, callback) => {
     	
     	$scope.showError = false;
-    	
-    	var saveEventRequest = {
-    		event: event
-    	};
-    	
-    	$log.debug(saveEventRequest);
-    	
-    	$http.post('/api/events', saveEventRequest, { headers: requestHeaders } )
-			.success(function(response) {
-			
-			$log.debug(response);
-			
-			$rootScope.screenResponse(response, function() {
-				
-				if(response.status == 'eventSaved' || response.status == 'eventCreated') {
-					
-					$scope.eventChanged = false;
-					$scope.showError = false;
-					
-					if(response.status == 'eventCreated') {
-						
-						$scope.eventStatus = 'created';
-						$scope.firstLoad = 'loading';
-						$scope.editEvent = response.event._id;
-						$scope.event = response.event;
-					
-					} else {
-						
-						$scope.setEventStatus('saved');
-					
-					}
-					
-					$scope.eventExists = true;
-					
-				} else {
-					$scope.showError = true;
-					$scope.errorMessage = response.message;
-				}
-				
-				if(callback) {
-				    callback(response);
-				}
-				
-			});
-		
-		})
-		.error(function(data) {
-			$log.debug('Error: ' + data);
-		});
-    	
-    	$log.debug(event);
+
+        if (!event._id || event._id === "new") {
+            
+            $http.post("/api/events", event, { headers: requestHeaders } )
+            .success((response) => {
+                
+			    $log.debug(response);
+                
+                $scope.eventChanged = false;
+                $scope.showError = false;
+                
+                $scope.eventStatus = "created";
+                $scope.firstLoad = "loading";
+                $scope.editEvent = response.event._id;
+                $scope.event = response.event;
+                         
+			    $scope.eventExists = true;
+
+            })
+            .error((err) => {
+                $scope.showError = true;
+                $scope.errorMessage = err.message;
+			    $log.debug("Error: ", err);
+            });
+
+        } else {
+            
+            $http.put("/api/events", event, { headers: requestHeaders } )
+            .success((response) => {
+                
+			    $log.debug(response);
+                
+                $scope.eventChanged = false;
+                $scope.showError = false;
+                
+			    $scope.setEventStatus("saved");
+                         
+			    $scope.eventExists = true;
+
+            })
+            .error((err) => {
+                $scope.showError = true;
+                $scope.errorMessage = err.message;
+			    $log.debug("Error: ", err);
+            });
+        
+        }
+        
     	
     };
 	
