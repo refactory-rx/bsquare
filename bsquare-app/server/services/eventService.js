@@ -189,6 +189,7 @@ class EventService {
         };
                 
         event.signupFields = [emailSignupField];
+        console.log("new event", event.info);
         let eventName = event.info.title.toLowerCase();
         event.slug = eventName.split(" ").join("-");
         console.log(`generated event slug: ${event.slug}`);

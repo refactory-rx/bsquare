@@ -1,27 +1,26 @@
-controllers.controller('QuickEditEventCtrl', 
-		['$rootScope', '$scope', '$routeParams', '$http', '$log', '$timeout', 'stringUtils', 'validationService',
-		 function($rootScope, $scope, $routeParams, $http, $log, $timeout, stringUtils, validationService) {
+controllers.controller(
+    "QuickEditEventCtrl", 
+    ['$rootScope', '$scope', '$routeParams', '$http', '$log', '$timeout', 'stringUtils', 'validationService',
+    ($rootScope, $scope, $routeParams, $http, $log, $timeout, stringUtils, validationService) => {
 	
-	$scope.eventStatus = 'init';
+	$scope.eventStatus = "init";
 	
-	$scope.eventView = 'settings';
+	$scope.eventView = "settings";
     $scope.showError = false;
-    $scope.errorMessage = '';
+    $scope.errorMessage = "";
     
-    $scope.firstLoad = '';
+    $scope.firstLoad = "";
     $scope.eventChanged = false;
     
-    $scope.savedEvent = undefined;
     $scope.eventExists = false;
     
     $scope.event = {};
     
-    $scope.viewHeight = 420;
+    $scope.viewHeight = 420; 
     
-    
-    $scope.loadInit = function(myEvent, firstLoad) {
+    $scope.loadInit = (myEvent, firstLoad) => {
     	
-    	console.log('loadInit', firstLoad, myEvent);
+    	console.log("loadInit", firstLoad, myEvent);
     	
     	if(myEvent) {
     		
@@ -36,7 +35,7 @@ controllers.controller('QuickEditEventCtrl',
     			if(firstLoad) {
     	    		$scope.firstLoad = firstLoad;
     	    	} else {
-    	    		$scope.firstLoad = 'loading';
+    	    		$scope.firstLoad = "loading";
     	    	}
     			
     			if(myEvent.info.title) {
@@ -182,11 +181,11 @@ controllers.controller('QuickEditEventCtrl',
     };
     
     
-    $scope.saveEvent = function(event, callback) {
+    $scope.saveEvent = (event, callback) => {
     	
-    	console.log('quick-save event');
+    	console.log("quick-save event");
     	
-    	$scope.eventStatus = '';
+    	$scope.eventStatus = "";
     	$scope.showError = false;
     	
     	if($scope.validationErrors) {
@@ -199,94 +198,99 @@ controllers.controller('QuickEditEventCtrl',
     		console.log('validation errors', validationErrors);
     		return;
     	}
-    	
-    	var saveEventRequest = {
-    		event: event
-    	};
-    	
-    	$log.debug(saveEventRequest);
-    	
-    	$http.post('/api/events', saveEventRequest, { headers: requestHeaders } )
-			.success(function(response) {
-			
-			$log.debug(response);
-			
-			$rootScope.screenResponse(response, function() {
-				
-				if(response.status == 'eventSaved' || response.status == 'eventCreated') {
-					
-					$scope.eventChanged = false;
-					$scope.showError = false;
-					if(response.status == 'eventCreated') {
-						
-						$scope.eventStatus = 'created';
-						$scope.firstLoad = 'loading';
-						$scope.editEvent = response.event._id;
-						$scope.event = response.event;
-						
-						$rootScope.navigate('#/event/'+$scope.event._id);
-						
-					} else {
-						$scope.eventStatus = 'saved';
-					}
-					
-					$scope.eventExists = true;
-					
-				} else {
-					$scope.showError = true;
-					$scope.errorMessage = response.message;
-				}
-				
-				if(callback) {
-				    callback(response);
-				}
-				
-			});
-		
-		})
-		.error(function(data) {
-			$log.debug('Error: ' + data);
-		});
+                
+        if (!event._id || event._id === "new") {
+            
+            $http.post("/api/events", event, { headers: requestHeaders } )
+            .success((response) => {
+                
+                $log.debug(response);
+                
+                $scope.eventChanged = false;
+                $scope.showError = false;
+                
+                $scope.eventStatus = "created";
+                $scope.firstLoad = "loading";
+                $scope.editEvent = response.event._id;
+                $scope.event = response.event;
+                         
+                $scope.eventExists = true;
+
+                $rootScope.navigate('#/event/'+$scope.event._id);
+                
+                if (callback) { callback(response); }
+
+            })
+            .error((err) => {
+                $scope.showError = true;
+                $scope.errorMessage = err.message;
+                $log.debug("Error: ", err);
+            });
+
+        } else {
+            
+            $http.put("/api/events", event, { headers: requestHeaders } )
+            .success((response) => {
+                
+                $log.debug(response);
+                
+                $scope.eventChanged = false;
+                $scope.showError = false;
+                
+                $scope.setEventStatus("saved");
+                         
+                $scope.eventExists = true;
+                
+                if (callback) { callback(response); }
+
+            })
+            .error((err) => {
+                $scope.showError = true;
+                $scope.errorMessage = err.message;
+                $log.debug("Error: ", err);
+            });
+        
+        }
     	
     	$log.debug(event);
     	
     };
     
     
-    $scope.getEvent = function() {
+    $scope.getEvent = () => {
 		
 		$scope.showError = false;
 		
-		$http.get('/api/events/'+$scope.eventId+'?kind=edit', { headers: requestHeaders } )
-			.success(function(response) {
+		$http.get("/api/events/"+$scope.eventId+"?kind=edit", { headers: requestHeaders } )
+        .success((response) => {
 				
-				$log.debug(response);
-				
-				$rootScope.screenResponse(response, function() {
-					
-					if(response.status == 'eventFound') {
-						$scope.firstLoad = 'loading';
-						$scope.event = response.event;
-						$scope.eventStatus = 'fetched';
-						$scope.eventExists = true;
-					} else {
-						$scope.showError = true;
-						$scope.errorMessage = response.message;
-					}
-					
-				});
-			
-			})
-			.error(function(data) {
-				$log.debug('Error: ' + data);
-			});
+            $log.debug(response);
+            
+            $rootScope.screenResponse(response, () => {
+                
+                if(response.status === "eventFound") {
+                    $scope.firstLoad = "loading";
+                    $scope.event = response.event;
+                    $scope.eventStatus = "fetched";
+                    $scope.eventExists = true;
+                } else {
+                    $scope.showError = true;
+                    $scope.errorMessage = response.message;
+                }
+                
+            });
+        
+        })
+        .error((data) => {
+            $log.debug("Error: ", data);
+        });
 			
 	};
     
     
-	$scope.initMap = function() {
+    $scope.initMap = () => {
 		
-		var mapCanvas = document.getElementById('map_canvas');
+		var mapCanvas = document.getElementById("map_canvas");
                         
         var mapOptions = {
         	center: new google.maps.LatLng($scope.event.info.place.coords.lat, $scope.event.info.place.coords.lng),
@@ -305,38 +309,38 @@ controllers.controller('QuickEditEventCtrl',
 	};
 	
     
-    $scope.$watch('eventStartTime', function(startTime) {
+    $scope.$watch("eventStartTime", (startTime) => {
         if(startTime) {
     		$scope.event.info.timeStart = startTime.getTime();
-    		$scope.clearError('timeStart');
+    		$scope.clearError("timeStart");
     	}
     }, true);
     
-    $scope.$watch('eventEndTime', function(endTime) {
+    $scope.$watch("eventEndTime", (endTime) => {
         if(endTime) {
     		$scope.event.info.timeEnd = endTime.getTime();
-    		$scope.clearError('timeEnd');
+    		$scope.clearError("timeEnd");
     	}
     }, true);
     
     
-    setTimeout(function() {
+    $timeout(() => {
     	
-    	var input = document.getElementById('place-input');
+    	var input = document.getElementById("place-input");
     	
     	var options = {
-            types: ['geocode']
+            types: ["geocode"]
         };
         
     	var autocomplete = new google.maps.places.Autocomplete(input);
         
     	console.log(autocomplete);
     	
-        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+        google.maps.event.addListener(autocomplete, "place_changed", () => {
             
             var place = autocomplete.getPlace();
             
-            $scope.$apply(function() {
+            $scope.$apply(() => {
                 
                 $scope.event.info.place = {
                     address: input.value,

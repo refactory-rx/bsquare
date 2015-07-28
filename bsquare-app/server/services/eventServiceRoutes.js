@@ -107,7 +107,7 @@ module.exports = {
         
 		app.post("/api/events", isLoggedIn, (req, res, next) => {
             
-            app.eventService.createEvent(req.body, req.user)
+            app.eventService.createEvent(req.body, req.auth.user)
             .then((event) => {
                 res.json({ status: "ok", event: event });
             })

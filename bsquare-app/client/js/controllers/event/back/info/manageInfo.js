@@ -1,10 +1,10 @@
 controllers.controller(
-    'event.back.info.ManageInfoCtrl', 
+    "event.back.info.ManageInfoCtrl", 
     ['$rootScope', '$scope', '$routeParams', '$http', '$log', '$timeout', 'stringUtils', 'validationService',
-        ($rootScope, $scope, $routeParams, $http, $log, $timeout, stringUtils, validationService) => {
+    ($rootScope, $scope, $routeParams, $http, $log, $timeout, stringUtils, validationService) => {
 	
-    $scope.imageUploadStatus = 'upload';
-    $scope.infoStatus = 'none';
+    $scope.imageUploadStatus = "upload";
+    $scope.infoStatus = "none";
     
     $scope.init = () => {
         
@@ -14,10 +14,10 @@ controllers.controller(
         
         var info = angular.copy($scope.event.info);
         
-        if(!info.eventImage || info.eventImage === '') {
-            $scope.imageUploadStatus = 'upload';
+        if(!info.eventImage || info.eventImage === "") {
+            $scope.imageUploadStatus = "upload";
         } else {
-            $scope.imageUploadStatus = 'inactive';
+            $scope.imageUploadStatus = "inactive";
         }
         
         if(info.timeStart) {
@@ -29,7 +29,7 @@ controllers.controller(
 		}
 		
         if(info.place) {
-            var input = document.getElementById('place-input');
+            var input = document.getElementById("place-input");
             console.log($scope.event);
             input.value = info.place.address;
         }
@@ -38,46 +38,41 @@ controllers.controller(
         
     };
     
-    $scope.$watch('info', (info) => {
+    $scope.$watch("info", (info) => {
         
-        console.log('info changed', info);
+        console.log("info changed", info);
         
-        if($scope.infoStatus === 'none') {
-            $scope.infoStatus = 'init';  
+        if($scope.infoStatus === "none") {
+            $scope.infoStatus = "init";  
         } else {
-            $scope.infoStatus = 'changed';
+            $scope.infoStatus = "changed";
         }
         
-        console.log('infoStatus='+$scope.infoStatus);
+        console.log("infoStatus="+$scope.infoStatus);
         
     }, true);
     
-    $scope.$watch('eventStatus', (eventStatus) => {
+    $scope.$watch("eventStatus", (eventStatus) => {
     	
-    	if(eventStatus == 'loaded') {
-        	
-        	console.log('init manage info');
-            
+    	if(eventStatus === "loaded") {
+        	console.log("init manage info");
             $scope.init();
-            
     	}
     		
     }, true);
         
     $scope.enableImageUpload = () => {
-        $scope.imageUploadStatus = 'upload';
+        $scope.imageUploadStatus = "upload";
     };
     
     $scope.finishImageUpload = () => {
-        $scope.imageUploadStatus = 'inactive';
+        $scope.imageUploadStatus = "inactive";
     };
     
     $scope.selectPlace = (ac) => {
-    	
-    	console.log('select place...');
+    	console.log("select place...");
     	var place = autocomplete[ac].getPlace();
     	$log.debug(place);
-    
     };
     
     
@@ -99,21 +94,21 @@ controllers.controller(
     	};
         
         $scope.saveEvent(event, (response) => {
-            if(response.status == 'eventSaved') {
-                $scope.infoStatus = 'saved';
+            if(response.status === "ok") {
+                $scope.infoStatus = "saved";
                 $scope.event.info = angular.copy($scope.info);
             }
         });
         
     };
     
-    $scope.$watch('eventStartTime', (startTime) => {
+    $scope.$watch("eventStartTime", (startTime) => {
         if(startTime) {
     		$scope.info.timeStart = startTime.getTime();
     	}
     }, true);
     
-    $scope.$watch('eventEndTime', (endTime) => {
+    $scope.$watch("eventEndTime", (endTime) => {
         if(endTime) {
     		$scope.info.timeEnd = endTime.getTime();
     	}
