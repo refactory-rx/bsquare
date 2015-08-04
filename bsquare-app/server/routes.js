@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import url from "url";
 
-module.exports = function(app) {
+module.exports = (app) => {
 
     let Event = app.model.Event;
     
@@ -17,19 +17,19 @@ module.exports = function(app) {
     app.guestService.initRoutes();
     app.ticketService.initRoutes();
 
-    app.get('/e/:slug', function(req, res) {
-        Event.findOne({ slug: req.params.slug }, function(err, event) {
+    app.get("/e/:slug", (req, res) => {
+        Event.findOne({ slug: req.params.slug }, (err, event) => {
             if(!err || event) {
-                res.redirect('/#/event/'+event._id);
+                res.redirect(`/#/event/${event._id}`);
             } else {
-                res.redirect('/404.html');
+                res.redirect("/404.html");
             }
 
         });
     });
 
     app.get("/", (req, res) => {
-		res.sendFile(app.settings.WEB_CONTENT_PATH+"/index.html"); // load the single view file (angular will handle the page changes on the front-end)
+		res.sendFile(app.settings.WEB_CONTENT_PATH+"/index.html");
 	});
 
 

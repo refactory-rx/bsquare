@@ -1,16 +1,21 @@
-let Q = require('q');
-let url = require('url');
+import Q from "q";
+import url from "url";
+
+import Errors from "../../../shared/lib/Errors";
 
 let Order, Invoice, TicketResource;
 
 class PaymentService {
 
     constructor(app) {
+
         ({ Order, Invoice, TicketResource } = app.model);
+        
         this.app = app;
-        this.coinbaseService = require('./coinbaseService')(app);
-        this.checkoutService = require('./checkoutService')(app);
+        this.coinbaseService = require("./coinbaseService")(app);
+        this.checkoutService = require("./checkoutService")(app);
         this.orderService = app.orderService;
+    
     }
 
 	checkoutRequest(orderId) {
@@ -19,35 +24,34 @@ class PaymentService {
 		
 		let response = { success: 0 };
 		
-        Order.findOne( { _id: orderId }, (err, order) => {
-			
-			if(err) {
-				response.status = 'orderError';
-				response.error = err;
-				deferred.resolve(response);
-			} else {
-				
-				if(order) {
-                    
-                    if (order.orderTotal === 0) {
-                        response.status = "freeOrder";
-                        response.message = "Order does not require invoice";
-                        deferred.resolve(response);
-                        return; 
-                    }
+        Order.findOneQ( { _id: orderId })
+        .then((order) => {
+            
+            if (!order) {
+                return deferred.reject(new Erors.NotFound(null, { message: "order_not_found" }));
+            }
 
-                    this.provideInvoice('checkout', order, null, (response) => {
-						deferred.resolve(response);
-                    });
+            if (order.orderTotal === 0) {
+                response.status = "freeOrder";
+                response.message = "Order does not require invoice";
+                deferred.resolve();
+                return; 
+            }
 
-				} else {
-					response.status = 'orderNotFound';
-					deferred.resolve(response);
-				}
-					
-			}
-				
-		});
+            this.provideInvoice("checkout", order, null, (result) => {
+                if (result.success === 1) {
+                    deferred.resolve(result.invoice);
+                } else {
+                    deferred.reject(new Errors.UnprocessableEntity(null, result));
+                }
+            });
+
+
+        })
+        .catch((err) => {
+            deferred.reject(err);
+        });
+
 		
 		return deferred.promise;
 				
@@ -274,16 +278,16 @@ class PaymentService {
         let paymentProvider;
         let fetchParams;
 		
-        if(invoice.provider == 'coinbase') {
+        if(invoice.provider === "coinbase") {
             paymentProvider = this.coinbaseService;
             fetchParams = invoice.extData.button.id;
-            console.log('get by extData.id: '+invoice.extData.button.id);
-        } else if(invoice.provider == 'checkout') {
+            console.log("get by extData.id: "+invoice.extData.button.id);
+        } else if(invoice.provider === "checkout") {
             paymentProvider = this.checkoutService;
             fetchParams = invoice.extData;
         } else {
-            response.status = 'unknownPaymentProvider';
-            response.message = 'Unknown payment provider';
+            response.status = "unknownPaymentProvider";
+            response.message = "Unknown payment provider";
             callback(response);
             return;
         }

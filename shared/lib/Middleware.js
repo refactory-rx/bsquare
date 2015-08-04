@@ -3,7 +3,7 @@
 import url from "url";
 
 module.exports = (app) => { 
-
+    
     app.use("/api", (req, res, next) => {
         
         let url_parts = url.parse(req.url, true);
@@ -15,7 +15,7 @@ module.exports = (app) => {
                 req.auth = result;
             }
             
-            console.log("REQ "+req.url+" auth="+(result.status === "authorized"));
+            console.log(`REQ ${req.url} auth=${(result.status === "authorized")}`);
             next();
 
         });

@@ -171,7 +171,7 @@ controllers.controller(
 			
 			console.log("invoice response", response);
 				
-            if(response.status === "invoiceProvided") {
+            if(response.status === "ok") {
 
 				var banks = response.invoice.extData.trade.payments[0].payment[0].banks[0];
 				console.log(banks);
