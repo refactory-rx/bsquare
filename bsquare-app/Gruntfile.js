@@ -73,10 +73,15 @@ module.exports = function(grunt) {
         },
 
         uglify: {
-            js: {
+            dev: {
                 options: {
                     sourceMap: true
                 },
+                files: {
+                    "client/dist/source.min.js": ["client/dist/source.js"]
+                }
+            },
+            server: {
                 files: {
                     "client/dist/source.min.js": ["client/dist/source.js"]
                 }
@@ -86,7 +91,7 @@ module.exports = function(grunt) {
         watch: {
             es6: {
                 files: ["client/js/**/*.js"],
-                tasks: ["babel", "concat", "ngAnnotate", "uglify"]
+                tasks: ["babel", "concat", "ngAnnotate", "uglify:dev"]
             }
         },
         

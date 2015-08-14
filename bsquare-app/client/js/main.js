@@ -187,7 +187,6 @@ var mainApp = angular.module(
     ]
 );
 
-
 mainApp.config(
     
     [   
