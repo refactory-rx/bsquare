@@ -1,6 +1,7 @@
-controllers.controller('AppCtrl', 
-		['$rootScope', '$scope', '$location', '$routeParams', '$http', '$log', '$timeout', '$filter',
-		 function($rootScope, $scope, $location, $routeParams, $http, $log, $timeout, $filter) {
+console.log("load app ctrl");
+controllers.controller("AppCtrl", 
+    ['$rootScope', '$scope', '$location', '$routeParams', '$http', '$log', '$timeout', '$filter',
+        ($rootScope, $scope, $location, $routeParams, $http, $log, $timeout, $filter) => {
 	
 	$scope.appStatus = '';
     $scope.showError = false;

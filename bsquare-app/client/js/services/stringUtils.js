@@ -1,4 +1,5 @@
-mainApp.factory('stringUtils', [function() {
+console.log("load stringUtils service");
+mainApp.factory("stringUtils", [() => {
    
     return  {
      

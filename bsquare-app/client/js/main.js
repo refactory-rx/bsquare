@@ -1,20 +1,20 @@
-var placeSearch;
+let placeSearch;
 
-var loggedUser = null;
-var requestHeaders = {};
+let loggedUser = null;
+let requestHeaders = {};
 
-var controllers = angular.module('controllers', []);
-var filters = angular.module('filters', []);
+let controllers = angular.module("controllers", []);
+let filters = angular.module("filters", []);
 
-filters.filter('truncate', function () {
+filters.filter("truncate", () => {
     
-    return function (text, length, end) {
+    return (text, length, end) => {
         
         if(isNaN(length)) {
             length = 10;
         }
         
-        if(end === undefined) {
+        if(!end) {
             end = "...";
         }
         
@@ -172,13 +172,30 @@ controllers.controller(
 	
 }]);
 
-var mainApp = angular.module('mainApp', ['controllers', 'filters', 'ngRoute', 'ngCookies', 'ngAnimate', 'angulike', 'ui.bootstrap.datetimepicker', 'pascalprecht.translate']);
 
+console.log("create main app");
+var mainApp = angular.module(
+    "mainApp", 
+    [
+        "controllers", 
+        "filters", 
+        "ngRoute", 
+        "ngCookies", 
+        "ngAnimate", 
+        "angulike", 
+        "ui.bootstrap.datetimepicker", 
+        "pascalprecht.translate"
+    ]
+);
+
+
+console.log("conf main app");
 mainApp.config(
     
     [   
-        '$routeProvider',
-        function($routeProvider) {
+        "$routeProvider",
+        ($routeProvider) => {
+
 	        $routeProvider.when('/user/:id', { templateUrl: 'user.html', controller: 'UserCtrl' } )
 	            .when('/front', { templateUrl: 'parts/front.html', controller: 'FrontCtrl' } )
 	            .when('/app', { 
@@ -209,16 +226,19 @@ mainApp.config(
 	            .when('/faq', { templateUrl: 'parts/faq.html' } )
 	            .when('/support', { templateUrl: 'parts/support.html' } )
 	            .otherwise( { redirectTo: '/app' } );
-	    }
+        
+        }
 	   
 	]
 
 );
 
-mainApp.config(function($logProvider){
+mainApp.config(($logProvider) => {
 	$logProvider.debugEnabled(true);
 });
 
-mainApp.run(function($rootScope, $location) {
-	$rootScope.location = $location;
+
+console.log("main app run");
+mainApp.run(($rootScope, $location) => {
+    $rootScope.location = $location;
 });

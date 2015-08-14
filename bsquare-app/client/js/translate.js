@@ -1,3 +1,4 @@
+console.log("config trannslations");
 mainApp.config(($translateProvider) => {
     
     //console.log($locale);

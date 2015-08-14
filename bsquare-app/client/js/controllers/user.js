@@ -1,4 +1,4 @@
-controllers.controller('UserCtrl', ['$scope', '$routeParams', '$http', function($scope, $routeParams, $http) {
+controllers.controller("UserCtrl", ['$scope', '$routeParams', '$http', function($scope, $routeParams, $http) {
 	
 	$scope.userId = $routeParams.id;
     
