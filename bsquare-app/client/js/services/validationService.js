@@ -1,4 +1,3 @@
-console.log("load validation service");
 mainApp.factory("validationService", ["$translate", function($translate) {
    
     return  {

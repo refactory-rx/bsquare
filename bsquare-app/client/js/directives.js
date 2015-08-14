@@ -1,5 +1,3 @@
-console.log("define directives");
-
 var INTEGER_REGEXP = /^\-?\d*$/;
 mainApp.directive('integer', function() {
   return {

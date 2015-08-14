@@ -1,4 +1,3 @@
-console.log("load stringUtils service");
 mainApp.factory("stringUtils", [() => {
    
     return  {

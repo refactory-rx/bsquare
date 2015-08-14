@@ -173,7 +173,6 @@ controllers.controller(
 }]);
 
 
-console.log("create main app");
 var mainApp = angular.module(
     "mainApp", 
     [
@@ -189,7 +188,6 @@ var mainApp = angular.module(
 );
 
 
-console.log("conf main app");
 mainApp.config(
     
     [   
@@ -238,7 +236,6 @@ mainApp.config(($logProvider) => {
 });
 
 
-console.log("main app run");
 mainApp.run(($rootScope, $location) => {
     $rootScope.location = $location;
 });

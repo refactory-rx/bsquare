@@ -1,4 +1,3 @@
-console.log("load eventFront ctrl");
 controllers.controller(
     "EventFrontCtrl", 
     ['$rootScope', '$scope', '$location', '$routeParams', '$http', '$log', '$timeout', '$filter', '$locale', '$translate',

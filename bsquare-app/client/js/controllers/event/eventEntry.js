@@ -1,4 +1,3 @@
-console.log("load event entry ctrl");
 controllers.controller(
     "EventEntryCtrl", 
     ['$rootScope', '$scope', '$location', '$routeParams', '$http', '$log', '$timeout',
