@@ -2,6 +2,6 @@
 echo Pulling latest from master
 git pull
 echo Transpiling ES6 client code
-grunt babel concat ng-annotate uglify
+grunt babel concat ngAnnotate uglify
 echo Restarting server
 pkill -f "bsquare-app/server.js"
