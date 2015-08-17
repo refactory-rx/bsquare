@@ -1,6 +1,7 @@
-controllers.controller('event.back.payout.PayoutCtrl', 
-		['$rootScope', '$scope', '$routeParams', '$http', '$log', '$timeout',
-		 function($rootScope, $scope, $routeParams, $http, $log, $timeout) {
+controllers.controller(
+    "event.back.payout.PayoutCtrl", 
+    ['$rootScope', '$scope', '$routeParams', '$http', '$log', '$timeout',
+        ($rootScope, $scope, $routeParams, $http, $log, $timeout) => {
 	
 	$scope.payoutStatus = 'none';
 	
@@ -44,21 +45,17 @@ controllers.controller('event.back.payout.PayoutCtrl',
     };
     
     
-    $scope.savePayoutOptions = function() {
+    $scope.savePayoutOptions = () => {
         
         var event = {
             _id: $scope.event._id,
             payout: $scope.payout
         };
         
-        $scope.saveEvent(event, function(response) {
-            if(response.status == 'eventSaved') {
-                $scope.payoutStatus = 'saved';
-                $scope.event.payout = angular.copy($scope.payout);
-            } else if(response.status == 'eventCreated') {
-                $scope.payoutStatus = 'created';
-                $scope.event.payout = angular.copy($scope.payout);
-            }
+        delete $scope.errors.invalid_iban;    
+        $scope.saveEvent(event, (response) => {
+            $scope.payoutStatus = "saved";
+            $scope.event.payout = angular.copy($scope.payout);
         });
             
     };

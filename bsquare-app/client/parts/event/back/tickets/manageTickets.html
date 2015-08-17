@@ -7,7 +7,7 @@
     </div>
 
     <div ng-show="validationErrors" style="width: 100%;">
-        <div ng-repeat="errorKey in validationErrors.keys" style="color: #e86850;">
+        <div ng-repeat="errorKey in validationErrors.keys" class="errormessage">
             {{validationErrors[errorKey]}}
         </div>
     </div>

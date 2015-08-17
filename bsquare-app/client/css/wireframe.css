@@ -79,6 +79,10 @@ div.appHeader {
 	margin-bottom: 2%;
 }
 
+.errormessage {
+    color: #e86850;
+}
+
 div.inlineError {
 	color: #a00000;
 	text-align: center;
@@ -1512,6 +1516,14 @@ div.minView1 div.listEventImage {
 }
 
 
+@media (min-width: 660px) and (max-width: 1024px) {
+    
+    div.editEventSettings {
+        width: 75%;
+    }
+
+}
+
 @media (max-width: 660px) {
 		
 	#mainCard {
@@ -1621,7 +1633,7 @@ div.minView1 div.listEventImage {
 	
 	
 	div.editEventSettings {
-		width: 90%;
+		width: 100%;
 	}
 	
 	.signupFields {
@@ -1831,7 +1843,7 @@ div.minView1 div.listEventImage {
 @media (min-width: 420px) and (max-width: 600px) {
 	
 	div.inputForm div.inputRow div.labelContainer {
-		width: initial;
+		/* width: initial; */
 	}
 
 }

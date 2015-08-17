@@ -1,7 +1,7 @@
 controllers.controller(
     "ManageEventCtrl", 
     ['$rootScope', '$scope', '$routeParams', '$http', '$log', '$timeout', 'validationService',
-        ($rootScope, $scope, $routeParams, $http, $log, $timeout, validationService) => {
+    ($rootScope, $scope, $routeParams, $http, $log, $timeout, validationService) => {
 	
 	$scope.eventView = 'manageInfo';
 	$scope.eventViewUrlPrefix = 'parts/event/back/';
@@ -9,7 +9,8 @@ controllers.controller(
 	
     $scope.showError = false;
     $scope.errorMessage = '';
-    
+    $scope.errors = {};
+        
     $scope.eventExists = false;
     
     $scope.viewHeight = 420;
@@ -25,8 +26,7 @@ controllers.controller(
     $scope.$on("$routeUpdate", (current, next) => {
     	$scope.updateView(next.params);
     });
-    
-    
+     
     $scope.updateView = (params) => {
     	
     	if(params.view === "myEvents" && params.action) {
@@ -38,8 +38,7 @@ controllers.controller(
     		}
     	}
     	
-    };
-    
+    }; 
     
     $scope.setView = (view) => {
     	
@@ -120,9 +119,8 @@ controllers.controller(
 
             })
             .error((err) => {
-                $scope.showError = true;
-                $scope.errorMessage = err.message;
-			    $log.debug("Error: ", err);
+                $scope.errors[err.message] = err;
+                $log.debug("Error: ", err);
             });
         
         }

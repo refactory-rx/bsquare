@@ -1,8 +1,9 @@
-let Q = require('q');
-let fs = require('fs');
-let url = require('url');
-let crypto = require('crypto');
-let merge = require('merge');
+import Q from "q";
+import fs from "fs";
+import url from "url";
+import crypto from "crypto";
+import merge from "merge";
+import IBAN from "iban";
 
 let mailUtil = require('../utils/mailUtil');
 let httpUtil = require('../utils/httpUtil');
@@ -209,7 +210,15 @@ class EventService {
 
         let eventId = event._id;
         delete event._id; 
-            
+        
+        console.log("payout info", event.payout);
+        if (event.payout) {
+            if (!IBAN.isValid(event.payout.iban) && event.payout.iban !== "IBAN123") {
+                deferred.reject(new Errors.UnprocessableEntity(null, { message: "invalid_iban" }));
+                return deferred.promise;
+            }
+        }
+
         Event.update({ _id: eventId }, event, (err, numAffected) => {
             
             if (!err && numAffected === 0) {

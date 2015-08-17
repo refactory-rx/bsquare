@@ -19,6 +19,7 @@
     "ejs": "^2.3.2",
     "express": "^4.13.0",
     "form-urlencoded": "^0.1.4",
+    "iban": "arhs/iban.js",
     "merge": "^1.2.0",
     "method-override": "^2.3.3",
     "moment": "^2.10.3",

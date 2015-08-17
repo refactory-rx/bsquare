@@ -1,5 +1,9 @@
 <div class="editEventSettings" style="height: 100%;" ng-controller="event.back.payout.PayoutCtrl">
     
+    <div ng-show="errors.invalid_iban" class="errormessage">
+        {{ "event.back.payout.invalidIban" | translate }}
+    </div>
+
     <div role="form">
         
         <div class="inputForm">

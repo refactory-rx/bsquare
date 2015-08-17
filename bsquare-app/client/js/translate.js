@@ -130,6 +130,7 @@ mainApp.config(($translateProvider) => {
         "event.back.payout.rcptName.placeholder": "Rcpt name: eg. John Smith",
         "event.back.payout.rcptAddress.label": "Recipient address",
         "event.back.payout.rcptAddress.placeholder": "Rcpt addr: eg. Kirkkokatu 24 B 11, 03012 Helsinki",
+        "event.back.payout.invalidIban": "Invalid IBAN",
          
         "event.back.tickets.visible": "VISIBLE",
         "event.back.tickets.hidden": "HIDDEN",
@@ -373,6 +374,7 @@ mainApp.config(($translateProvider) => {
         "event.back.payout.rcptName.placeholder": "Nimi: esim. Matti Virtanen",
         "event.back.payout.rcptAddress.label": "Vastaanottajan osoite",
         "event.back.payout.rcptAddress.placeholder": "Osoite: esim. Kirkkokatu 24 B 11, 03012 Helsinki",
+        "event.back.payout.invalidIban": "Virheellinen IBAN",
         
         "event.back.tickets.visible": "NÄKYY",
         "event.back.tickets.hidden": "EI NÄY",
