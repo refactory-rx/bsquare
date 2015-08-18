@@ -1,21 +1,20 @@
-var Q = require('q');
+import Q from "q";
 
-var paymentTime = 30*60*1000;
+let Order, Invoice, TicketResource;
+let paymentTime = 30*60*1000;
 
-module.exports = function(app) {
-
-    let { Order, Invoice, TicketResource } = app.model;
-
-    var module = {};
+class OrdersTask {
     
-    module.exports = {
+    constructor(app) {
+        ({ Order, Invoice, TicketResource } = app.model);
+    }
 
-    timeoutOrders: function() {
+    timeoutOrders() {
 
         var now = (new Date()).getTime();
         var tooOld = now - paymentTime;
 
-        console.log('timeout orders older than '+tooOld);
+        console.log(`timeout orders older than ${tooOld}`);
 
         var qtyByResource = {};
         var timedoutOrderIds = [];
@@ -23,38 +22,37 @@ module.exports = function(app) {
         Order.findQ({
             $and: [
                 { timePlaced: { $lt: tooOld } },
-                { status: { $nin: ['fulfilled', 'refunded', 'paid', 'timedout'] } }
+                { status: { $nin: ["fulfilled", "refunded", "paid", "timedout"] } }
             ]
         })
-        .then(function(orders) {
+        .then((orders) => {
 
-            for(var i=0; i < orders.length; i++) {
+            orders.forEach(order => {
 
-                timedoutOrderIds.push(orders[i]._id);
+                timedoutOrderIds.push(order._id);
 
-                for(var j=0; j < orders[i].items.length; j++) {
-
-                    var item = orders[i].items[j];
+                order.items.forEach(item => {
+                    
                     if(!qtyByResource[item.ticketResource]) {
                         qtyByResource[item.ticketResource] = 0;
                     }
 
                     qtyByResource[item.ticketResource] += parseInt(item.quantity);
 
-                }
+                });
 
-            }
+            });
 
             var resourceIds = Object.getOwnPropertyNames(qtyByResource);
             //console.log(resourceIds);
             return TicketResource.findQ({ _id: { $in: resourceIds } });
 
         })
-        .then(function(ticketResources) {
+        .then((ticketResources) => {
 
             //console.log(ticketResources);
 
-            var resourceUpdates = ticketResources.map(function(ticketResource) {
+            var resourceUpdates = ticketResources.map((ticketResource) => {
                 var quantity = qtyByResource[ticketResource._id.toHexString()];
                 var qtyReserved = ticketResource.qtyReserved - quantity;
                 console.log(ticketResource.name+': qtyReserved - '+quantity+' = '+qtyReserved);
@@ -64,29 +62,28 @@ module.exports = function(app) {
             return Q.all(resourceUpdates);
 
         })
-        .then(function(rowsAffected) {
+        .then((rowsAffected) => {
 
             console.log(rowsAffected);
 
             console.log(timedoutOrderIds);
-            return Order.updateQ( { _id: { $in: timedoutOrderIds } }, { status: 'timedout' }, { multi: true });
+            return Order.updateQ( { _id: { $in: timedoutOrderIds } }, { status: "timedout" }, { multi: true });
 
         })
-        .then(function(rowsAffected) {
-            console.log('Timed out orders: '+rowsAffected);
+        .then((rowsAffected) => {
+            console.log(`Timed out orders: ${rowsAffected}`);
         })
-        .catch(function(error) {
+        .catch((error) => {
             console.log(error);
         })
         .done();
 
-    },
+    }
 
-
-    updatePaymentStatus: function() {
+    updatePaymentStatus() {
 
         Order.findQ({ status: "invoiced" })
-        .then(function(orders) {
+        .then((orders) => {
 
             console.log(`updating payment status for ${orders.length} orders`, orders);
 
@@ -103,43 +100,47 @@ module.exports = function(app) {
             });
 
         })
-        .catch(function(error) {
+        .catch((error) => {
             console.log(error);
         });
 
-    },
+    }
 
-
-    updateOrderPaymentStatus: function(order) {
+    updateOrderPaymentStatus(order) {
 
         Invoice.findOneQ({ _id: order.invoiceId })
-        .then(function(invoice) {
+        .then((invoice) => {
 
             console.log('foundInvoice', invoice);
 
-            app.paymentService.updateInvoice(invoice, function(response) {
+            app.paymentService.updateInvoice(invoice, (response) => {
                 console.log('scheduled invoice update response', response);
             });
 
         })
-        .catch(function(error) {
+        .catch((error) => {
             console.log(error);
         });
 
-    },
+    }
 
-    start: function() {
+    start() {
 
-        module.exports.timeoutOrders();
-        module.exports.updatePaymentStatus();
+        this.timeoutOrders();
+        this.updatePaymentStatus();
 
-        setInterval(module.exports.timeoutOrders, 60*1000);
-        setInterval(module.exports.updatePaymentStatus, 60*1000);
+        setInterval(() => {
+            this.timeoutOrders();
+        }, 60*1000);
+
+        setInterval(() => {
+            this.updatePaymentStatus()
+        }, 60*1000);
 
     }
 
-    };
+}
 
-    return module.exports;
-
+module.exports = (app) => {
+    return new OrdersTask(app);
 };
