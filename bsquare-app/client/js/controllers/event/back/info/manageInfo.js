@@ -11,7 +11,7 @@ controllers.controller(
         if(!$scope.event) {
             return;
         }
-        
+         
         var info = angular.copy($scope.event.info);
         
         if(!info.eventImage || info.eventImage === "") {
@@ -34,15 +34,16 @@ controllers.controller(
             input.value = info.place.address;
         }
         
+        $scope.infoStatus = "viewInit";
         $scope.info = info;
         
     };
     
     $scope.$watch("info", (info) => {
         
-        console.log("info changed", info);
+        console.log("info changed", $scope.infoStatus, info);
         
-        if($scope.infoStatus === "none") {
+        if ($scope.infoStatus === "none" || $scope.infoStatus === "viewInit") {
             $scope.infoStatus = "init";  
         } else {
             $scope.infoStatus = "changed";
@@ -150,20 +151,20 @@ controllers.controller(
     
     setTimeout(function() {
     	
-    	var input = document.getElementById('place-input');
+    	var input = document.getElementById("place-input");
     	
     	var options = {
-            types: ['geocode']
+            types: ["geocode", "locality", "postal_town"]
         };
         
     	var autocomplete = new google.maps.places.Autocomplete(input);
         
     	console.log(autocomplete);
     	
-        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+        google.maps.event.addListener(autocomplete, "place_changed", function() {
             
             var place = autocomplete.getPlace();
-            //console.log(place);
+            console.log("full place", place);
             
             $scope.$apply(function() {
                 
