@@ -12,6 +12,23 @@ let Errors = require("../../../shared/lib/Errors");
 let Event, ImpressionTracker, TicketResource, Ticket;
 let WEB_CONTENT_PATH;
 
+const PLACE_MAP = {
+    "Helsingfors": "Helsinki",
+    "Tammerfors": "Tampere",
+    "Åbo": "Turku",
+    "Uleåborg": "Oulu",
+    "Esbo": "Espoo",
+    "Vanda": "Vantaa",
+    "Tavastehus": "Hämeenlinna",
+    "Lahtis": "Lahti",
+    "Villmanstrand": "Lappeenranta",
+    "Björneborg": "Pori",
+    "Nyslott": "Savonlinna",
+    "Vasa": "Vaasa",
+    "Torneå": "Tornio",
+    "Hangö": "Hanko"
+};
+
 class EventService {
     
     constructor(app) {
@@ -49,7 +66,10 @@ class EventService {
             
             let eventStats = { max: 0 };
             events.forEach(event => {
-                let city = event.info.place.vicinity;
+                
+                let vicinity = event.info.place.vicinity;
+                let city = PLACE_MAP[vicinity] || vicinity;
+                
                 eventStats[city] = eventStats[city] ? eventStats[city] + 1 : 1;
                 if (eventStats[city] > eventStats.max) {
                     eventStats.max = eventStats[city];

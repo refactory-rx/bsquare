@@ -149,29 +149,39 @@ controllers.controller(
     
     $scope.init();
     
-    setTimeout(function() {
+    setTimeout(() => {
     	
-    	var input = document.getElementById("place-input");
+    	let input = document.getElementById("place-input");
     	
-    	var options = {
+    	let options = {
             types: ["geocode", "locality", "postal_town"]
         };
         
-    	var autocomplete = new google.maps.places.Autocomplete(input);
+    	let autocomplete = new google.maps.places.Autocomplete(input);
         
     	console.log(autocomplete);
     	
-        google.maps.event.addListener(autocomplete, "place_changed", function() {
-            
-            var place = autocomplete.getPlace();
+        google.maps.event.addListener(autocomplete, "place_changed", () => {
+
+            let vicinity = null;
+            let place = autocomplete.getPlace();
+            let addr_components = place.address_components;
+
+            for (let i = 0; i < addr_components.length; i++) {
+                if (addr_components[i].types.indexOf("locality") != -1) {
+                    vicinity = addr_components[i].long_name;
+                    break;
+                }
+            }
+
             console.log("full place", place);
-            
-            $scope.$apply(function() {
+             
+            $scope.$apply(() => {
                 
                 $scope.info.place = {
                     
                     address: input.value,
-                    vicinity: place.vicinity,
+                    vicinity: vicinity || place.vicinity,
                     
                     coords: {
                         lat: place.geometry.location.lat(),
@@ -180,6 +190,7 @@ controllers.controller(
                 };
                 
                 $scope.initMap();
+                $scope.infoState = "changed";
                 console.log($scope.info.place);
                 
             });
