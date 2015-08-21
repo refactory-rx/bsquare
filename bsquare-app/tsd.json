@@ -4,5 +4,18 @@
   "ref": "master",
   "path": "client/typings",
   "bundle": "client/typings/tsd.d.ts",
-  "installed": {}
+  "installed": {
+    "angular2/angular2.d.ts": {
+      "commit": "6a24a980eddf0c5b43e1aee82d6ae5ecba5abd86"
+    },
+    "es6-promise/es6-promise.d.ts": {
+      "commit": "6a24a980eddf0c5b43e1aee82d6ae5ecba5abd86"
+    },
+    "rx/rx.d.ts": {
+      "commit": "6a24a980eddf0c5b43e1aee82d6ae5ecba5abd86"
+    },
+    "rx/rx-lite.d.ts": {
+      "commit": "6a24a980eddf0c5b43e1aee82d6ae5ecba5abd86"
+    }
+  }
 }
