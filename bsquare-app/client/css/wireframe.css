@@ -506,7 +506,7 @@ div.listEventInfo {
 }
 
 .listEventInfo .header {
-    height: 24%;
+    margin-bottom: 4px;
 }
 
 .listEventInfo .header .title {
