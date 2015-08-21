@@ -7,4 +7,5 @@ bower_components
 config
 dist
 tickets
+typings
 */**/client/img/events

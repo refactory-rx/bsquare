@@ -19,7 +19,21 @@ module.exports = function(grunt) {
                 ]
             }
         },
-        
+
+        ts: {
+            default: {
+                files: [
+                    { src: ["client/ts/*.ts"], dest: "client/dist/ng2" }
+                ],
+                options: {
+                    experimentalDecorators: true,
+                    module: "commonjs",
+                    fast: "never",
+                    target: "es5"
+                }
+            }
+        },
+
         concat: {
             js: {
                 src: [
@@ -71,7 +85,7 @@ module.exports = function(grunt) {
                 }
             }
         },
-
+        
         uglify: {
             dev: {
                 options: {
@@ -90,8 +104,8 @@ module.exports = function(grunt) {
 
         watch: {
             es6: {
-                files: ["client/js/**/*.js"],
-                tasks: ["babel", "concat", "ngAnnotate", "uglify:dev"]
+                files: ["client/js/**/*.js", "client/ts/*.ts"],
+                tasks: ["babel", "ts", "concat", "ngAnnotate", "uglify:dev"]
             }
         },
         
