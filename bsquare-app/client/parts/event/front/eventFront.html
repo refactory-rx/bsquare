@@ -1,11 +1,11 @@
 <div class="panel panel-default event {{event.layout}}" ng-controller="EventFrontCtrl" data-ng-init="init()" ng-cloak>
 
-    <div class="panel-heading columnHeader">
+    <div class="panel-heading columnHeader" ng-show="ownEvent == true">
         <div class="left">{{event.info.title}}</div>
         <div ng-show="ownEvent == true" class="right"><a href="" ng-click="setRootView('edit')" ng-show="loggedUser != undefined">{{ 'event.front.manage' | translate }}</a></div>
     </div>
     
-    <div class="panel-body event-content" style="height: 92%; overflow-y: auto; margin-right: 1px;" ng-cloak>
+    <div class="panel-body event-content" style="height: 100%; overflow-y: auto; margin-right: 1px;" ng-cloak>
     	
             <div style="padding-top: 1%; padding-left: 1%">
             

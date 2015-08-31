@@ -1,0 +1,1995 @@
+@font-face {
+  font-family: 'Adam CG Pro';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Adam CG Pro'), url('/fonts/adam-cg-pro.regular.otf') format('opentype');
+}
+
+html {
+    height: 100%;   
+}
+
+body {
+    height: 100%;
+    overflow-y: hidden;
+    background: white;
+    background-color: white;
+    font-family: 'Oswald', serif;
+    /* font-family: "Adam CG Pro", serif; */
+    /*font-family: "Open Sans","Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;i*/
+}
+
+.headerBg {
+    /*background: #485563;*/
+}
+
+.tableRowBorder { 
+    border-top: 1px solid #485563;
+}
+
+.panelBg {
+   /* background: #4e5d6c; */
+}
+
+.bodyBg {
+    /* background: #2b3e50; */
+}
+
+.panel-body {
+    padding: inherit;
+}
+
+.panel-body .btn {
+    border: 1px solid #ebebeb;
+}
+
+.panel {
+    box-shadow: none;
+}
+
+
+.textbox { 
+    background: white; 
+    border: 1px solid #DDD; 
+    border-radius: 3px;
+    color: #666;
+    outline: none; 
+    height: 30px;
+    padding-left: 4px;
+    margin-top: -4px;
+}
+   
+input.ng-invalid {
+	box-shadow: 0 0 2px #FF0000 inset;
+}
+
+input.ng-valid {
+	box-shadow: 0 0 2px #DDDDDD inset;
+}
+
+input.pwdShort {
+	width: 87%;
+	display: inline;
+}
+
+input.pwdLong {
+	width: 100%;
+	display: inline;
+}
+
+div.appHeader {
+    background: #e0e0e0;
+	height: 40px;
+	/* margin-bottom: 2%; */
+}
+
+.errormessage {
+    color: #e86850;
+}
+
+div.inlineError {
+	color: #a00000;
+	text-align: center;
+	margin-bottom: 12px;
+}
+
+div.appHeader div.left {
+	display: inline;
+	float: left;
+	width: 33%;
+	height: 100%;
+}
+
+div.appHeader div.right {
+	display: inline;
+	float: left;
+	width: 67%;
+	text-align: right;
+}
+
+div.appContent {
+	
+}
+
+div.appFooter {
+	
+}
+
+div.front {
+	padding-top: 60px;
+}
+
+div.front div.left {
+	text-align: center;
+	padding-bottom: 60px;
+}
+
+div.front div.right {
+	
+}
+
+div.loggedIn {
+	text-align: center;	
+}
+
+div.inputForm {
+	padding: 10px;
+}
+
+div.inputForm div.inputRow {
+	width: 100%;
+	height: 28px;
+	display: block;
+	text-align: center;
+}
+
+div.inputForm div.inputRow div.inputRowCell {
+	display: inline;
+	float: left;
+}
+
+div.inputForm div.inputRow div.labelContainer {
+    width: 30%;
+    text-align: right;
+    margin-right: 8px;
+    margin-top: 6px;
+}
+
+div.inputForm div.inputRow div.inputContainer {
+    width: 14em;
+    text-align: left;
+}
+
+div.inputForm div.inputRow div.eventInputContainer {
+    width: 67%;
+    max-width: 20em;
+    text-align: left;
+}
+
+
+@media (min-width: 650px) and (max-width: 860px) {
+	div.minView1 div.inputForm div.inputRow div.labelContainer {
+		display: none;
+	}
+	div.minView1 div.inputForm div.inputRow div.inputContainer {
+		width: 100%;
+	}
+	div.minView1 div.inputForm div.inputRow div.eventInputContainer {
+		width: 100%;
+	}
+}
+
+div.layoutOption {
+    width: 80px; 
+    height: 80px; 
+    display: inline-block; 
+    margin: 10px;
+}
+
+div.inputForm div.recoverPwdLink {
+	padding-top: 36px;
+	text-align: center;
+}
+
+div.registration div.formLabel {
+	text-align: right;
+}
+
+div.registration div.formRow {
+	margin-bottom: 12px;
+}
+
+
+div.main {
+    
+	height: 100%;
+	position: relative;
+	overflow: hidden;
+	
+	backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    
+	-webkit-backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    
+}
+
+div.main div.mainView {
+	position: absolute;
+	left: 1%;
+	width: 60%;
+	top: 0%;
+	z-index: 3;
+	transition: top 1s, left 1s, width 1s, height 1s;
+}
+
+div.main div.mainView.loggedIn {
+	height: 96%;
+	width: 60%;
+}
+
+div.main div.mainView.loggedOut {
+	height: 96%;
+	width: 60%;
+}
+
+div.panelContent {
+	/*
+    height: 95%;
+	overflow-y: auto;
+	*/
+    margin-right: 1px;
+}
+
+div.mainView div.panelContent {
+	height: 95%;
+	overflow-y: auto;
+}
+
+div.panelContent.minView1 {
+	height: 90%;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+div.main div.minView1 {
+	position: absolute;
+	width: 37%;
+	top: 0%;
+	left: 62%;
+	z-index: 1;
+	transition: top 1s, left 1s, width 1s, height 1s;
+}
+
+div.main div.minView1.loggedIn {
+	height: 47%;
+}
+
+div.main div.minView1.loggedOut {
+    height: 47%;
+    transition: none;
+}
+
+div.minView1 div.panelContent {
+	height: 89%;
+	overflow-y: auto;	
+}
+
+div.main div.minView2 {
+	padding-top: 1px;
+	position: absolute;
+	top: 49%;
+	width: 37%;
+	left: 62%;
+	z-index: 2;
+	transition: top 1s, left 1s, width 1s, height 1s;
+}
+
+div.main div.minView2.loggedIn {
+	top: 49%;
+	height: 47%;
+}
+
+div.main div.minView2.loggedOut {
+	top: 48%;
+	height: 47%;
+    transition: none;
+}
+
+div.minView2 div.panelContent {
+	height: 89%;
+	overflow-y: auto;
+	margin-right: 1px;
+}
+
+div.columnHeader {
+	background: #ededed;
+	padding-left: 4px;
+	padding-top: 2px;
+	height: 28px;
+}
+
+.columnHeader .left {
+    display: inline-block;
+    float: left;
+}
+
+.columnHeader .right {
+    display: inline-block;
+    float: right;
+}
+
+.minView1 div.columnHeader {
+	height: 28px;
+}
+
+.minView2 div.columnHeader {
+	height: 28px;
+}
+
+.myEventsHeader .addNew {
+    display: inline;
+    margin-left: 4px;
+}
+
+@media (max-width: 660px) {
+    
+    .minView1 .myEventsHeader .addNew {
+        display: none;
+    }
+
+    .minView2 .myEventsHeader .addNew {
+        display: none;
+    }
+
+}
+
+div.logreg {
+    
+    margin-top: 10px;	
+	
+    /*
+    border: 1px solid black;
+	height: 95%;
+	*/
+    
+    width: 100%;
+	
+	backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    
+	-webkit-backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    
+}
+
+div.myEvents {
+	margin-top: 10px;
+    border: 1px solid black;
+	height: 100%;
+	width: 100%;
+	overflow-y: hidden;
+}
+
+div.myEvents div.myListEvent {
+	padding-left: 10px;
+	padding-top: 8px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	/*border: 1px solid #ededed;*/
+	width: 98%;
+	margin-left: 1%;
+	transition: top 1s;
+	opacity: 1.0; /*background: rgba(255, 255, 255, 1);*/
+	overflow: hidden;
+	-webkit-transform: translate3d(0, 0, 0);
+}
+
+div.editEvent {
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+
+div.quickEditEventSettings {
+	width: 100%;
+	display: inline-block;
+	text-align: center;
+}
+
+div.editEventSettings {
+	width: 50%;
+	margin: auto;
+	text-align: center;
+}
+
+div.editEventTickets {
+	display: inline-block;
+	text-align: center;
+	width: 100%;	
+}
+
+div.editEventLayout {
+	display: inline-block;	
+	text-align: center;
+	width: 100%;
+}
+
+div.editEvent div.topMenu {
+	width: 100%; 
+	overflow: hidden; 
+	margin-bottom: 12px;
+	position: relative;	
+	text-align: center;
+	border-bottom: 1px solid #cccccc;
+}
+
+div.editEvent div.topMenu div.menuElement {
+	display: inline-block;
+	padding-left: 4px;
+	padding-right: 4px;
+	margin: 1px;
+	padding-top: 2px;
+	padding-bottom: 2px; 
+	text-align: center;
+    cursor: pointer;
+}
+
+.selectedMenuElement {
+	background: #cccccc;
+}
+
+div.editEvent div.editEventPane {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+.firstPosition {
+	left: 0%;
+	transition: left 1s;
+}
+
+.secondPosition {
+	left: -100%;
+	transition: left 1s;
+}
+
+.thirdPosition {
+	left: -200%;
+	transition: left 1s;
+}
+
+
+div.findEvents {
+	margin-top: 10px;
+    border: 1px solid black;
+	height: 100%;
+	width: 100%;
+	overflow-y: hidden;
+}
+
+div.findEvents div.listEvent {
+	padding: 10px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	/*border: 1px solid #ededed;*/
+	width: 98%;
+	margin-left: 1%;
+	min-height: 80px;
+    max-height: 120px;
+    overflow-y: hidden;
+    margin-bottom: 16px;
+}
+
+div.listEventImage {
+	display: inline-block; 
+	height: 100%;
+	max-width: 24%;
+	vertical-align: top;
+}
+
+.listEventImage img {
+    margin-top: -6px;
+    /*max-height: 120px;*/
+    max-width: 100%;
+}
+
+.listEventImage .imageShader {
+    width: 100%;
+    height: 100%;
+    background: black;
+    opacity: 0.5;
+    position: absolute;
+    top: 2%;
+    left: 2%;
+    width: 96%;
+    height: 96%;
+    display: none;
+}
+
+div.listEventInfo {
+    position: relative;
+    overflow: hidden;
+	display: inline-block; 
+	max-width: 75%;
+    padding-left: 6px;
+    height: 120px;
+    margin-top: -6px;
+}
+
+.listEventInfo .header {
+    margin-bottom: 4px;
+}
+
+.listEventInfo .header .title {
+    display: inline; 
+    font-size: 1.2em; 
+    font-weight: bold;
+}
+
+.listEventInfo .descriptionBox {
+    height: 74%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 4;
+    line-height: 1.4;
+    margin: 0 auto;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+   padding-left: 6px; 
+}
+
+div.myTickets {
+	margin-top: 10px;
+    border: 1px solid black;
+	height: 100%;
+	width: 100%;
+	overflow-y: hidden;
+}
+
+div.myTickets .ticketsFull div.myListTicket {
+	margin-top: 3px;
+	margin-bottom: 3px;
+	width: 96%;
+	margin-left: 2%;
+}
+
+div.opaque {
+	opacity: 1.0; /*background: rgba(255, 255, 255, 1.0);*/
+}
+
+.cardContainer {
+	
+	position: relative;
+	width: 100%;
+	height: 100%;
+  	
+  	perspective: 800px;
+  	
+  	-webkit-perspective: 800px;	
+  	
+}
+
+#mainCard {
+	
+	width: 100%;
+  	height: 100%;
+  	position: absolute;
+  	
+  	transform-style: preserve-3d;
+  	transition: transform 1s;
+  	transform-origin: right center;
+  	
+  	-webkit-transform-style: preserve-3d;
+  	-webkit-transition: -webkit-transform 1s;
+  	-webkit-transform-origin: right center;
+  	
+}
+
+#mainCard figure {
+	
+	display: block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	
+	backface-visibility: hidden;
+	
+	-webkit-backface-visibility: hidden;
+
+}
+
+#card {
+	
+	width: 100%;
+  	height: 100%;
+  	position: absolute;
+  	
+  	font-smoothing: none;
+  	transform-style: preserve-3d;
+  	transition: transform 1s;
+  	
+  	-webkit-font-smoothing: none;
+  	-webkit-transform-style: preserve-3d;
+  	-webkit-transition: -webkit-transform 1s;
+  	
+}
+
+#card figure {
+	
+	display: block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	
+	backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+	
+}
+
+.cardBack {
+
+    overflow-y: auto;
+    	
+	transform: rotateY(180deg) translate3d(0, 0, 0);
+	backface-visibility: hidden;
+	
+	-webkit-transform: rotateY(180deg) translate3d(0, 0, 0);
+	-webkit-backface-visibility: hidden;
+
+}
+
+.cardFront {
+    
+    overflow-y: auto;
+	
+	backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+
+}
+
+.flipped {
+	
+	transform: rotateY(180deg) translate3d(0, 0, 0);
+	
+	-webkit-transform: rotateY(180deg) translate3d(0, 0, 0);
+	
+}
+
+.mainFlipped {
+	
+	transform: translateX(-100%) rotateY(-180deg);
+	
+	-webkit-transform: translateX(-100%) rotateY(-180deg);
+
+}
+
+div.settingsContainer {
+	width: 98%;
+    left: 1%;
+    position: absolute;
+	height: 100%;
+}
+
+div.settingsContainer div.settings {
+	border: 1px solid black; 
+	opacity: 1.0;
+	padding: 5%;
+}
+
+.addTickets {
+	width: 100%;
+	position: relative;
+	text-align: left;
+	padding: 6px;
+}
+
+.addTickets .addTicketsName {
+	width: 40%;
+	display: inline-block; 
+	text-align: left;
+}
+
+.addTickets .addTicketsName input {
+	display: inline;
+	width: 16em;
+}
+
+.addTickets .addTicketsPrice {
+	width: 20%; 
+	display: inline-block; 
+	text-align: left;
+}
+
+.addTickets .addTicketsPrice input {
+	display: inline;
+	width: 6em;
+}
+
+.addTickets .addTicketsQty {
+	width: 12%;
+	display: inline-block; 
+	text-align: left;
+}
+
+.addTickets .addTicketsQty input {
+	display: inline;
+	width: 4em;
+}
+
+.addTickets .addTicketsPublic {
+	width: 12%;
+	display: inline-block; 
+	text-align: center;
+}
+
+
+.addTickets .addTicketsPublic input {
+	width: 16px;
+	height: 16px;
+}
+	
+.addTickets .addTicketsSave {
+	width: 16%;
+	display: inline-block; 
+	text-align: right;
+}
+
+.addTickets .addTicketsLowerCell {
+	width: 30%;
+	display: inline-block; 
+	text-align: left;
+}
+
+.addTickets .addTicketsLowerCell input {
+	display: inline;
+	width: 100%;
+}
+
+.addTickets .addTicketsProductUrl {
+	width: 82%;
+	display: inline-block; 
+	text-align: left;
+}
+
+.addTickets .addTicketsProductUrl input {
+	display: inline;
+}
+
+.event {
+	
+    /* position: absolute; */ 
+    /* left: 5%; */ 
+    /* border: 1px solid black; */
+    /* height: 95%; */ 
+    /* width: 98%; */
+    /* left: 1%; */
+    
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    
+}
+
+.event .eventHeader {	
+	padding-left: 4px; 
+	padding-top: 2px; 
+	height: 28px;	
+}
+
+.event .orderTickets {
+    width: 68%; 
+    display: inline-block;
+}
+
+.event .leftContent {
+    padding-left: 2%;
+    width: 28%; 
+    display: inline-block; 
+    vertical-align: top;
+}
+
+/*
+.event.white {
+	background: #ffffff;
+    color: black;
+}
+
+.event.white .eventHeader {
+	background: #ebebeb;
+    color: black;	
+}
+
+.event.white .event-content .panel-heading {
+	background: #ebebeb;
+    color: black;
+}
+
+.event.white .event-content .table {
+	background: #ffffff;
+}
+
+.event.white .event-content .panel-body {
+	background: #ffffff;
+}
+
+.event.white button {
+    background-color: #ffffff;
+    color: black;
+}
+
+.event.red {
+	background: #EE8888;
+}
+
+.event.red .eventHeader {
+	background: #AA3333;
+    color: black;	
+}
+
+.event.red .event-content .panel-heading {
+	background: #AA3333;
+}
+
+.event.red .event-content .table {
+	background: #EE8888;
+}
+
+.event.red .event-content .panel-body {
+	background: #EE8888;
+}
+
+.event.red button {
+	background-color: #EE8888;
+    color: black;
+}
+
+.event.green {
+	background: #88EE88;
+    color: black;
+}
+
+.event.green .eventHeader {
+	background: #33AA33;
+}
+
+.event.green .event-content .panel-heading {
+	background: #33AA33;
+}
+
+.event.green .event-content .table {
+	background: #88EE88;
+}
+
+.event.green .event-content .panel-body {
+	background: #88EE88;
+}
+
+.event.green button {
+	background-color: #88EE88;
+    color: black;
+}
+
+.event.blue {
+	background: #3333AA;
+}
+
+.event.blue .eventHeader {
+	background: #101050;	
+}
+
+.event.blue .event-content .panel-heading {
+	background: #101050;
+}
+
+.event.blue .event-content .table {
+	background: #3333AA;
+}
+
+.event.blue .event-content .panel-body {
+	background: #3333AA;
+}
+*/
+
+div.ad {
+    /*background: #ffffff;*/
+    text-align: center;
+}
+
+div.ad-h1 {
+    position: absolute;
+    left: 0%;
+    width: 100%;
+    height: 60px;
+}
+
+
+div.ad-f1 {
+    margin: 1%;
+    height: 40px;
+}
+
+div.ad-s1.loggedIn  {
+    display: none;
+}
+
+div.ad-s2.loggedIn  {
+    display: none;
+}
+
+div.order {
+	top: 10px;
+    position: absolute; 
+	left: 1%; 
+	border: 1px solid black;
+	width: 98%;
+	height: 90%;
+}
+
+div.ticketContainer {
+	top: 10px;
+    position: absolute; 
+	left: 0px;
+	width: 100%;
+	height: 360px;
+}
+
+div.ticket {
+	width: 50%;
+	height: 328px;
+	border: 1px solid black;
+	margin: auto;
+	max-width: 650px;
+}
+
+.ticketContent {
+	height: 300px;
+	width: 100%;
+}
+
+.ticket .ticketInfo {
+	width: 58%;
+	height: 100%;
+	display: inline-block;
+	margin-bottom: 24px;
+	vertical-align: top;
+}
+
+.ticket .ticketCode {
+	width: 40%; 
+	height: 100%;
+	display: inline-block;
+	vertical-align: top;
+}
+
+
+.ticket .ticketCode .ticketCodeQr {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	text-align: center;
+	display: inline-block;
+}
+
+
+.ticket .ticketCode .ticketCodeQr .qrImage {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -110px;
+	margin-top: -110px;
+	height: 220px;
+	width: 220px;
+}
+
+
+.ticket .ticketInfo .admittance {
+	display: inline-block;
+	height: 48%; 
+	width: 100%; 
+	border: 1px dashed black; 
+	text-align: center;
+}
+
+.ticket .ticketInfo .ticketId {
+	height: 10%; 
+	width: 100%; 
+	text-align: center;
+}
+	
+.ticket .ticketCode .admittance {
+	vertical-align: top;
+	display: none;
+}
+	
+.eventInfo {
+	height: 100%; position: relative;
+}
+
+.eventInfo .eventLogo {
+	width: 32%; 
+	display: inline-block; 
+	position: relative;
+    overflow: hidden;    
+}
+
+.eventInfo .eventLogo img {
+    height: 250px;
+    width: auto;
+    display: inline;
+    float: left;
+}
+
+.eventInfo .eventDescription {
+	width: 33%; 
+	display: inline-block;
+	text-align: left;
+	vertical-align: top;
+	padding-right: 12px;
+    padding-left: 12px;
+}
+
+.eventInfo .eventMap {
+	width: 33%; 
+	display: inline-block; 
+	text-align: right; 
+	vertical-align: top;
+}
+
+@media (max-width: 660px) {
+     
+    .eventInfo .eventLogo {
+		width: 99%;
+        height: initial;
+    }
+
+    .eventInfo .eventLogo img {
+        width: 100%;
+        height: auto;
+        position: initial; 
+    }
+	
+    .eventInfo .eventDescription {
+		width: 99%;
+	}
+	
+	.eventInfo .eventMap {
+		width: 99%;
+		margin-top: 12px;
+	}
+
+}
+
+.ticketResourceItem {
+	width: 140px; 
+	height: 140px; 
+	position: relative; 
+	margin-left: 4px;
+	margin-bottom: 4px;
+	display: inline-block; 
+	vertical-align: top; 
+	border: 1px solid black;
+}
+
+.signupFields {
+	
+	width: 50%; 
+	margin: auto; 
+	display: inline-block;
+	
+}
+
+.signupFieldsNewLeft {
+	display: inline-block;
+	width: 49%;
+}
+
+.signupFieldsNewRight {
+	display: inline-block;
+	width: 49%;
+}
+
+.newItemButtonContainer {
+    width: 34px; 
+    height: 34px; 
+    top: 50%; 
+    left: 50%; 
+    margin-left: -21px; 
+    margin-top: -20px; 
+    position: absolute;
+}
+
+.newRefConditionLeft {
+	display: inline-block;
+	width: 59%;
+}
+
+.newRefConditionLeft .type {
+	display: inline-block; 
+	width: 42%; 
+	float: left;
+}
+
+.newRefConditionLeft .unit {
+	display: inline-block;
+	margin-left: 4%;
+	width: 50%; 
+	float: left; 
+	text-align: center;
+}
+
+.newRefConditionRight {
+	display: inline-block;
+	width: 39%;
+}
+
+.newRefConditionRight .points {
+	display: inline-block; 
+	width: 28%; 
+	float: left; 
+	text-align: center;
+}
+
+.newRefConditionRight .add {
+	display: inline-block; 
+	width: 70%; 
+	float: left; 
+	text-align: right;
+}
+
+.manageOrders {
+	width: 100%; 
+	height: 100%;	
+}
+
+.manageOrders .orderSearchInput {
+	width: 250px; 
+	display: inline-table;
+}
+
+.manageOrders .orderSelector {
+	display: inline-block;
+}
+
+.viewOrder {
+	width: 75%; 
+	display: inline-block; 
+	margin: auto;
+}
+
+.orderDetailLabel {
+	display: inline-block; 
+	width: 25%; 
+	text-align: right; 
+	margin-bottom: 2px;
+	padding-right: 2px;
+	vertical-align: top;
+    font-weight: bold;
+}
+
+.orderDetailValue {
+	display: inline-block; 
+	width: 73%;
+	text-align: left;
+	padding-left: 4px;
+}
+
+.viewOrderContact {
+	display: inline-block;
+	width: 49%;
+}
+
+.viewOrderInfo {
+	display: inline-block;
+	width: 49%;
+}
+
+.viewOrderTickets {
+	display: inline-block;
+	width: 100%;
+}
+
+.orderActionButton {
+	display: inline-block; 
+	width: 80px; 
+	text-align: center;
+	margin-left: 10px;
+}
+
+.orderBankButton {
+    display: inline-block;
+    height: 40px;
+    width: 90px;
+    margin: 6px;
+    padding: 8px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.groupRewardsBlock {
+	display: inline-block; 
+	width: 49%; 
+	vertical-align: top;
+}
+
+.refRewardsBlock {
+	display: inline-block; 
+	width: 49%; 
+	vertical-align: top;
+}
+
+.rewardItem {
+    text-align: center;
+    border: 1px solid black;
+    display: inline-block; 
+	color: white; 
+	width: 32%; 
+	padding: 6px; 
+	margin-right: 6px; 
+	margin-bottom: 4px;
+}
+
+.rewardDescription {
+    display: inline-block;
+    position: absolute;
+    opacity: 1.0;
+    z-index: 1;
+    border: 1px solid black; padding: 4px;
+}
+
+.editTicketResource {
+	width: 90%; 
+	margin: auto;
+}
+
+
+.eventSearch {
+	width: 100%; 
+	display: inline-block; 
+	padding: 8px;
+    text-align: center;
+}
+
+.eventSearch .eventSearchLeft {
+	display: inline-block; 
+	padding-top: 6px;
+	transition: width 1s;
+}
+
+.eventSearch .eventSearchRight {
+	display: inline-block; 
+	width: 200px; 
+	float: right;
+}
+
+div.minView1 .eventSearch {
+	display: none;
+}
+
+div.minView1 .eventSearch .eventSearchLeft {
+	width: 0px;
+	overflow: hidden;
+	height: 0px;
+	transition: width 1s;
+}
+
+div.minView1 .eventSearch .eventSearchRight {
+	width: 100%;
+	transition: width 1s;
+}
+
+div.minView1 div.listEvent {
+	min-height: initial;
+    transition: height 1s;
+    height: 20px;
+}
+	
+div.minView1 div.listEventImage {
+	display: none;
+}
+
+.promoFull {
+	margin-top: 10px;
+    display: block;
+    color: black;
+}
+
+.promoSmall {
+	display: none;
+}
+
+.appHeader .logo {
+	display: inline-block; 
+	margin-top: 10px; 
+	margin-left: 1%;
+}
+
+.ticketTab {
+	/*float: right;*/ 
+	display: inline-block; 
+	/* background: white; */ 
+	opacity: 1; 
+	/*box-shadow: 4px 0px 7px -2px #333; */
+	/* border: 1px solid black; */ 
+	width: 36px;
+	height: 37px;
+	margin-left: -1px;
+	text-align: center;
+	padding-left: 4px;
+	padding-top: 8px;
+	vertical-align: top;
+	margin-bottom: 4px;
+}
+
+
+.ticketsFull {
+	display: block;
+}
+
+.ticketsSmall {
+	display: none;
+}
+
+.ticketsSmall div.myListTicket {
+	border: none;
+}
+
+.minView2 .ticketsFull {
+	display: none;
+}
+
+.minView2 .ticketsSmall {
+	display: block;
+}
+
+#revenue-chart {
+	width: 98%;
+}
+
+#tickets-chart {
+	width: 98%;
+}
+
+@media print {
+	
+	.cardBack {
+		display:none !important;
+	}
+	
+	.headerControls {
+		display:none !important;
+	}
+	
+	.ticketInfoHandle {
+		display:none !important;
+	}
+	
+}
+
+@media(max-width: 1100px) {
+	div.ticket {
+		width: 80%;
+	}
+}
+
+@media (max-width: 850px) {
+    
+    .event .orderTickets {
+        width: 99%; 
+        display: block;
+    }
+    
+    .event .leftContent {
+        padding-left: 0%;
+        width: 98%;
+        display: block;
+    }
+    
+}
+
+@media (max-width: 690px) {
+    
+    .eventSearch .eventSearchLeft {
+        display: none;
+    }
+        
+    .eventSearch .eventSearchRight {
+        margin-left: 6px; 
+	    width: inherit; 
+	    float: inherit;
+    }
+}
+
+@media (max-width: 660px) {
+	
+	.addTickets .addTicketsName {
+		display: block;
+		width: 100%;
+	}
+	
+	.addTickets .addTicketsName input {
+		width: 100%;
+	}
+	
+	.addTickets .addTicketsPrice {
+		display: inline-block;
+		width: 49%;
+	}
+	
+	.addTickets .addTicketsPrice input {
+		width: 90%;
+	}
+	
+	.addTickets .addTicketsQty {
+		display: inline-block;
+		width: 49%;
+	}
+	
+	.addTickets .addTicketsQty input {
+		width: 100%;
+	}
+	
+	.addTickets .addTicketsLowerCell {
+		display: block;
+		width: 100%;
+	}
+	
+	.addTickets .addTicketsLowerCell input {
+		width: 100%;
+	}
+	
+	.addTickets .addTicketsProductUrl {
+		display: block;
+		width: 100%;
+	}
+	
+	.addTickets .addTicketsProductUrl input {
+	}
+	
+	.addTickets .addTicketsPublic {
+		display: inline-block;
+		text-align: center;
+		width: 49%;
+	}
+	
+	.addTickets .addTicketsSave {
+		display: inline-block;
+		text-align: right;
+		width: 100%;
+	}
+	
+	div.ticket {
+		width: 80%;
+	}
+	
+	.ticket .ticketCode .ticketCodeQr .qrImage {
+		
+		height: 180px;
+		width: 180px;
+		left: 50%;
+		top: 50%;
+		margin-top: -90px;
+		margin-left: -90px;
+		
+	}
+	
+	div.listEventImage {
+        max-width: initial;
+		vertical-align: top;
+        width: 100%;
+        overflow: hidden;
+	}
+
+    .listEventImage .imageShader {
+        display: block;
+    }
+	
+	div.listEventInfo {
+        position: absolute;
+        top: 4%;
+        left: 4%;
+        padding: 2%;
+		max-width: initial;
+        width: 96%;
+        height: 96%;
+        margin-top: initial;
+	}
+    
+    .listEventInfo .header {
+        height: 20%;
+    }
+       
+    .listEventInfo .descriptionBox {
+        height: 80%;
+        padding-left: initial;
+        padding-right: 2%;
+        -webkit-line-clamp: 6;
+    }
+     
+    div.findEvents div.listEvent {
+        max-height: initial;
+        height: 200px;
+    }    
+
+    .fadeoutListEvent {
+        display: none;
+    }
+	
+	.appHeader .logo {
+		margin-top: 4px;
+	}
+	
+	#revenue-chart {
+		margin-left: -20px;
+		width: inherit;
+	}
+	
+	#tickets-chart {
+		margin-left: -20px;
+		width: inherit;
+	}
+
+	
+}
+
+
+@media (min-width: 660px) and (max-width: 1024px) {
+    
+    div.editEventSettings {
+        width: 75%;
+    }
+
+}
+
+@media (max-width: 660px) {
+		
+	#mainCard {
+	    top: 4px; 
+	}
+	
+	div.order {
+	    top: 4px;
+	    height: 95%;
+	}
+	
+	div.ad-h1 {
+	    display: none;
+	}
+	
+	div.main div.mainView {
+	    top: 48px;
+		width: 98%;
+	}
+	
+	div.main div.mainView.loggedIn {
+		top: 38px;
+		height: 90%;
+		width: 98%;
+	}
+	
+	div.main div.mainView.loggedOut {
+		top: 48px;
+		height: 88%;
+		width: 98%;
+	}
+	
+	div.mainView div.columnHeader {
+		height: 28px;
+	}
+	
+	div.main div.minView1 {
+		top: 3px;
+		left: 1%;
+		width: 48%;
+		height: 41px;
+	}
+	
+	div.main div.minView1 .noContent {
+		display: none;
+	}
+	
+	div.main div.minView1.loggedIn {
+	    top: 4px;
+		left: 1%;
+		width: 48%;
+		height: 30px;
+	}
+
+	div.main div.minView1.loggedOut {
+		top: 3px;
+		left: 1%;
+		width: 48%;
+		height: 41px;
+	}
+	
+	.promoFull {
+		display: none;
+	}
+	
+	.promoSmall {
+		display: block;
+	}
+	
+	div.minView1 div.columnHeader {
+		height: 28px;
+	}
+	
+	div.main div.minView2 {
+	    top: 2px;
+		left: 50%;
+		width: 49%;
+		height: 42px;
+	}
+	
+	div.main div.minView2 .noContent {
+		display: none;
+	}
+	
+	div.main div.minView2.loggedIn {
+	    top: 4px;
+		left: 50%;
+		width: 49%;
+		height: 30px;
+		padding-top: initial;
+	}
+
+	div.main div.minView2.loggedOut {
+		top: 2px;
+		left: 50%;
+		width: 49%;
+		height: 42px;
+	}
+	
+	div.minView2 div.columnHeader {
+		height: 28px;
+	}
+	
+	div.settingsContainer {
+		padding: 0px;
+	}
+	
+	
+	div.editEventSettings {
+		width: 100%;
+	}
+	
+	.signupFields {
+	
+		width: 98%; 
+		
+	}
+	
+	.signupFieldsNewLeft {
+		display: inline-block;
+		width: 100%;
+	}
+	
+	.signupFieldsNewRight {
+		display: inline-block;
+		width: 100%;
+	}
+	
+	.newRefConditionLeft {
+		width: 100%;
+	}
+	
+	.newRefConditionLeft .type {
+		width: 49%;
+	}
+	
+	.newRefConditionLeft .unit {
+		width: 49%;
+		float: right;
+	}
+
+	.newRefConditionRight {
+		width: 100%;
+	}
+	
+	.newRefConditionRight .points {
+		width: 49%;
+	}
+	
+	.newRefConditionRight .add {
+		width: 49%;
+		float: right;
+	}
+	
+	.newRefConditionRight .add button {
+		width: 100%;
+	}
+	
+	.ordersTable .emailHeader {
+		display: none;
+	}
+	
+	.ordersTable .ticketsHeader {
+		display: none;
+	}
+	
+	.ordersTable .totalHeader {
+		display: none;
+	}
+	
+	.ordersTable .emailRow {
+		display: none;
+	}
+	
+	.ordersTable .ticketsRow {
+		display: none;
+	}
+	
+	.ordersTable .totalRow {
+		display: none;
+	}
+	
+	.manageOrders .orderSearchInput {
+		width: 100%; 
+		/*display: inline-table;*/
+		display: none;
+	}
+	
+	.manageOrders .orderSelector {
+		display: none;
+	}
+	
+	.viewOrder {
+		width: 96%;
+	}
+	
+	.viewOrderContact {
+		width: 100%;
+	}
+
+	.viewOrderInfo {
+		width: 100%;
+	}
+	
+	.orderActionButton {
+		width: 31%;
+		margin-left: 1%;
+	}
+	
+	.groupRewardsBlock {
+		width: 98%;
+	}
+	
+	.refRewardsBlock {
+		width: 98%;
+	}
+	
+	.rewardItem {
+		width: 48%;
+	}
+	
+	.editTicketResource {
+		width: 96%;
+	}
+	
+	div.ticketContainer {
+		height: 95%;	
+	}
+	
+	div.ticket {
+		width: 98%;
+		height: 100%;
+		margin-left: 1%;
+		max-height: 100%;
+	}
+	
+	.ticket .ticketInfo {
+		width: 100%;
+		height: initial;
+	}
+	
+	.ticket .ticketCode {
+		width: 100%;
+	}
+	
+	.ticket .ticketCode .ticketCodeQr {
+		width: 49%;
+		padding: 12px;
+	}
+	
+	.ticket .ticketCode .ticketCodeQr .qrImage {
+		width: 100%;
+		height: initial;
+		margin-left: initial;
+		left: initial;
+		top: initial;
+		margin-top: initial;
+		position: relative;
+	}
+	
+	.ticket .ticketInfo .admittance {
+		display: none;
+	}
+	
+	.ticket .ticketCode .admittance {
+		display: inline-block;
+		height: 100%; 
+		width: 49%;
+		text-align: center;
+		position: relative;
+	}
+	
+	.ticket .ticketCode .admittanceStamp {
+		position: absolute;
+		height: 200px;
+		width: 200px;
+		border-radius: 50%;
+		top: 4%;
+		left: 50%;
+		margin-left: -100px;
+		padding-top: 85px;
+		border: 1px dashed #000;
+	}
+	
+	.ticket .ticketInfo .ticketId {
+		margin-top: 24px;
+	}
+	
+}
+
+@media (max-width: 420px) {
+	
+	div.inputForm div.inputRow div.labelContainer {
+		display: none;
+	}
+	div.inputForm div.inputRow div.inputContainer {
+		width: 100%;
+	}
+	div.inputForm div.inputRow div.eventInputContainer {
+		width: 100%;
+	}
+	
+	.ticket .ticketCode .admittanceStamp {
+		position: absolute;
+		height: 140px;
+		width: 140px;
+		border-radius: 50%;
+		top: 4%;
+		left: 50%;
+		margin-left: -70px;
+		padding-top: 55px;
+		border: 1px dashed #000;
+	}	
+	
+}
+
+@media (min-width: 420px) and (max-width: 600px) {
+	
+	div.inputForm div.inputRow div.labelContainer {
+		/* width: initial; */
+	}
+
+}
+
+div.date {
+    width: 100%;
+}
+
+div.mainContainer {
+    height: 100%;
+}
+
+@media (min-width: 1620px) {
+	
+	div.mainContainer {
+		
+		position: absolute;
+		width: 1600px;
+		left: 50%;
+		margin-left: -800px;
+		
+	}
+	
+}
+
+
+ul.header-dropdown {
+  text-align: left;
+  margin: 0;
+  list-style: none;
+  position: absolute;
+  padding-left: 0px;
+  z-index: 2;
+  width: 90px;
+}
+ul.header-dropdown li {
+  
+  display: inline-block;
+  width: 100%;
+  position: relative;
+  cursor: pointer;
+  background: #555;
+  color: #fff;
+  height: 30px;
+
+}
+
+ul.header-dropdown li:hover {
+  
+}
+
+ul.header-dropdown li ul {
+  padding: 0;
+  position: absolute;
+  top: 26px;
+  left: 0;
+  width: 100%;
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+ul.header-dropdown li ul li { 
+  background: #555; 
+  display: block;
+  color: #fff;
+  text-shadow: 0 -1px 0 #000;
+}
+
+ul.header-dropdown li ul li:hover { background: #666; }
+ul.header-dropdown li:hover ul {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+}
+
+.fadeout {
+	
+	position: absolute;
+	bottom: 0px;
+	width: 138px;
+	height: 20px;
+	background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 90%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(95%,rgba(255,255,255,1)));
+	background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 90%);
+	background: -o-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 90%);
+	background: -ms-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 90%);
+	background: linear-gradient(to bottom,  rgba(78,93,108,0) 0%,rgba(78,93,108,1) 90%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 );
+	
+}
+
+.fadeoutListEvent {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(to bottom, rgba(78,93,108,0) 0%,rgba(78,93,108,1) 80%);
+}
+
+.dropdown-menu {
+	width: 100%;
+	position: absolute;
+}
+
+@media (max-width: 660px) {
+	.dropdown-menu {
+		position: relative;
+	}
+}
+
+.datetimepicker {
+	width: 100%;
+}
+
+.dropdown-menu .table>thead>tr>th, 
+.dropdown-menu .table>tbody>tr>th, 
+.dropdown-menu .table>tfoot>tr>th, 
+.dropdown-menu .table>thead>tr>td, 
+.dropdown-menu .table>tbody>tr>td, 
+.dropdown-menu .table>tfoot>tr>td {
+	padding: 2px;
+	line-height: 1.42857143;
+	vertical-align: top;
+	border-top: 1px solid #DDD;
+}

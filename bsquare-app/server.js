@@ -18,6 +18,7 @@ mongoose.connect(settings.DATABASE_URL);
 let app = express();
 
 let staticDir = __dirname + "/client";
+let modulesDir = __dirname + "/node_modules";
 console.log("static file dir: " + staticDir);
 
 app.set("view engine", "html");
@@ -45,6 +46,7 @@ app.eventService = require("./server/services/eventService")(app);
 app.orderUpdates = require('./server/tasks/orderUpdates')(app);
 
 app.use(express.static(staticDir));                                  // set the static files location
+app.use("/node_modules", express.static(modulesDir));                                  // set the static files location
 app.use(bodyParser.urlencoded({ extended: "true" }));               // parse application/x-www-form-urlencoded
 app.use(bodyParser.json());                                         // parse application/json
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));     // parse application/vnd.api+json as json

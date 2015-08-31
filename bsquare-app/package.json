@@ -14,6 +14,7 @@
   "repository": "https://github.com/vhalme/bsquare.git",
   "dependencies": {
     "MD5": "^1.2.2",
+    "angular2": "^2.0.0-alpha.35",
     "body-parser": "^1.13.1",
     "connect-busboy": "0.0.2",
     "ejs": "^2.3.2",
@@ -31,6 +32,7 @@
     "q": "^1.4.1",
     "request": "^2.58.0",
     "sendgrid": "^1.8.0",
+    "traceur": "0.0.91",
     "utf8": "^2.1.0",
     "xml2js": "^0.4.9"
   },

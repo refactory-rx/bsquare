@@ -4,6 +4,19 @@ module.exports = function(grunt) {
     
     grunt.initConfig({
         
+        copy: {
+            shared: {
+                files: [
+                    { 
+                        expand: true,
+                        cwd: "../shared",
+                        src: ["alt/*.js", "alt/**/*.js"],
+                        dest: "client/typings"
+                    }
+                ]
+            }
+        },
+
         babel: {
             options: {
                 sourceMap: true
@@ -104,7 +117,7 @@ module.exports = function(grunt) {
 
         watch: {
             es6: {
-                files: ["client/js/**/*.js", "client/ts/*.ts"],
+                files: ["client/js/**/*.js", "client/ts/*.ts", "../shared/alt/**/*.js"],
                 tasks: ["babel", "ts", "concat", "ngAnnotate", "uglify:dev"]
             }
         },

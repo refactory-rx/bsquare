@@ -42,9 +42,12 @@
     	<div class="ticketsSmall" style="padding-left: 1%;">
 
 
-            <div ng-show="ticketsByEvent.length > 0" ng-repeat="event in ticketsByEvent" style="width: 100%; padding: 12px;">
-                <div style="display: inline-block; float: left; max-width: 75%; text-align: left;">{{event.eventName}}</div>
-                <div style="display: inline-block; float: right;">{{event.tickets.length}} lippua</div>
+            <div ng-show="ticketsByEvent.length > 0" ng-repeat="event in ticketsByEvent" style="width: 100%; padding-left: 6px; padding-right: 6px; padding-top: 4px; text-align: right;">
+                
+                <div style="display: inline-block; float: left;">
+                    {{event.eventName}}
+                </div>
+                <div style="display: inline-block;">{{event.tickets.length}} lippua</div>
             </div>
 
             <!-- 

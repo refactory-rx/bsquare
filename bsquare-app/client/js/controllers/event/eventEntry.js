@@ -106,7 +106,7 @@ controllers.controller(
                     $scope.ownEvent = false;
                 }
                 
-                $(".event-content").css("height", ($(".event").height() - $(".columnHeader").height() - 15)+"px");
+                //$(".event-content").css("height", ($(".event").height() - $(".columnHeader").height() - 15)+"px");
                             
             } else {
                 $scope.eventStatus = "loadError";
