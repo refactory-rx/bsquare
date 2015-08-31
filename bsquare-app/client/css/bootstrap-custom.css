@@ -6880,7 +6880,7 @@ table,
 }
 table a:not(.btn),
 .table a:not(.btn) {
-  color: #fff;
+  color: black;
   text-decoration: underline;
 }
 table .dropdown-menu a,
