@@ -1276,6 +1276,7 @@ div.ticket {
     background: #e0e0e0;
     z-index: 1;
     border: 1px solid black; padding: 4px;
+    width: 99%;
 }
 
 .editTicketResource {
