@@ -300,9 +300,7 @@ class AuthService {
 			status: 'none'
 		};
 		
-		let objId = mongoose.Types.ObjectId(userId);
-		
-        User.findByIdAndUpdate(objId, { emailVerified: 'true' }, (err, user) => {
+        User.findByIdAndUpdate(userId, { emailVerified: 'true' }, (err, user) => {
 			
 			if(err) {
 				
