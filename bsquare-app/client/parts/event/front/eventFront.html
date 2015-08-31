@@ -1,7 +1,7 @@
 <div class="panel panel-default event {{event.layout}}" ng-controller="EventFrontCtrl" data-ng-init="init()" ng-cloak>
 
-    <div class="panel-heading columnHeader" ng-show="ownEvent == true">
-        <div class="left">{{event.info.title}}</div>
+    <div class="panel-heading columnHeader" style="height: 49px;" ng-show="ownEvent == true">
+        <div class="left" style="font-size: 33px;">{{event.info.title}}</div>
         <div ng-show="ownEvent == true" class="right"><a href="" ng-click="setRootView('edit')" ng-show="loggedUser != undefined">{{ 'event.front.manage' | translate }}</a></div>
     </div>
     
@@ -20,11 +20,6 @@
                     
                     
                     <div class="eventDescription">
-                        <div>
-                            <div style="font-size: 20px;">
-                                {{event.info.title}}
-                            </div>
-                        </div>
                         <div>
                             <div>
                                 {{formatTime(event.info.timeStart)}}
@@ -228,7 +223,9 @@
                     
                     <div class="leftContent">
                         <div>
-                            <div>
+                            <div ng-show="event.info.video !== undefined">
+                                
+                                <anguvideo ng-model="event.info.video" width="100%" height="200"></anguvideo> 
                                 <p style="display: inline-block; text-align: justify; line-height: 100%;">
                                     
                                     <!--

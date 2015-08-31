@@ -810,13 +810,13 @@ div.settingsContainer div.settings {
 }
 
 .event .orderTickets {
-    width: 68%; 
+    width: 64%; 
     display: inline-block;
 }
 
 .event .leftContent {
     padding-left: 2%;
-    width: 28%; 
+    width: 34%; 
     display: inline-block; 
     vertical-align: top;
 }
@@ -922,6 +922,14 @@ div.settingsContainer div.settings {
 	background: #3333AA;
 }
 */
+
+.event > .event-content .panel-heading {
+    background: #e0e0e0;
+}
+
+.event > .panelContent .panel-heading {
+    background: #e0e0e0;
+}
 
 div.ad {
     /*background: #ffffff;*/

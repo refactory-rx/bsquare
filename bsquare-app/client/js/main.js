@@ -181,7 +181,8 @@ var mainApp = angular.module(
         "ngRoute", 
         "ngCookies", 
         "ngAnimate", 
-        "angulike", 
+        "angulike",
+        "anguvideo",
         "ui.bootstrap.datetimepicker", 
         "pascalprecht.translate"
     ]

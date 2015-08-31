@@ -14,6 +14,7 @@
   "repository": "https://github.com/vhalme/bsquare.git",
   "dependencies": {
     "MD5": "^1.2.2",
+    "angular-video": "0.0.0",
     "angular2": "^2.0.0-alpha.35",
     "body-parser": "^1.13.1",
     "connect-busboy": "0.0.2",
