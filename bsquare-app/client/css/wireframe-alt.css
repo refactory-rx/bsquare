@@ -79,7 +79,7 @@ input.pwdLong {
 
 div.appHeader {
     background: #e0e0e0;
-	height: 40px;
+	height: 44px;
 	/* margin-bottom: 2%; */
 }
 
@@ -1262,7 +1262,7 @@ div.ticket {
     text-align: center;
     border: 1px solid black;
     display: inline-block; 
-	color: white; 
+	color: black; 
 	width: 32%; 
 	padding: 6px; 
 	margin-right: 6px; 
@@ -1273,6 +1273,7 @@ div.ticket {
     display: inline-block;
     position: absolute;
     opacity: 1.0;
+    background: #e0e0e0;
     z-index: 1;
     border: 1px solid black; padding: 4px;
 }
@@ -1340,7 +1341,7 @@ div.minView1 div.listEventImage {
 
 .appHeader .logo {
 	display: inline-block; 
-	margin-top: 10px; 
+	margin-top: 6px; 
 	margin-left: 1%;
 }
 
