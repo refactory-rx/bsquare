@@ -92,3 +92,8 @@ Shared
     db.createUser({ user: "<username>", pwd: "<pwd>", roles: [ "readWrite" ] });
     exit;
 _Edit net.port to **27111** and security.authentication to **enabled** in mongod conf file_
+
+### Run the app
+    cd ~/bsquare/bsquare-app
+    grunt
+
