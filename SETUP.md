@@ -2,8 +2,8 @@ UBUNTU
 ------
 
 ### Install Git
-   sudo apt-get update
-   sudo apt-get install git
+    sudo apt-get update
+    sudo apt-get install git
 
 # Install NodeJS
 wget http://nodejs.org/dist/v0.12.7/node-v0.12.7-linux-x64.tar.gz
