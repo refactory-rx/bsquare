@@ -40,6 +40,15 @@ https://nodejs.org/en/
 brew update
 brew install mongodb
 
+# Setup MongoDB
+sudo mkdir /data
+sudo chown <user>:<group> /data
+mkdir /data/db
+cp /usr/local/Cellar/mongodb/3.0.6/homebrew.mxcl.mongodb.plist ~/Library/LaunchAgents/mongodb.plist
+* Edit service name to "mongodb" in ~/Library/LaunchAgents/mongodb.plist
+launchctl load ~/Library/LaunchAgents/mongodb.plist
+launchctl start mongodb
+
 # Configure NPM
 mkdir "${HOME}/.npm-packages"
 echo NPM_PACKAGES="${HOME}/.npm-packages" >> ~/.bash_profile
@@ -67,6 +76,7 @@ npm install -g babel
 cd bsquare-app
 npm install
 bower install
+grunt babel concat ngAnnotate uglify:server
 cd ../bsquare-auth
 npm install
 cd ../bsquare-phantom
@@ -74,4 +84,13 @@ npm install
 cd ../bsquare-tickets
 npm install
 
-
+# Add MongoDB users
+mongo
+use admin;
+db.createUser({ user: "admin", pwd: "<pwd>", roles: [ { role: "userAdminAnyDatabase", db: "admin" }] });
+var schema = db.system.version.findOne({ "_id" : "authSchema" });
+schema.currentVersion = 3;
+db.system.version.save(schema);
+db.createUser({ user: "<username>", pwd: "<pwd>", roles: [ "readWrite" ] });
+exit;
+* Edit net.port to "27111" and security.authentication to "enabled" in mongod conf file
