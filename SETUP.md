@@ -46,7 +46,7 @@ https://nodejs.org/en/
     mkdir /data/db
     cp /usr/local/Cellar/mongodb/3.0.6/homebrew.mxcl.mongodb.plist ~/Library/LaunchAgents/mongodb.plist
 
-_Edit service name to "mongodb" in **~/Library/LaunchAgents/mongodb.plist**_  
+_Edit service name to **mongodb** in **~/Library/LaunchAgents/mongodb.plist**_  
     
     launchctl load ~/Library/LaunchAgents/mongodb.plist
     launchctl start mongodb
