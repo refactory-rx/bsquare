@@ -76,7 +76,7 @@ class PhantomService {
                     var path = `${WEB_CONTENT_PATH}/tickets/ticket${ticket._id}.pdf`;
                     var url = `${TICKET_SERVICE_URL}/tickets/ticket${ticket._id}.pdf`;
 
-                    page.render(path, () => {
+                    page.evaluate(() => {
 
                         fs.readFile(path, (err, data) => {
                             console.log(err, url);
@@ -137,6 +137,38 @@ class PhantomService {
         });
 
 	}
+
+    createPage(url) {
+
+	    var deferred = Q.defer();
+        
+        phantom.create((ph) => {
+
+            console.log("phantom created");
+            ph.createPage((page) => {
+
+                //page.set("paperSize", { format: "A4" }); 
+                console.log(`web page created, url: ${url}`);
+                page.set("onLoadFinished", (success) => {
+                    console.log(`load finished, success: ${success}`);
+                });
+
+                page.open(url, (status) => {
+
+                    console.log(`page load status: ${status}`);
+                    page.getContent((result) => {
+                        deferred.resolve(result);
+                    });
+
+                });
+
+            });
+
+        });
+
+	    return deferred.promise;
+
+    }
 
 }
 

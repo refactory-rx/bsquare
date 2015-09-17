@@ -32,7 +32,13 @@ controllers.controller(
     "MainCtrl", 
     ["$rootScope", "$scope", "$route", "$routeParams", "$location", "$http", "$cookies", "$log", "$timeout", "$locale", "$translate",
     ($rootScope, $scope, $route, $routeParams, $location, $http, $cookies, $log, $timeout, $locale, $translate) => {
-    
+
+    if (document.location.search.indexOf("?route") === 0) {
+        let route = document.location.search.split("=")[1];
+        console.log("ROUTE "+route);
+        $location.path(route);
+    }
+
     let lang = $locale.id.split('-')[0];
         
     if(lang === "fi" || lang === "en") {
@@ -42,20 +48,21 @@ controllers.controller(
     
     $scope.name = "Main Application";
     
-    $rootScope.appUrl = "http://bsq.co/#";
+    $rootScope.appUrl = "http://bsq.co";
     $rootScope.imgBaseUrl = "http://bsq.co/img"; 
     $rootScope.filesBaseUrl = "http://bsq.co/files";
     $rootScope.imageServer = "http://bsq.co";
     $rootScope.fileServer = "http://bsq.co";
     
-    $rootScope.logregStatus = 'start';
-    $rootScope.logregView = 'login';
-    $rootScope.username = '';
-    $rootScope.rootView = 'events'; 
+    $rootScope.logregStatus = "start";
+    $rootScope.logregView = "login";
+    $rootScope.username = "";
+    $rootScope.rootView = "events"; 
     $rootScope.og = {
         title: "Helpp tapa myydä liput",
         description: "Myy liput vaivattomasti ja pienin kustannuksin",
-        image: `${$rootScope.imgBaseUrl}/img/BSQ-logo_small.png`
+        image: `${$rootScope.imgBaseUrl}/BSQ-logo_small.png`,
+        url: `${$rootScope.appUrl}`
     };
 
     $scope.accountDropdownStatus = 'closed';
@@ -199,7 +206,7 @@ mainApp.config(
     [   
         "$routeProvider",
         ($routeProvider) => {
-
+            
 	        $routeProvider.when('/user/:id', { templateUrl: 'user.html', controller: 'UserCtrl' } )
 	            .when('/front', { templateUrl: 'parts/front.html', controller: 'FrontCtrl' } )
 	            .when('/app', { 

@@ -20,6 +20,16 @@ module.exports = (app) => {
             .catch((error) => {
                 callback({ success: 0, status: "ticketCreationFailed", error: error });
             });
+        },
+
+        createPage: (url, callback) => {
+            phantomService.createPage(url)
+            .then((data) => {
+                callback({ success: 1, status: "ok", data: data });
+            })
+            .catch((error) => {
+                callback({ success: 0, status: "error", error: error });
+            });
         }
 
     }; 

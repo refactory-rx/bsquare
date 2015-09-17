@@ -70,7 +70,7 @@ controllers.controller(
     	
         $timeout(() => {
 	    	
-	    	var baseUrl = $rootScope.appUrl + '/event/' + $scope.event._id;
+            var baseUrl = `${$rootScope.appUrl}/i?route=/event/${$scope.event._id}`;
 	    	var queryParams = $location.search();
 	    	
 	    	/*
@@ -241,7 +241,7 @@ controllers.controller(
 	    	return;
 	    }
 	    
-	    var baseUrl = $rootScope.appUrl + '/event/' + $scope.event._id;
+        var baseUrl = `${$rootScope.appUrl}/i?route=/event/${$scope.event._id}`;
 	    
 	    console.log($rootScope.loggedUser);
 	    

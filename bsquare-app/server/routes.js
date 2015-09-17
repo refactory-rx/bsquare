@@ -28,9 +28,19 @@ module.exports = (app) => {
         });
     });
 
-    app.get("/", (req, res) => {
-		res.sendFile(app.settings.WEB_CONTENT_PATH+"/index.html");
-	});
+    app.get("/i", (req, res) => {
 
+        var url = `${app.settings.APP_BASE_URL}/main-index.html#${req.query.route}`;
+        console.log("phantom page:", url);
+        let phantomService = app.phantomService;
+        phantomService.createPage(url, (result) => {
+            res.send(result.data);
+        });
+    
+    });
+
+    app.get("/", (req, res) => {
+        res.sendFile(app.settings.WEB_CONTENT_PATH+"/main-index.html");
+    });
 
 };

@@ -18,23 +18,26 @@ controllers.controller(
     $scope.ticketResources = [];
     $scope.publicTicketResources = [];
     
-    $scope.$watch("event", (value) => {
+    $scope.$watch("event", (event) => {
     	
     	console.log("eventEntry->$watch(event): "+$scope.eventStatus);
     	
-    	if(value) {
+    	if (event) {
     		
     		if($scope.eventStatus === "loaded" || $scope.eventStatus === "saved") {
     
 	    		$log.debug("event changed");
 	        	$scope.eventStatus = "changed";
 	        	
-    		} else if($scope.eventStatus == "loading" || $scope.eventStatus == "preloaded") {
+    		} else if($scope.eventStatus === "loading" || $scope.eventStatus === "preloaded") {
        			
         		$scope.eventStatus = "loaded";
     			
     		} 
-    		
+    	    
+            $rootScope.og.title = event.info.title;
+            $rootScope.og.description = event.info.description;
+            $rootScope.og.url = `${$rootScope.appUrl}/#/event/${event._id}`;    
     		
     	}
     	
@@ -169,7 +172,11 @@ controllers.controller(
     
     
     $scope.initMap = () => {
-		
+	    
+        if (!google) {
+            return;
+        }
+
 		var mapCanvas = document.getElementById("map_canvas");
                         
         var mapOptions = {
