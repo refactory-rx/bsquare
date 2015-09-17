@@ -42,16 +42,22 @@ controllers.controller(
     
     $scope.name = "Main Application";
     
-    $rootScope.appUrl = 'http://bsq.co/#';
-    $rootScope.imgBaseUrl = 'http://bsq.co/img'; 
-    $rootScope.filesBaseUrl = 'http://bsq.co/files';
-    $rootScope.imageServer = 'http://bsq.co';
-    $rootScope.fileServer = 'http://bsq.co';
+    $rootScope.appUrl = "http://bsq.co/#";
+    $rootScope.imgBaseUrl = "http://bsq.co/img"; 
+    $rootScope.filesBaseUrl = "http://bsq.co/files";
+    $rootScope.imageServer = "http://bsq.co";
+    $rootScope.fileServer = "http://bsq.co";
     
     $rootScope.logregStatus = 'start';
     $rootScope.logregView = 'login';
     $rootScope.username = '';
-    $rootScope.rootView = 'events';
+    $rootScope.rootView = 'events'; 
+    $rootScope.og = {
+        title: "Helpp tapa myydä liput",
+        description: "Myy liput vaivattomasti ja pienin kustannuksin",
+        image: `${$rootScope.imgBaseUrl}/img/BSQ-logo_small.png`
+    };
+
     $scope.accountDropdownStatus = 'closed';
     
     $rootScope.app = {
