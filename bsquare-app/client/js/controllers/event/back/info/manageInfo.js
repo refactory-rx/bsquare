@@ -34,7 +34,10 @@ controllers.controller(
             input.value = info.place.address;
         }
         
-        $scope.infoStatus = "viewInit";
+        if ($scope.infoStatus === "none" || $scope.infoStatus === "init") {        
+            $scope.infoStatus = "viewInit";
+        }
+
         $scope.info = info;
         
     };
@@ -147,7 +150,7 @@ controllers.controller(
             
     };
     
-    $scope.init();
+    //$scope.init();
     
     setTimeout(() => {
     	
@@ -168,7 +171,8 @@ controllers.controller(
             let addr_components = place.address_components;
 
             for (let i = 0; i < addr_components.length; i++) {
-                if (addr_components[i].types.indexOf("locality") != -1) {
+                var types = addr_components[i].types;
+                if (types.indexOf("locality") != -1 || types.indexOf("administrative_area_level_3") != -1) {
                     vicinity = addr_components[i].long_name;
                     break;
                 }

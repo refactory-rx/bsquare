@@ -81,6 +81,10 @@ Shared
     npm install
     cd ../bsquare-tickets
     npm install
+    cd ..
+
+### Add necessary files and folders
+    mkdir bsquare-app/client/img/events
 
 ### Add MongoDB users
     mongo
