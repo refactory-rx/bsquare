@@ -35,7 +35,7 @@ controllers.controller(
 
     if (location.search) {
 
-        let routeIndex = location.serach.indexOf("?route=");
+        let routeIndex = location.search.indexOf("?route=");
 
         if (routeIndex != -1) {
             let routeSubstr = location.substring(routeIndex + 7);
