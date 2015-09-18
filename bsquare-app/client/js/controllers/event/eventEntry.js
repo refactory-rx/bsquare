@@ -36,7 +36,7 @@ controllers.controller(
     		} 
     	    
             $rootScope.og.title = event.info.title;
-            $rootScope.og.image = `${$rootScope.baseImgUrl}${event.info.eventImage}`;    
+            $rootScope.og.image = `${$rootScope.imgBaseUrl}${event.info.eventImage}`;    
             $rootScope.og.description = event.info.description;
             $rootScope.og.url = `${$rootScope.appUrl}/#/event/${event._id}`;    
     		
