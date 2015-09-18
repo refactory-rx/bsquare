@@ -7,6 +7,8 @@ class OrdersTask {
     
     constructor(app) {
         ({ Order, Invoice, TicketResource } = app.model);
+        this.orderService = app.orderService;
+        this.paymentService = app.paymentService;
     }
 
     timeoutOrders() {
@@ -65,7 +67,6 @@ class OrdersTask {
         .then((rowsAffected) => {
 
             console.log(rowsAffected);
-
             console.log(timedoutOrderIds);
             return Order.updateQ( { _id: { $in: timedoutOrderIds } }, { status: "timedout" }, { multi: true });
 

@@ -449,7 +449,7 @@ class OrderService {
 
                                                 let idString = ticketResource._id.toHexString();
                                                 let qtyReserved = ticketResource.qtyReserved + qtyById[idString];
-                                                console.log('qtyreserved', qtyReserved);
+                                                console.log("qtyById / qtyReserved", qtyById, qtyReserved);
 
                                                 TicketResource.update( { _id: ticketResource._id }, { qtyReserved: qtyReserved }, (err, numAffected) => {
                                                     deferred.resolve(numAffected);
