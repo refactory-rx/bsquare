@@ -504,7 +504,6 @@ div.listEventImage {
     top: 2%;
     left: 2%;
     width: 96%;
-    height: 96%;
     display: none;
 }
 
@@ -1566,19 +1565,22 @@ div.minView1 div.listEventImage {
         width: 100%;
         overflow: hidden;
 	}
+	
+    div.listEventImage img {
+	    position: absolute;
+        width: 100%;
+    }
 
     .listEventImage .imageShader {
         display: block;
     }
 	
 	div.listEventInfo {
-        position: absolute;
         top: 4%;
         left: 4%;
         padding: 2%;
 		max-width: initial;
         width: 96%;
-        height: 96%;
         margin-top: initial;
 	}
     
@@ -1595,7 +1597,6 @@ div.minView1 div.listEventImage {
      
     div.findEvents div.listEvent {
         max-height: initial;
-        height: 200px;
     }    
 
     .fadeoutListEvent {
