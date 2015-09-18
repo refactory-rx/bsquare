@@ -39,7 +39,7 @@ controllers.controller(
 
         if (routeIndex != -1) {
             let routeSubstr = location.search.substring(routeIndex + 7);
-            let route = unescape(routeSubstr.split("=")[1]);
+            let route = unescape(routeSubstr);
             console.log("ROUTE "+route);
             location.href = `/#${route}`;
         }

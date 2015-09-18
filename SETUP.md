@@ -60,6 +60,11 @@ _Edit service name to **mongodb** in **~/Library/LaunchAgents/mongodb.plist**_
     echo MANPATH=\"\$NPM_PACKAGES/share/man\:$(manpath)\" >> ~/.bash_profile
     echo prefix=${HOME}/.npm-packages >> ~/.npmrc
 
+### Install PhantomJS
+    brew install wget
+    wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.0.0-macosx.zip
+    unzip phantomjs-2.0.0-macosx.zip
+    echo PATH=\$PATH:~/phantomjs-2.0.0-macosx/bin >> ~/.bash_profile
 
 Shared
 ------

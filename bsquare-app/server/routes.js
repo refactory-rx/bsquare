@@ -34,7 +34,7 @@ module.exports = (app) => {
         console.log("phantom page:", url);
         let phantomService = app.phantomService;
         phantomService.createPage(url, (result) => {
-            console.log(result.data);
+            //console.log(result.data);
             res.send(result.data);
         });
     
