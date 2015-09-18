@@ -76,19 +76,15 @@ class PhantomService {
                     var path = `${WEB_CONTENT_PATH}/tickets/ticket${ticket._id}.pdf`;
                     var url = `${TICKET_SERVICE_URL}/tickets/ticket${ticket._id}.pdf`;
 
-                    page.evaluate(() => {
-
-                        fs.readFile(path, (err, data) => {
-                            console.log(err, url);
-                            deferred.resolve({
-                                id: ticket._id, 
-                                url: url,
-                                path: path,
-                                data: data 
-                            });
-                            ph.exit();
+                    fs.readFile(path, (err, data) => {
+                        console.log(err, url);
+                        deferred.resolve({
+                            id: ticket._id, 
+                            url: url,
+                            path: path,
+                            data: data 
                         });
-
+                        ph.exit();
                     });
 
                 });
