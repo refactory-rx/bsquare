@@ -33,10 +33,17 @@ controllers.controller(
     ["$rootScope", "$scope", "$route", "$routeParams", "$location", "$http", "$cookies", "$log", "$timeout", "$locale", "$translate",
     ($rootScope, $scope, $route, $routeParams, $location, $http, $cookies, $log, $timeout, $locale, $translate) => {
 
-    if (document.location.search.indexOf("?route") === 0) {
-        let route = unescape(document.location.search.split("=")[1]);
-        console.log("ROUTE "+route);
-        location.href = `/#${route}`;
+    if (location.search) {
+
+        let routeIndex = location.serach.indexOf("?route=");
+
+        if (routeIndex != -1) {
+            let routeSubstr = location.substring(routeIndex + 7);
+            let route = unescape(routeSubstr.split("=")[1]);
+            console.log("ROUTE "+route);
+            location.href = `/#${route}`;
+        }
+
     }
 
     let lang = $locale.id.split('-')[0];
