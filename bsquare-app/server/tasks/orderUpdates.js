@@ -90,7 +90,7 @@ class OrdersTask {
 
             orders.forEach(order => {
                 if(order.paymentStatus === "paid") {
-                    app.orderService.fulfillOrder(order._id, (result) => {
+                    this.orderService.fulfillOrder(order._id, (result) => {
                         console.log("order fulfilled in order update task");
                     });
                 } else {
@@ -114,7 +114,7 @@ class OrdersTask {
 
             console.log('foundInvoice', invoice);
 
-            app.paymentService.updateInvoice(invoice, (response) => {
+            this.paymentService.updateInvoice(invoice, (response) => {
                 console.log('scheduled invoice update response', response);
             });
 
