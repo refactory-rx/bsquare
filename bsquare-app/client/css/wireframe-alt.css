@@ -477,7 +477,7 @@ div.findEvents div.listEvent {
 	width: 98%;
 	margin-left: 1%;
 	min-height: 80px;
-    max-height: 120px;
+    /* max-height: 120px; */
     overflow-y: hidden;
     margin-bottom: 16px;
 }
@@ -514,7 +514,7 @@ div.listEventInfo {
 	display: inline-block; 
 	max-width: 75%;
     padding-left: 6px;
-    height: 120px;
+    /* height: 120px; */
     margin-top: -6px;
 }
 
@@ -534,7 +534,7 @@ div.listEventInfo {
     text-overflow: ellipsis;
     -webkit-line-clamp: 4;
     line-height: 1.4;
-    margin: 0 auto;
+    margin-top: 10px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
    padding-left: 6px; 
@@ -1099,6 +1099,14 @@ div.ticket {
 
 @media (max-width: 660px) {
     
+    .listEventInfo .header .title {
+        color: white;
+    }
+
+    .listEventInfo .descriptionBox {
+        color: white;
+    }
+
     .eventInfo .eventLogo {
 		width: 99%;
         height: initial;
