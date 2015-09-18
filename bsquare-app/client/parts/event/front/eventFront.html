@@ -1,38 +1,33 @@
 <div class="panel panel-default event {{event.layout}}" ng-controller="EventFrontCtrl" data-ng-init="init()" ng-cloak>
 
     <div class="panel-heading columnHeader" style="height: 49px;">
-        <div class="left" style="font-size: 33px;">{{event.info.title}}</div>
+        <div class="left" style="margin-left: 6px;">
+            <div class="event-title" style="font-size: 33px;">{{event.info.title}}</div>
+            <div class="event-description-item event-time">
+                <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+                {{formatTime(event.info.timeStart)}}
+            </div>
+            <div class="event-description-item">
+                <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+                {{event.info.place.address}}
+            </div>
+        </div>
         <div ng-show="ownEvent == true" class="right"><a href="" ng-click="setRootView('edit')" ng-show="loggedUser != undefined">{{ 'event.front.manage' | translate }}</a></div>
     </div>
     
-    <div class="panel-body event-content" style="height: 100%; overflow-y: auto; margin-right: 1px;" ng-cloak>
+    <div class="panel-body event-content" style="height: 100%; padding: 6px;" ng-cloak>
     	
             <div style="padding-top: 1%; padding-left: 1%">
             
                 <div class="eventInfo">
                     
                     <div class="eventLogo">
-                        
-                        <img ng-show="event.info.eventImage != undefined" id="eventImage" align="right" ng-src="img{{event.info.eventImage}}"/>
-                        <img ng-show="event.info.eventImage == undefined" align="right" data-src="holder.js/100%x150/#dad34d:#000000/text:EVENT LOGO"/>
-                        
-                    </div>
-                    
-                    
-                    <div class="eventDescription">
-                        <div>
-                            <div>
-                                {{formatTime(event.info.timeStart)}}
-                            </div>
+                        <div id="eventImageContainer">    
+                            <img ng-show="event.info.eventImage != undefined" id="eventImage" align="right" ng-src="img{{event.info.eventImage}}"/>
+                            <img ng-show="event.info.eventImage == undefined" align="right" data-src="holder.js/100%x150/#dad34d:#000000/text:EVENT LOGO"/>
                         </div>
-                        <div>
-                            <div>
-                                {{event.info.place.address}}
-                            </div>
-                        </div>
-                        <pre style="margin-top: 12px;">{{event.info.description}}</pre>
                     </div>
-                    
+                     
                     <div class="eventMap">
                         <div id="map_canvas" style="width: 100%; height: 250px"></div>
                         <!-- <img align="right" data-src="holder.js/100%x250/#a0a0a0:#000000/text:MAP" style="width: 100%; margin-right: 6px; display: inline;"/> -->
@@ -41,6 +36,10 @@
                     
                 </div>
                 
+                <div class="eventDescription">
+                    <pre style="margin-top: 12px;">{{event.info.description}}</pre>
+                </div>
+
                 <div style="display: inline-block; width: 100%; margin-top: 24px; margin-bottom: 12px;" 
                     ng-show="event.groupRewards.conditions.length > 0 || event.refRewards.pointRewards.length > 0">
                     

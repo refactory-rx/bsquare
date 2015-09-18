@@ -1047,21 +1047,27 @@ div.ticket {
 }
 
 .eventInfo .eventLogo {
-	width: 32%; 
+	width: 49%;
+    height: 250px; 
 	display: inline-block; 
 	position: relative;
-    overflow: hidden;    
+    overflow: hidden;
+    background: #e0e0e0;    
+}
+
+#eventImageContainer {
+    height: 250px;
+    vertical-align: middle;
 }
 
 .eventInfo .eventLogo img {
-    height: 250px;
-    width: auto;
-    display: inline;
-    float: left;
+    height: auto;
+    width: 100%;
+    margin: auto;
 }
 
-.eventInfo .eventDescription {
-	width: 33%; 
+.eventDescription {
+	width: 98%; 
 	display: inline-block;
 	text-align: left;
 	vertical-align: top;
@@ -1069,30 +1075,61 @@ div.ticket {
     padding-left: 12px;
 }
 
+.event-title {
+    display: inline;
+    margin-right: 10px;
+}
+
+.event-description-item {
+    font-size: 14px;
+    display: inline-block;
+    vertical-align: super;
+    margin-left: 10px;
+}
+
+.event-description-item .event-time {
+}
+
 .eventInfo .eventMap {
-	width: 33%; 
+	width: 49%; 
 	display: inline-block; 
 	text-align: right; 
 	vertical-align: top;
 }
 
 @media (max-width: 660px) {
-     
+    
     .eventInfo .eventLogo {
 		width: 99%;
+        height: initial;
+        margin-top: 6px;
+    }
+
+    #eventImageContainer {
         height: initial;
     }
 
     .eventInfo .eventLogo img {
         width: 100%;
         height: auto;
-        position: initial; 
     }
 	
     .eventInfo .eventDescription {
-		width: 99%;
+		width: 98%;
 	}
-	
+
+    .event-title {
+        display: block;
+    }
+
+    .event-description-item {
+        display: block;
+    }
+
+    .event-description-item {
+        margin-left: 0px;
+    }
+
 	.eventInfo .eventMap {
 		width: 99%;
 		margin-top: 12px;

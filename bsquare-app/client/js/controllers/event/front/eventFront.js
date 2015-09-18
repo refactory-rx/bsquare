@@ -43,26 +43,36 @@ controllers.controller(
     		
     }, true);
     
-    
     $scope.init = () => {
     	
         console.log("eventFront->init()");
-        let eventImage = $("#eventImage");
-        eventImage.load(() => {
+
+        if(!$scope.imageScaled && $(document).width() > 660) {
             
-            let img = eventImage.get(0);
-            let imgWidth = img.naturalWidth;
-            let imgHeight = img.naturalHeight;
-            console.log("loaded event image: ", imgWidth+" x "+imgHeight); 
-            /*
-            if (imgWidth >= imgHeight) {
-                eventImage.css({ "height": "250px", "width": "auto" });
-            } else {
-                eventImage.css({ "max-height": "250px", "width": "auto" });
-            }
-            */
-            //console.log(image, image.naturalWidth, image.naturalHeight);	
-        });
+            let eventImageContainer = $("#eventImageContainer");
+            let eventImage = $("#eventImage");
+            eventImage.load(() => {
+                
+                let img = eventImage.get(0);
+                let imgWidth = img.naturalWidth;
+                let imgHeight = img.naturalHeight;
+                console.log("loaded event image: ", imgWidth+" x "+imgHeight); 
+                
+                var imgRatio = imgWidth/imgHeight;
+                var containerRatio = eventImageContainer.width() / eventImageContainer.height() 
+                if (imgRatio < containerRatio) {
+                    eventImageContainer.css("display", "flex");
+                    eventImage.css({ "height": "100%", "width": "auto" });
+                } else {
+                    eventImageContainer.css("display", "table-cell");
+                }
+                
+                $scope.imageScaled = true;    
+                console.log("image processing", imgRatio, containerRatio);
+
+            });
+
+        }
         
         $scope.getTicketResources(() => {
     		$scope.updateOrder();
