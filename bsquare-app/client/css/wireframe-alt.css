@@ -1573,6 +1573,7 @@ div.minView1 div.listEventImage {
 
     .listEventImage .imageShader {
         display: block;
+        max-height: 230px;
     }
 	
 	div.listEventInfo {
