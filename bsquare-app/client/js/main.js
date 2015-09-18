@@ -34,9 +34,9 @@ controllers.controller(
     ($rootScope, $scope, $route, $routeParams, $location, $http, $cookies, $log, $timeout, $locale, $translate) => {
 
     if (document.location.search.indexOf("?route") === 0) {
-        let route = document.location.search.split("=")[1];
+        let route = unescape(document.location.search.split("=")[1]);
         console.log("ROUTE "+route);
-        $location.path(route);
+        location.href = `/#${route}`;
     }
 
     let lang = $locale.id.split('-')[0];
