@@ -483,7 +483,6 @@ div.editEvent div.editEventPane {
 }
 
 .findEvents .listEventCell {
-    min-height: 250px;
     height: 100%;
     position: relative;
     display: inline-block;
@@ -1570,6 +1569,7 @@ div.minView1 div.listEventImage {
     
     .findEvents .listEventCell {
         background: #e0e0e0;
+        min-height: 250px;
     }
 
 	div.listEventImage {
