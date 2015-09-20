@@ -461,7 +461,7 @@ div.editEvent div.editEventPane {
 }
 
 
-div.findEvents {
+.findEvents {
 	margin-top: 10px;
     border: 1px solid black;
 	height: 100%;
@@ -469,7 +469,7 @@ div.findEvents {
 	overflow-y: hidden;
 }
 
-div.findEvents div.listEvent {
+.findEvents .listEvent {
 	padding: 10px;
 	margin-top: 3px;
 	margin-bottom: 3px;
@@ -480,6 +480,15 @@ div.findEvents div.listEvent {
     /* max-height: 120px; */
     overflow-y: hidden;
     margin-bottom: 16px;
+}
+
+.findEvents .listEventCell {
+    min-height: 250px;
+    height: 100%;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    cursor: pointer;
 }
 
 div.listEventImage {
@@ -1558,7 +1567,11 @@ div.minView1 div.listEventImage {
 		margin-left: -90px;
 		
 	}
-	
+    
+    .findEvents .listEventCell {
+        background: #e0e0e0;
+    }
+
 	div.listEventImage {
         max-width: initial;
 		vertical-align: top;
