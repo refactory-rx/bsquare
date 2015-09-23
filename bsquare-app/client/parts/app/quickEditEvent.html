@@ -33,6 +33,13 @@
 								ng-model="event.info.title" ng-change="clearError('title')"/>
 						</div>
 					</div>
+					<div class="inputRow form-group" ng-class="{ 'has-error': validationErrors && validationErrors.slug }">
+						<div class="inputRowCell labelContainer hideTooNarrow">bsq.co/e/</div>
+						<div class="inputRowCell eventInputContainer">
+							<input class="form-control" style="width: 100%;" type="text" 
+								ng-model="event.slug"/>
+						</div>
+					</div>
 					<div class="inputRow form-group" ng-class="{ 'has-error': validationErrors && validationErrors.place }">
 						<div class="inputRowCell labelContainer">{{ 'event.back.info.label-place' | translate }}</div>
 						<div class="inputRowCell eventInputContainer">

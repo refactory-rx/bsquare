@@ -86,7 +86,7 @@ controllers.controller(
     		delete $scope.validationErrors;
     	}
     	
-    	var validationErrors = validationService.validateEventFields($scope.info);
+    	var validationErrors = validationService.validateEventFields($scope.event);
     	if(validationErrors.keys.length > 0) {
     		$scope.validationErrors = validationErrors;
     		return;

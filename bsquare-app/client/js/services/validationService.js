@@ -2,16 +2,23 @@ mainApp.factory("validationService", ["$translate", function($translate) {
    
     return  {
      
-        validateEventFields: function(info) {
+        validateEventFields: function(event) {
     	
         	var validationErrors = {};
         	var validationErrorKeys = [];
-        	
+
+            var info = event.info;
+
         	if(!info.title || info.title.length === 0) {
         		validationErrors.title = 'Event name is missing.';
         		validationErrorKeys.push('title');
         	}
         	
+        	if(!event.slug || event.slug.length === 0) {
+        		validationErrors.slug = "Event slug is missing.";
+        		validationErrorKeys.push("slug");
+            }
+
         	if(!info.place) {
         		validationErrors.place = 'Event place is missing.';
         		validationErrorKeys.push('place');

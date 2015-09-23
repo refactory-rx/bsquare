@@ -81,6 +81,34 @@ module.exports = {
             });
         });
 
+        app.get("/api/events/slug", (req, res, next) => {
+            
+            if (req.query.slug) { 
+                
+                app.eventService.checkSlug(req.query.slug)
+                .then((available) => {
+                    res.json({ status: "ok", available: available });
+                })
+                .catch((err) => {
+                    next(err);
+                });
+
+            } else if (req.query.title) {
+                
+                app.eventService.getSlugs(req.query.title)
+                .then((slugs) => {
+                    res.json({ status: "ok", slugs: slugs });
+                })
+                .catch((err) => {
+                    next(err);
+                });
+            
+            } else {
+                next(new Errors.UnprocessableEntity(null, { message: "invalid_params" }));
+            }
+
+        });
+
         app.get("/api/events/:id", (req, res, next) => {
             
             let tracking = Object.assign({ 

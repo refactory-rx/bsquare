@@ -67,6 +67,10 @@ input.ng-valid {
 	box-shadow: 0 0 2px #DDDDDD inset;
 }
 
+.has-error input {
+    border-color: #FF0000;
+}
+
 input.pwdShort {
 	width: 87%;
 	display: inline;

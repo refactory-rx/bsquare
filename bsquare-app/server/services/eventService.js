@@ -147,7 +147,6 @@ class EventService {
         });
 
         return deferred.promise;
-
 		
 	}
     
@@ -211,14 +210,24 @@ class EventService {
                 
         event.signupFields = [emailSignupField];
         console.log("new event", event.info);
-        let eventName = event.info.title.toLowerCase();
-        event.slug = eventName.split(" ").join("-");
-        console.log(`generated event slug: ${event.slug}`);
 
-        Event.create(event, (err, createdEvent) => {
-            if (err) { return deferred.reject(err); }
-            deferred.resolve(createdEvent); 
+        this.checkSlug(event.slug)
+        .then((available) => {
+
+            if (available) {
+                Event.create(event, (err, createdEvent) => {
+                    if (err) { return deferred.reject(err); }
+                    deferred.resolve(createdEvent); 
+                });
+            } else {
+                deferred.reject(new Errors.UnprocessableEntity(null, { message: "invalid_or_duplicate_slug" }));
+            }
+
+        })
+        .catch((err) => {
+            deferred.reject(err);
         });
+
 					
 	    return deferred.promise;
 		
@@ -719,6 +728,102 @@ class EventService {
         	
     	});	
 		
+    }
+    
+    checkSlug(slug) {
+
+        let deferred = Q.defer();
+        
+        let badChars = slug.match(/(?!\-)\W/g);
+        if (badChars && badChars.length > 0) {
+            
+            setTimeout(() => {
+                deferred.resolve(false);
+            });
+
+            return deferred.promise;
+
+        }
+
+        Event.findQ({ slug: slug })
+        .then((events) => {
+            deferred.resolve(!(events && events.length > 0));
+        })
+        .catch((err) => {
+            deferred.reject(err);
+        });
+
+        return deferred.promise;
+
+    }
+
+    getSlugs(title) {
+
+        let deferred = Q.defer();
+
+        let preSlug = title.toLowerCase().replace(/(?!\s)\W/g, "")
+        let slugElems = preSlug.split(" ");
+        
+        let slugs = [];
+        let slugBase = "";
+        
+        slugElems.forEach((slugElem) => {
+            
+            slugElem = slugElem.trim();
+            
+            if (slugElem !== "") {
+                
+                if (slugBase === "") {
+                    slugBase += slugElem;
+                } else {
+                    slugBase += `-${slugElem}`;
+                }
+                
+                slugs.push(slugBase);
+
+            }
+
+        });
+        
+        Event.findQ({ slug: { $in: slugs } })
+        .then((events) => {
+            
+            if (events && events.length > 0) {
+                
+                let matchingSlugs = events.map(event => event.slug);
+                let filteredSlugs = slugs.filter(slug => matchingSlugs.indexOf(slug) === -1)
+                
+                if (filteredSlugs.length === 0) {
+
+                    let lastSlug = slugs[slugs.length - 1];
+                    Event.where({ slug: new RegExp(`${lastSlug}(\-\d+)*`, "g") }).count()
+                    .execQ()
+                    .then((count) => {
+                        console.log("slug count", count);
+                        deferred.resolve([`${lastSlug}-${count}`]);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        deferred.resolve([]);
+                    });
+
+                    return;
+
+                }
+
+                slugs = filteredSlugs;
+                
+            }
+
+            deferred.resolve(slugs);    
+
+        })
+        .catch((err) => {
+            deferred.reject(err);
+        });
+
+        return deferred.promise;
+
     }
 
     initRoutes() {
