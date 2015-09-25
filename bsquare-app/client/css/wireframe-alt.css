@@ -291,7 +291,7 @@ div.main div.minView2 {
 
 div.main div.minView2.loggedIn {
 	top: 49%;
-	height: 47%;
+	height: 46%;
 }
 
 div.main div.minView2.loggedOut {
@@ -1395,6 +1395,18 @@ div.minView1 div.listEventImage {
 	margin-top: 10px;
     display: block;
     color: black;
+}
+
+.promoFull .imageContainer {
+    width: 96%;
+    height: 60%;
+    margin: auto;
+    overflow-y: hidden;
+    background: #e0e0e0;
+}
+
+.promoFull .imageContainer img {
+    max-width: 100%;
 }
 
 .promoSmall {
