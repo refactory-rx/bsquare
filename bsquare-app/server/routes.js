@@ -19,7 +19,7 @@ module.exports = (app) => {
 
     app.get("/e/:slug", (req, res) => {
         Event.findOne({ slug: req.params.slug }, (err, event) => {
-            if(!err || event) {
+            if(!err && event) {
                 res.redirect(`/#/event/${event._id}`);
             } else {
                 res.redirect("/404.html");
