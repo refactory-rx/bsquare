@@ -316,11 +316,13 @@ div.columnHeader {
 .columnHeader .left {
     display: inline-block;
     float: left;
+    width: 100%;
 }
 
 .columnHeader .right {
-    display: inline-block;
-    float: right;
+    position: absolute;
+    right: 2%;
+    top: 14px;
 }
 
 .minView1 div.columnHeader {
@@ -1084,8 +1086,11 @@ div.ticket {
 }
 
 .event-title {
-    display: inline;
+    display: inline-block;
     margin-right: 10px;
+    margin-top: 14px;
+    margin-bottom: 12px;
+    max-width: 50%;
 }
 
 .event-description-item {
@@ -1136,6 +1141,9 @@ div.ticket {
 
     .event-title {
         display: block;
+        margin-bottom: 6px;
+        margin-top: initial;
+        max-width: initial;
     }
 
     .event-description-item {
@@ -1720,6 +1728,28 @@ div.minView1 div.listEventImage {
 	div.minView1 div.columnHeader {
 		height: 28px;
 	}
+    
+    div.columnHeader {
+        height: initial;
+    }
+
+    .columnHeader .left {
+        display: block;
+        float: none;
+    }
+
+    .columnHeader .right {
+        display: block;
+        float: none;
+        width: 100%;
+        text-align: center;
+        margin-top: 12px;
+        border: 1px dashed;
+        margin-left: 6px;
+        position: initial;
+        right: initial;
+        top: initial;
+    }
 	
 	div.main div.minView2 {
 	    top: 2px;

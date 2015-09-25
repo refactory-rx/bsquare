@@ -1,8 +1,8 @@
 <div class="panel panel-default event {{event.layout}}" ng-controller="EventFrontCtrl" data-ng-init="init()" ng-cloak>
 
-    <div class="panel-heading columnHeader" style="height: 49px;">
+    <div class="panel-heading columnHeader">
         <div class="left" style="margin-left: 6px;">
-            <div class="event-title" style="font-size: 33px;">{{event.info.title}}</div>
+            <div class="event-title" style="font-size: 33px; line-height: 36px;">{{event.info.title}}</div>
             <div class="event-description-item event-time">
                 <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
                 {{formatTime(event.info.timeStart)}}
