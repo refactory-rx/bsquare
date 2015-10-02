@@ -31,7 +31,7 @@ controllers.controller("AppCtrl",
     	$log.debug('app.route changed');
     	$log.debug(value);
     	
-    	if(value !== undefined) {
+    	if(value) {
     		$scope.updateView(value.params);
     	}
     	
@@ -51,9 +51,9 @@ controllers.controller("AppCtrl",
     	var queryParams = $location.search();
     	$log.debug('queryParams:');
     	$log.debug(queryParams);
-    	var view = queryParams.view;
-    	var face = queryParams.face;
-    	
+    	var view = params.view;
+    	var face = params.face;
+        	
     	if(view) {
     		
     		if(face === undefined) {
@@ -68,7 +68,11 @@ controllers.controller("AppCtrl",
     		
     		$scope.selectMainView(view);
     	
-    	}
+    	} else {
+            
+            $rootScope.setJumbotron("events");            
+
+        }
     	
     	if(face) {
     		$rootScope.setRootView(face);
@@ -147,16 +151,9 @@ controllers.controller("AppCtrl",
         }
         
         if (view === "findEvents") {
-            $(".appHeader").css("height", "300px");
-            $("#jumbotron").css({ "opacity": "1.0", "top": "30px" });
-            $("#jumbotron > div > h1").css("font-size", "39px");
-            $("#jumbotron a").css("display", "inline-block");
-            $("#jumbotron").css("display", "block");
+            $rootScope.setJumbotron("events");
         } else {    
-            $(".appHeader").css("height", "44px");
-            $("#jumbotron").css({ "opacity": "0", "top": "-40px" });
-            $("#jumbotron > div > h1").css("font-size", "9px");
-            $("#jumbotron").css("display", "none");
+            $rootScope.setJumbotron("none");
 	    }
         
     	$timeout(function() {
