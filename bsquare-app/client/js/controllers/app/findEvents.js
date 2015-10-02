@@ -22,10 +22,35 @@ controllers.controller(
 
     $scope.$watch("app.views.selectedView", (value) => {
     	
+        
         if (value === "findEvents") {
             $scope.templateUrl = "parts/app/findEventsFull.html";
     		$scope.searchField.text = "";
     		$scope.getEvents($routeParams.q);
+            
+            $timeout(() => {
+                $(".findEventsContent").scroll(() => { 
+                    
+                    let scrollTop = $(".findEventsContent").scrollTop();
+                    
+                    if (scrollTop <= 256) {
+                        $(".appHeader").css("height", 44+(256-scrollTop)+"px");
+                        $("#jumbotron").css({ "opacity": ""+(1-(scrollTop/256)), "top": (30-(70*(scrollTop/256)))+"px" });
+                        $("#jumbotron > div > h1").css("font-size", (39-(30*(scrollTop/256)))+"px");
+                    } else {
+                        $(".appHeader").css("height", "44px");
+                        $("#jumbotron").css({ "opacity": "0", "top": "-40px" });
+                        $("#jumbotron > div > h1").css("font-size", "9px");
+                    }
+                    
+                    if (scrollTop > 120) {
+                        $("#jumbotron a").css("display", "none");
+                    } else { 
+                        $("#jumbotron a").css("display", "inline-block");
+                    }
+                    
+                });
+            }, 1000);
         } else {
             $scope.templateUrl = "parts/app/findEventsMin.html";
     		$scope.getEventStats();
@@ -158,7 +183,7 @@ controllers.controller(
     
     	
     }
-    
+     
     //$scope.init();
     
 }]);

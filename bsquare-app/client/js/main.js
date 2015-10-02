@@ -98,8 +98,8 @@ controllers.controller(
 	};
 	
     $scope.init = () => {
-		
-		$log.debug(requestHeaders);
+        	
+        $log.debug(requestHeaders);
 		
 		$http.get("/api", { headers: requestHeaders } )
         .success((response) => {
@@ -158,6 +158,18 @@ controllers.controller(
 	
 	$rootScope.setRootView = function(view) {
     	$rootScope.rootView = view;
+        if (view === "events") {
+            $(".appHeader").css("height", "300px");
+            $("#jumbotron").css({ "opacity": "1.0", "top": "30px" });
+            $("#jumbotron > div > h1").css("font-size", "39px");
+            $("#jumbotron a").css("display", "inline-block");
+            $("#jumbotron").css("display", "block");
+        } else {    
+            $(".appHeader").css("height", "44px");
+            $("#jumbotron").css({ "opacity": "0", "top": "-40px" });
+            $("#jumbotron > div > h1").css("font-size", "9px");
+            $("#jumbotron").css("display", "none");
+	    }
     	console.log('rootview set to '+$rootScope.rootView);
     };
 	
