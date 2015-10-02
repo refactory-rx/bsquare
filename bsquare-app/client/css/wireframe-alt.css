@@ -494,16 +494,17 @@ div.editEvent div.editEventPane {
 }
 
 .findEvents .listEvent {
-	padding: 10px;
+	padding: 16px;
 	margin-top: 3px;
 	margin-bottom: 3px;
-	/*border: 1px solid #ededed;*/
+	border: 1px solid #e0e0e0;
 	width: 98%;
 	margin-left: 1%;
 	min-height: 80px;
     /* max-height: 120px; */
     overflow-y: hidden;
     margin-bottom: 16px;
+    /* box-shadow: 3px 4px 10px -4px #888888; */
 }
 
 .findEvents .listEventCell {
