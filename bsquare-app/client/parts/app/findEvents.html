@@ -1,9 +1,116 @@
 <div class="panel panel-default findEvents" ng-controller="FindEventsCtrl" ng-init="init()">
-	
+    
+    <!--    
 	<div class="panel-heading columnHeader" ng-click="navigate('#/app?view=findEvents')">	
 		{{ "app.findEvents.title" | translate }} 
 	</div>
+    -->
 
-    <div ng-include="templateUrl" class="findEventsContent"></div>    
+    <div class="eventSearch">
+        
+        <!--
+        <div class="eventSearchLeft">
+            <a href="">{{ 'app.findEvents.searchFilters' | translate }}</a>
+        </div>
+        -->
+        <!-- 
+        <div class="eventSearchLeft">
+            {{ 'app.findEvents.searchText' | translate }}
+        </div>
+        -->
+        
+        <div class="eventSearchLeft">
+            <div class="mainFilterSection">
+                <div class="filterBadge">
+                    <a href="">
+                        Helsinki
+                        <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+                    </a>
+                </div>
+                <input id="place-input" class="form-control" style="display: none; width: 200px;" type="text" placeholder="{{ 'event.back.info.placeholder-place' | translate }}"/>
+            </div>
+            
+            <div class="mainFilterSection">
+                <div class="filterBadge" style="border: 1px solid #e0e0e0; background: white;">
+                    <a href="">
+                        TAPAHTUMAN LAJI
+                        <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="eventSearchRight">
+            <div class="input-group" style="width: 100%;">
+                <input type="text" class="form-control" ng-model="searchField.text" ng-change="searchEvents()">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-search"></span>
+                </span>
+            </div>
+        </div>
+
+    </div>
+    
+    <div class="findEventsContainer" ng-class="{ 'loggedIn': logregStatus == 'loggedIn' }">
+        
+        <div ng-include="templateUrl" class="findEventsContent"></div>    
+
+        <div class="promoEvents">
+            
+            <div ng-show="promoEvents.length > 0"
+                ng-class="{ loggedIn: logregStatus == 'loggedIn', loggedOut: logregStatus != 'loggedIn' }"
+                class="minView1 ad ad-s1">
+                
+                 
+                <div class="promoFull" style="width: 100%; height: 100%; position: relative;" ng-click="navigate('#/event/'+promoEvents[0]._id)">
+                    <div class="imageContainer">
+                        <img ng-src="img{{promoEvents[0].info.eventImage}}">
+                    </div>
+                    <div style="height: 20%; border: 1px solid black;">
+                        <a href="#/event/{{promoEvents[0]._id}}"><span style="font-size: 1.5em;">{{promoEvents[0].info.title}}</span></a> in {{promoEvents[0].info.place.vicinity}}
+                    </div>
+                    <div style="height: 20%;">
+                        <div class="panelBg" style="width: 96%; margin: auto; height: 100%; font-size: 1.3em;">
+                            {{formatTime(promoEvents[0].info.timeStart)}}	
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="promoSmall" style="width: 100%; height: 100%; position: relative; border: 1px solid #a0a0a0; background: #FFFACD;">
+                    <a style="display: inline-block; margin-top: 10px; width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" 
+                        href="#/event/{{promoEvents[0]._id}}">{{promoEvents[0].info.title}}</a>
+                </div>
+                
+            </div>
+            
+            <div ng-show="promoEvents.length > 1"
+                ng-class="{ loggedIn: logregStatus == 'loggedIn', loggedOut: logregStatus != 'loggedIn' }"
+                class="minView2 ad ad-s2">
+                
+                <div class="promoFull" style="width: 100%; height: 100%; position: relative;" ng-click="navigate('#/event/'+promoEvents[1]._id)">
+                    <div class="imageContainer">
+                        <img ng-src="img{{promoEvents[1].info.eventImage}}">
+                    </div>
+                    <div style="height: 20%; border: 1px solid black;">
+                        <a href="#/event/{{promoEvents[1]._id}}"><span style="font-size: 1.5em;">{{promoEvents[1].info.title}}</span></a> in {{promoEvents[1].info.place.vicinity}}
+                    </div>
+                    <div style="height: 20%;">
+                        <div class="panelBg" style="width: 96%; margin: auto; height: 100%; font-size: 1.3em;">
+                            {{formatTime(promoEvents[1].info.timeStart)}}	
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="promoSmall" style="width: 100%; height: 100%; position: relative; border: 1px solid #a0a0a0; background: #FFFACD;">
+                    <a style="display: inline-block; margin-top: 10px; width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" 
+                        href="#/event/{{promoEvents[0]._id}}">{{promoEvents[1].info.title}}</a>
+                </div>
+                
+            </div>
+        
+        </div>
+
+    </div>
 
 </div>

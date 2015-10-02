@@ -6,6 +6,8 @@ controllers.controller("AppCtrl",
     $scope.showError = false;
     $scope.errorMessage = '';
     
+    $scope.viewTemplate = "parts/app/findEvents.html";
+
     /*
     $rootScope.$watch('logregStatus', function(value) {
         
@@ -126,16 +128,23 @@ controllers.controller("AppCtrl",
     		$rootScope.app.views.findEvents = 0;
     		$rootScope.app.views.myEvents = 1;
     		$rootScope.app.views.myTickets = 2;
-    		
+    	    $scope.viewTemplate = "parts/app/findEvents.html";
+
     	} else if(view == 'myEvents') {
-    		$rootScope.app.views.findEvents = 1;
+        
+            $rootScope.app.views.findEvents = 1;
     		$rootScope.app.views.myEvents = 0;
     		$rootScope.app.views.myTickets = 2;
-    	} else if(view == 'myTickets') {
-    		$rootScope.app.views.findEvents = 1;
+    	    $scope.viewTemplate = "parts/app/myEvents.html";
+        
+        } else if(view == 'myTickets') {
+        
+            $rootScope.app.views.findEvents = 1;
     		$rootScope.app.views.myEvents = 2;
     		$rootScope.app.views.myTickets = 0;
-    	}
+    	    $scope.viewTemplate = "parts/app/myTickets.html";
+        
+        }
     	
     	$timeout(function() {
     		$scope.setViewContentHeight('findEvents');

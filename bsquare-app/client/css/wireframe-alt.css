@@ -208,7 +208,7 @@ div.main {
     
 	height: 100%;
 	position: relative;
-	overflow: hidden;
+	/* overflow: auto; */
 	
 	backface-visibility: hidden;
     transform: translate3d(0, 0, 0);
@@ -219,22 +219,28 @@ div.main {
 }
 
 div.main div.mainView {
-	position: absolute;
-	left: 1%;
-	width: 60%;
+	/* position: absolute; */
+	/* left: 1%; */
+	width: 100%;
+    height: 100%;
 	top: 0%;
 	z-index: 3;
-	transition: top 1s, left 1s, width 1s, height 1s;
+	/* transition: top 1s, left 1s, width 1s, height 1s; */
 }
 
 div.main div.mainView.loggedIn {
-	height: 96%;
-	width: 60%;
 }
 
 div.main div.mainView.loggedOut {
-	height: 96%;
-	width: 60%;
+}
+
+.promoEvents {
+    position: absolute;
+    top: 1%;
+    right: 2%;
+    height: 100%;
+    width: 40%;
+    pointer-events: none;
 }
 
 div.panelContent {
@@ -246,8 +252,11 @@ div.panelContent {
 }
 
 div.mainView div.panelContent {
-	height: 95%;
-	overflow-y: auto;
+	/*
+    height: 95%;
+    overflow-y: auto;
+    */
+    width: 60%;
 }
 
 div.panelContent.minView1 {
@@ -257,10 +266,12 @@ div.panelContent.minView1 {
 }
 
 div.main div.minView1 {
-	position: absolute;
+	/*
+    position: absolute;
 	width: 37%;
 	top: 0%;
 	left: 62%;
+    */
 	z-index: 1;
 	transition: top 1s, left 1s, width 1s, height 1s;
 }
@@ -281,10 +292,12 @@ div.minView1 div.panelContent {
 
 div.main div.minView2 {
 	padding-top: 1px;
-	position: absolute;
+	/*
+    position: absolute;
 	top: 49%;
 	width: 37%;
 	left: 62%;
+    */
 	z-index: 2;
 	transition: top 1s, left 1s, width 1s, height 1s;
 }
@@ -371,7 +384,7 @@ div.logreg {
 
 div.myEvents {
 	margin-top: 10px;
-    border: 1px solid black;
+    /* border: 1px solid black; */
 	height: 100%;
 	width: 100%;
 	overflow-y: hidden;
@@ -468,8 +481,8 @@ div.editEvent div.editEventPane {
 
 
 .findEvents {
-	margin-top: 10px;
-    border: 1px solid black;
+	/* margin-top: 10px; */
+    /* border: 1px solid black; */
 	height: 99%;
 	width: 100%;
 	overflow-y: hidden;
@@ -477,6 +490,7 @@ div.editEvent div.editEventPane {
 
 .findEvents .findEventsContent {
     height: 100%;
+    overflow-y: auto;
 }
 
 .findEvents .listEvent {
@@ -685,7 +699,7 @@ div.opaque {
 
 .cardFront {
     
-    overflow-y: auto;
+    /* overflow-y: auto; */
 	
 	backface-visibility: hidden;
     transform: translate3d(0, 0, 0);
@@ -811,6 +825,9 @@ div.settingsContainer div.settings {
     /* -webkit-backface-visibility: hidden; */
     /* -webkit-transform: translate3d(0, 0, 0); */
     
+    height: 100%;
+    overflow-y: auto;   
+
 }
 
 .event .eventHeader {	
@@ -944,6 +961,7 @@ div.settingsContainer div.settings {
 div.ad {
     /*background: #ffffff;*/
     text-align: center;
+    height: 50%;
 }
 
 div.ad-h1 {
@@ -960,11 +978,11 @@ div.ad-f1 {
 }
 
 div.ad-s1.loggedIn  {
-    display: none;
+    /* display: none; */
 }
 
 div.ad-s2.loggedIn  {
-    display: none;
+    /* display: none; */
 }
 
 div.order {
@@ -1159,6 +1177,10 @@ div.ticket {
 		margin-top: 12px;
 	}
 
+    .promoEvents {
+        display: none;
+    }
+
 }
 
 .ticketResourceItem {
@@ -1346,17 +1368,30 @@ div.ticket {
 }
 
 
+.findEventsContainer {
+    position: relative;
+    height: calc(100% - 56px);
+}
+
+.findEventsContainer.loggedIn {
+    height: calc(100% - 92px);
+}
+
 .eventSearch {
-	width: 100%; 
-	display: inline-block; 
-	padding: 8px;
+	width: 100%;
+    height: 56px;
+	display: inline-block;
+    padding-top: 8px; 
+	padding-right: 6px;
     text-align: center;
+    z-index: 1;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: -2px 5px 10px -5px #888888;
+    position: relative;
+    text-align: right;
 }
 
 .eventSearch .eventSearchLeft {
-	display: inline-block; 
-	padding-top: 6px;
-	transition: width 1s;
 }
 
 .eventSearch .eventSearchRight {
@@ -1502,17 +1537,88 @@ div.minView1 div.listEventImage {
     
 }
 
+.categoriesBar {
+    width: 100%;
+    height: 36px;
+    padding-top: 6px;
+    border-bottom: 1px solid #e0e0e0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.categoriesBar .categorySection {
+    width: 32%;
+    margin-left: 0%;
+    margin-right: 0%;
+    display: inline-block;  
+    text-align: center;
+    border-left: 1px solid #e0e0e0;
+}
+
+.eventSearch .eventSearchLeft {
+    display: inline-block;
+    margin-top: 8px;
+    margin-right: 6px;
+}
+
+.mainFilterSection {
+    display: inline; 
+    /* padding: 6px; */
+}
+
+.mainFilterSection .filterBadge {
+    display: inline-block;
+    margin-top: -8px;
+    padding: 8px;
+    border-radius: 5px; 
+    background: #e0e0e0;
+}
+
+.mainFilterSection .filterBadge a {
+    text-decoration: none;
+    letter-spacing: px;
+}
+
 @media (max-width: 690px) {
     
+    .eventSearch {
+        height: initial;
+        padding-bottom: 8px;
+        padding-top: initial;
+    }
+
     .eventSearch .eventSearchLeft {
-        display: none;
+        padding-top: 4px;
+        padding-bottom: 6px;
+        width: 100%;
+        height: 39px;
     }
         
     .eventSearch .eventSearchRight {
-        margin-left: 6px; 
-	    width: inherit; 
-	    float: inherit;
+        margin-left: 1%; 
+	    width: 99%; 
+	    float: initial;
+        display: block;
+        height: 39px;
     }
+
+    .categoriesBar {
+        /* height: 28px; */
+    }
+    
+    .mainFilterSection {
+        display: inline-block; 
+        text-align: center;
+    }
+
+    .findEventsContainer {
+        height: calc(100% - 87px);
+    }
+
+    .findEventsContainer.loggedIn {
+        height: calc(100% - 122px);
+    }
+
 }
 
 @media (max-width: 660px) {
@@ -1655,7 +1761,10 @@ div.minView1 div.listEventImage {
 		margin-left: -20px;
 		width: inherit;
 	}
-
+ 
+    div.mainView div.panelContent {
+        width: 100%;
+    }
 	
 }
 
@@ -1671,7 +1780,7 @@ div.minView1 div.listEventImage {
 @media (max-width: 660px) {
 		
 	#mainCard {
-	    top: 4px; 
+	    /* top: 4px; */ 
 	}
 	
 	div.order {
@@ -1685,19 +1794,17 @@ div.minView1 div.listEventImage {
 	
 	div.main div.mainView {
 	    top: 48px;
-		width: 98%;
+		width: 100%;
 	}
 	
 	div.main div.mainView.loggedIn {
 		top: 38px;
-		height: 90%;
-		width: 98%;
+		width: 100%;
 	}
 	
 	div.main div.mainView.loggedOut {
 		top: 48px;
-		height: 88%;
-		width: 98%;
+		width: 100%;
 	}
 	
 	div.mainView div.columnHeader {

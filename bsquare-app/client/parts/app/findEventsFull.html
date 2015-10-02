@@ -1,28 +1,5 @@
-<div class="panel-body panelContent">
-    
-    <div class="eventSearch">
-        
-        <!--
-        <div class="eventSearchLeft">
-            <a href="">{{ 'app.findEvents.searchFilters' | translate }}</a>
-        </div>
-        -->
-        
-        <div class="eventSearchLeft">
-            {{ 'app.findEvents.searchText' | translate }}
-        </div>
-        
-        <div class="eventSearchRight">
-            <div class="input-group" style="width: 100%;">
-                <input type="text" class="form-control" ng-model="searchField.text" ng-change="searchEvents()">
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-search"></span>
-                </span>
-            </div>
-        </div>
-
-    </div>
-    
+<div class="panel-body panelContent" style="padding-top: 12px;">
+     
     <div ng-class="{ listEvent: event.promo != true }" id="listEvent_{{event._id}}" ng-repeat="event in events" ng-click="openEvent(event)" style="text-align: left;">
         
         <div ng-show="event.promo != true" class="listEventCell">
