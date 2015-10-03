@@ -1,43 +1,65 @@
 <div class="panel panel-default event {{event.layout}}" ng-controller="EventFrontCtrl" data-ng-init="init()" ng-cloak>
 
-    <div class="panel-heading columnHeader">
+    <div class="panel-heading columnHeader mobileTitle" style="padding-top: 6px; padding-bottom: 0px;">
         <div class="left" style="margin-left: 6px;">
             <div class="event-title" style="font-size: 33px; line-height: 36px;">{{event.info.title}}</div>
-            <div class="event-description-item event-time">
-                <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-                {{formatTime(event.info.timeStart)}}
-            </div>
-            <div class="event-description-item">
-            </div>
         </div>
         <div ng-show="ownEvent == true" class="right"><a href="" ng-click="setRootView('edit')" ng-show="loggedUser != undefined">{{ 'event.front.manage' | translate }}</a></div>
     </div>
     
-    <div class="panel-body event-content" style="padding: 6px;" ng-cloak>
+    <div class="panel-body event-content" ng-cloak>
     	
-            <div style="padding-top: 1%; padding-left: 1%">
+            <div>
             
                 <div class="eventInfo">
                     
                     <div class="eventLogo">
                         <div id="eventImageContainer">    
                             <img ng-show="event.info.eventImage != undefined" id="eventImage" align="right" ng-src="img{{event.info.eventImage}}"/>
+                            <div class="titleLayer">
+                                <div style="opacity: 0.3; padding: 12px; background: black; font-size: 33px; line-height: 36px;">
+                                    {{event.info.title}}
+                                </div>
+                                <div style="position: absolute; top: 0px; padding: 12px; color: white; font-size: 33px; line-height: 36px;">
+                                    {{event.info.title}}
+                                </div>
+                            </div>
                         </div>
                     </div> 
                     
                 </div>
                 
-                <div>
+                <div style="padding: 6px;">
                     <div class="eventDescription">
                         <pre style="margin-top: 12px; word-break: break-word; word-wrap: initial; white-space: pre-wrap; text-align: justify;">{{event.info.description}}</pre>
                     </div>
-                    <div class="eventMap">
-                        <div style="width: 100%; border: 1px solid #e0e0e0;">
-                            <div id="map_canvas" style="width: 100%; height: 250px"></div>
+                    <div class="eventColumn">
+                        <div class="eventMap">
+                            <div style="width: 100%; border: 1px solid #e0e0e0;">
+                                <div id="map_canvas" style="width: 100%; height: 250px"></div>
+                            </div>
+                            <div style="width: 100%; border-bottom: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; padding: 12px;">
+                                <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+                                {{event.info.place.address}}
+                            </div>
                         </div>
-                        <div style="width: 100%; border-bottom: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; padding: 12px;">
-                            <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
-                            {{event.info.place.address}}
+                        <div class="eventTime">
+                            <div style="display: inline-block; padding: 12px; background: #e0e0e0;">
+                                Alkaa
+                            </div>
+                            <div style="display: inline-block; padding: 12px;">
+                                <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+                                {{formatTime(event.info.timeStart)}}
+                            </div>
+                        </div>
+                        <div class="eventVideo">
+                            <div ng-show="event.info.video !== undefined">
+                                
+                                <anguvideo ng-model="event.info.video" width="100%" height="200"></anguvideo> 
+                                <p style="display: inline-block; text-align: justify; line-height: 100%;">
+                                </p>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -137,7 +159,7 @@
                         </div>
                 
                 
-                <div style="margin-bottom: 24px; margin-top: 12px;">
+                <div style="margin-bottom: 24px; margin-top: 12px; padding: 6px;">
                     
                     <div class="orderTickets" ng-show="publicTicketResources.length > 0">
                         
@@ -221,23 +243,6 @@
                     </div>
                     
                     <div class="leftContent">
-                        <div>
-                            <div ng-show="event.info.video !== undefined">
-                                
-                                <anguvideo ng-model="event.info.video" width="100%" height="200"></anguvideo> 
-                                <p style="display: inline-block; text-align: justify; line-height: 100%;">
-                                    
-                                    <!--
-                                    <img data-src="holder.js/33%x80/#ad3ad5:#000000/text:ORG LOGO" style="width: 33%; margin-right: 6px;" align="left"/>
-                                    
-                                    
-                                    <b>Club Liberté</b>
-                                    <span style="line-height: 80%;"><br/>&nbsp;<br/></span>
-                                    <i>Chill place to hang out and we have gigs and free beer every week-end. Free beer to everyone! That's how we roll.</i>
-                                    -->    
-                                </p>
-                            </div>
-                        </div>
                         <div style="margin-top: 6px;">
                             <!--
                             <div>

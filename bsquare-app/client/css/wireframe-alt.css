@@ -1076,7 +1076,7 @@ div.ticket {
 }
 
 .eventInfo .eventLogo {
-	width: 99%;
+	width: 100%;
     height: 250px; 
 	display: inline-block; 
 	position: relative;
@@ -1122,14 +1122,44 @@ div.ticket {
 .event-description-item .event-time {
 }
 
-.eventMap {
+.eventColumn {
 	margin-top: 12px;
     width: 38%; 
 	display: inline-block; 
 }
 
+.eventMap {
+}
+
+.eventTime {
+    border: 1px solid #e0e0e0;
+    margin-top: 12px;
+}
+
+.eventVideo {
+    margin-top: 12px;
+}
+
+.titleLayer {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+}
+
+.mobileTitle {
+    display: none;
+}
+
 @media (max-width: 660px) {
     
+    .titleLayer {
+        display: none;
+    }
+    
+    .mobileTitle {
+        display: inline-block;
+    }
+
     .listEventInfo .header .title {
         color: white;
     }
@@ -1139,7 +1169,7 @@ div.ticket {
     }
 
     .eventInfo .eventLogo {
-		width: 99%;
+		width: 100%;
         height: initial;
         margin-top: 6px;
     }
@@ -1158,8 +1188,8 @@ div.ticket {
         display: block;
 	}
     
-    .eventMap {
-		width: 98%;
+    .eventColumn {
+		width: 100%;
         display: block;
 	}
 
@@ -1531,7 +1561,7 @@ div.minView1 div.listEventImage {
 @media (max-width: 850px) {
     
     .event .orderTickets {
-        width: 99%; 
+        width: 100%; 
         display: block;
     }
     
