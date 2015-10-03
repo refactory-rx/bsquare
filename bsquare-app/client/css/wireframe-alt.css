@@ -1076,7 +1076,7 @@ div.ticket {
 }
 
 .eventInfo .eventLogo {
-	width: 49%;
+	width: 99%;
     height: 250px; 
 	display: inline-block; 
 	position: relative;
@@ -1096,7 +1096,7 @@ div.ticket {
 }
 
 .eventDescription {
-	width: 98%; 
+	width: 60%; 
 	display: inline-block;
 	text-align: left;
 	vertical-align: top;
@@ -1122,11 +1122,10 @@ div.ticket {
 .event-description-item .event-time {
 }
 
-.eventInfo .eventMap {
-	width: 49%; 
+.eventMap {
+	margin-top: 12px;
+    width: 38%; 
 	display: inline-block; 
-	text-align: right; 
-	vertical-align: top;
 }
 
 @media (max-width: 660px) {

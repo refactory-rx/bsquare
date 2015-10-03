@@ -25,17 +25,17 @@
                         <div id="eventImageContainer">    
                             <img ng-show="event.info.eventImage != undefined" id="eventImage" align="right" ng-src="img{{event.info.eventImage}}"/>
                         </div>
-                    </div>
-                     
-                    <div class="eventMap">
-                        <div id="map_canvas" style="width: 100%; height: 250px"></div>
-                    </div>
-                
+                    </div> 
                     
                 </div>
                 
-                <div class="eventDescription">
-                    <pre style="margin-top: 12px; word-break: break-word; word-wrap: initial; white-space: pre-wrap; text-align: justify;">{{event.info.description}}</pre>
+                <div>
+                    <div class="eventDescription">
+                        <pre style="margin-top: 12px; word-break: break-word; word-wrap: initial; white-space: pre-wrap; text-align: justify;">{{event.info.description}}</pre>
+                    </div>
+                    <div class="eventMap">
+                        <div id="map_canvas" style="width: 100%; height: 250px"></div>
+                    </div>
                 </div>
 
                 <div style="display: inline-block; width: 100%; margin-top: 24px; margin-bottom: 12px;" 
