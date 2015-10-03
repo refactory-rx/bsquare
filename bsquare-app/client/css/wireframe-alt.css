@@ -1153,8 +1153,14 @@ div.ticket {
         height: auto;
     }
 	
-    .eventInfo .eventDescription {
+    .eventDescription {
 		width: 98%;
+        display: block;
+	}
+    
+    .eventMap {
+		width: 98%;
+        display: block;
 	}
 
     .event-title {
