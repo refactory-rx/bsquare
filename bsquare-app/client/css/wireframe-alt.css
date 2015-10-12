@@ -1366,23 +1366,23 @@ div.ticket {
 }
 
 .groupRewardsBlock {
-	display: inline-block; 
-	width: 49%; 
+	display: block; 
+	width: 100%; 
 	vertical-align: top;
 }
 
 .refRewardsBlock {
-	display: inline-block; 
-	width: 49%; 
+	display: block; 
+	width: 100%; 
 	vertical-align: top;
 }
 
 .rewardItem {
     text-align: center;
     border: 1px solid black;
-    display: inline-block; 
+    display: block; 
 	color: black; 
-	width: 32%; 
+	width: 100%; 
 	padding: 6px; 
 	margin-right: 6px; 
 	margin-bottom: 4px;

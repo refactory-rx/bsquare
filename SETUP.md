@@ -98,6 +98,7 @@ Shared
     var schema = db.system.version.findOne({ "_id" : "authSchema" });
     schema.currentVersion = 3;
     db.system.version.save(schema);
+    use bsquare;
     db.createUser({ user: "<username>", pwd: "<pwd>", roles: [ "readWrite" ] });
     exit;
 _Edit net.port to **27111** and security.authentication to **enabled** in mongod conf file_

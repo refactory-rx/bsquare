@@ -61,101 +61,109 @@
 
                             </div>
                         </div>
+                        <div style="width: 100%; text-align: center; margin-top: -12px; margin-bottom: 10px;">
+                            <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                            <div class="addthis_sharing_toolbox"></div>
+                        </div>
+                        <div class="groupRewardsBlock">
+                            
+                            <div style="width: 100%; display: inline-block; position: relative;">    
+                                <div class="panel panel-default" style="width: 100%; display: inline-block; margin-bottom: 6px;">
+                                    <div class="panel-heading columnHeader" style="white-space: nowrap;">
+                                        <div style="display: inline;">
+                                            {{ 'event.front.rewards.groupRewards' | translate }}
+                                        </div>
+                                        <div style="display: inline;" ng-show="refTrackerUrls['group'] != undefined">
+                                            [<a class="a2a_dd" href="http://www.addtoany.com/share_save">{{ 'event.front.rewards.shareToGet' | translate }}</a>]
+                                        </div>
+                                        <div style="display: inline;" ng-show="refTrackerUrls['group'] == undefined">
+                                            [<a href="/#/app?view=logreg">{{ 'event.front.rewards.logIn' | translate }}</a> {{ 'event.front.rewards.startSharingGroup' | translate }}]
+                                        </div>
+                                    </div>
+                                    <div class="panel-body" style="width: 100%; display: inline-block; padding-top: 6px;">
+                                        
+                                        <div ng-repeat="condition in event.groupRewards.conditions" class="headerBg rewardItem" ng-mouseleave="resetRewardDescription()" ng-mouseenter="setRewardDescription(condition)">
+                                            <div style="width: 100%; display: inline-block; height: 12px;">
+                                                <b>{{condition.reward.name}}</b>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="bodyBg rewardDescription" style="" ng-show="hoveredRewardCondition != undefined">
+                                        <i>{{hoveredRewardCondition.reward.description}}</i><br/>
+                                        <b>{{hoveredRewardCondition.quantity}}</b> x <b>{{hoveredRewardCondition.ticketResource.name}}</b>
+                                    </div>    
+                                    <script type="text/javascript">
+                                        var a2a_config = a2a_config || {};
+                                        a2a_config.linkurl = "url";
+                                    </script>
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="refRewardsBlock">
+                        
+                            <div style="width: 100%; display: inline-block; position: relative;">
+                            
+                                <div class="panel panel-default" style="width: 100%; display: inline-block; margin-bottom: 6px;">
+                                    <div class="panel-heading columnHeader" style="white-space: nowrap;">
+                                        <div style="display: inline;">
+                                            {{ 'event.front.rewards.referralRewards' | translate }}
+                                        </div>
+                                        <div style="display: inline;" ng-show="shareRef">
+                                            [<a class="a2a_dd" href="http://www.addtoany.com/share_save">{{ 'event.front.rewards.shareToGet' | translate }}</a>]
+                                        </div>
+                                        <div style="display: inline;" ng-show="shareRef == undefined">
+                                            [<a href="/#/app?view=logreg">{{ 'event.front.rewards.logIn' | translate }}</a> {{ 'event.front.rewards.startSharingRef' | translate }}]
+                                        </div>
+                                    </div>
+
+                                    <div class="panel-body" style="width: 100%; display: inline-block; padding-top: 6px;">
+                                        
+                                        <div ng-repeat="reward in event.refRewards.pointRewards" class="headerBg rewardItem" ng-mouseleave="resetPointRewardDescription()" ng-mouseenter="setPointRewardDescription(reward)">
+                                            <div style="width: 100%; display: inline-block; height: 12px;">
+                                                <b>{{reward.name}}</b>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                
+                                    <div class="bodyBg rewardDescription" style="" ng-show="hoveredPointReward != undefined">
+                                        <i>{{hoveredPointReward.description}}</i><br/>
+                                        <b>{{hoveredPointReward.points}}</b> {{ 'event.front.rewards.pointsRequired' | translate }}
+                                    </div>
+
+                                </div>          
+                                
+                            </div>
+                            <div style="width: 100%; display: inline-block;">
+                                
+                                <div ng-repeat="condition in event.refRewards.conditions" style="width: 100%; display: inline-block; height: 12px;">
+                                    <div ng-show="condition.type.type == 'impression'">
+                                        <b>{{condition.points}}</b> {{ 'event.front.rewards.pointsPerView' | translate }}
+                                    </div>
+                                    <div ng-show="condition.type.type == 'attendance'">
+                                        <b>{{condition.points}}</b> {{ 'event.front.rewards.pointsPerAttendance' | translate }} <b>{{condition.ticketResource.name}}</b>
+                                    </div>
+                                    <div ng-show="condition.type.type == 'sale'">
+                                        <b>{{condition.points}}</b> {{ 'event.front.rewards.pointsPerSale' | translate }} <b>{{condition.ticketResource.name}}</b>
+                                    </div>
+                                </div>
+                                    
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div style="display: inline-block; width: 100%; margin-top: 24px; margin-bottom: 12px; padding: 6px;" 
                     ng-show="event.groupRewards.conditions.length > 0 || event.refRewards.pointRewards.length > 0">
                     
-                            <div class="groupRewardsBlock">
-                                <div style="width: 100%; display: inline-block; position: relative;">
-                                    
-                                    <div class="panel panel-default" style="width: 100%; display: inline-block; margin-bottom: 6px;">
-                                        <div class="panel-heading columnHeader" style="white-space: nowrap;">
-                                            <div style="display: inline;">
-                                                {{ 'event.front.rewards.groupRewards' | translate }}
-                                            </div>
-                                            <div style="display: inline;" ng-show="refTrackerUrls['group'] != undefined">
-                                                [<a class="a2a_dd" href="http://www.addtoany.com/share_save">{{ 'event.front.rewards.shareToGet' | translate }}</a>]
-                                            </div>
-                                            <div style="display: inline;" ng-show="refTrackerUrls['group'] == undefined">
-                                                [<a href="/#/app?view=logreg">{{ 'event.front.rewards.logIn' | translate }}</a> {{ 'event.front.rewards.startSharingGroup' | translate }}]
-                                            </div>
-                                        </div>
-                                        <div class="panel-body" style="width: 100%; display: inline-block; padding-top: 6px;">
-                                            
-                                            <div ng-repeat="condition in event.groupRewards.conditions" class="headerBg rewardItem" ng-mouseleave="resetRewardDescription()" ng-mouseenter="setRewardDescription(condition)">
-                                                <div style="width: 100%; display: inline-block; height: 12px;">
-                                                    <b>{{condition.reward.name}}</b>
-                                                </div>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="bodyBg rewardDescription" style="" ng-show="hoveredRewardCondition != undefined">
-                                            <i>{{hoveredRewardCondition.reward.description}}</i><br/>
-                                            <b>{{hoveredRewardCondition.quantity}}</b> x <b>{{hoveredRewardCondition.ticketResource.name}}</b>
-                                        </div>    
-                                        <script type="text/javascript">
-                                            var a2a_config = a2a_config || {};
-                                            a2a_config.linkurl = "url";
-                                        </script>
-                                    </div> 
-                                </div>
-                            </div>
-                            <div class="refRewardsBlock">
-                            
-                                <div style="width: 100%; display: inline-block; position: relative;">
-                                
-                                    <div class="panel panel-default" style="width: 100%; display: inline-block; margin-bottom: 6px;">
-                                        <div class="panel-heading columnHeader" style="white-space: nowrap;">
-                                            <div style="display: inline;">
-                                                {{ 'event.front.rewards.referralRewards' | translate }}
-                                            </div>
-                                            <div style="display: inline;" ng-show="shareRef">
-                                                [<a class="a2a_dd" href="http://www.addtoany.com/share_save">{{ 'event.front.rewards.shareToGet' | translate }}</a>]
-                                            </div>
-                                            <div style="display: inline;" ng-show="shareRef == undefined">
-                                                [<a href="/#/app?view=logreg">{{ 'event.front.rewards.logIn' | translate }}</a> {{ 'event.front.rewards.startSharingRef' | translate }}]
-                                            </div>
-                                        </div>
-
-                                        <div class="panel-body" style="width: 100%; display: inline-block; padding-top: 6px;">
-                                            
-                                            <div ng-repeat="reward in event.refRewards.pointRewards" class="headerBg rewardItem" ng-mouseleave="resetPointRewardDescription()" ng-mouseenter="setPointRewardDescription(reward)">
-                                                <div style="width: 100%; display: inline-block; height: 12px;">
-                                                    <b>{{reward.name}}</b>
-                                                </div>
-                                            </div>
-                                            
-                                        </div>
-                                    
-                                        <div class="bodyBg rewardDescription" style="" ng-show="hoveredPointReward != undefined">
-                                            <i>{{hoveredPointReward.description}}</i><br/>
-                                            <b>{{hoveredPointReward.points}}</b> {{ 'event.front.rewards.pointsRequired' | translate }}
-                                        </div>
-
-                                    </div>          
-                                    
-                                </div>
-                                <div style="width: 100%; display: inline-block;">
-                                    
-                                    <div ng-repeat="condition in event.refRewards.conditions" style="width: 100%; display: inline-block; height: 12px;">
-                                        <div ng-show="condition.type.type == 'impression'">
-                                            <b>{{condition.points}}</b> {{ 'event.front.rewards.pointsPerView' | translate }}
-                                        </div>
-                                        <div ng-show="condition.type.type == 'attendance'">
-                                            <b>{{condition.points}}</b> {{ 'event.front.rewards.pointsPerAttendance' | translate }} <b>{{condition.ticketResource.name}}</b>
-                                        </div>
-                                        <div ng-show="condition.type.type == 'sale'">
-                                            <b>{{condition.points}}</b> {{ 'event.front.rewards.pointsPerSale' | translate }} <b>{{condition.ticketResource.name}}</b>
-                                        </div>
-                                    </div>
-                                        
-                                </div>
                                 
                                 <script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+                                <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                                <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-527aa5ef28e9ad09" async="async"></script>
+
+
                                 
-                            </div>
                         </div>
                 
                 
