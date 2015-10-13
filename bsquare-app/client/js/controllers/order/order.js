@@ -4,7 +4,7 @@ controllers.controller(
         ($rootScope, $scope, $routeParams, $http, $log, $sce, $interval, $translate) => {
 	
 	$rootScope.setRootView("order");
-	
+    	
 	$scope.orderId = $routeParams.id;
 	$scope.event = {};
 	

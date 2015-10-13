@@ -65,13 +65,14 @@ controllers.controller(
     $rootScope.logregView = "login";
     $rootScope.username = "";
     $rootScope.rootView = "events"; 
+    $rootScope.hideHeader = false;
     $rootScope.og = {
         title: "Helpp tapa myydä liput",
         description: "Myy liput vaivattomasti ja pienin kustannuksin",
         image: `${$rootScope.imgBaseUrl}/BSQ-logo_small.png`,
         url: `${$rootScope.appUrl}`
     };
-
+    
     $scope.accountDropdownStatus = 'closed';
     
     $rootScope.app = {
@@ -157,9 +158,17 @@ controllers.controller(
 	};
 	
 	$rootScope.setRootView = function(view) {
-    	$rootScope.rootView = view;
+        
+        $rootScope.rootView = view;
         $rootScope.setJumbotron(view);
-    	console.log('rootview set to '+$rootScope.rootView);
+        if (view === "event") {
+            $rootScope.hideHeader = true;
+        } else {
+            $rootScope.hideHeader = false;
+        }
+
+        console.log('rootview set to '+$rootScope.rootView);
+    
     };
 	
     $rootScope.setJumbotron = (view) => {

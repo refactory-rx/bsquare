@@ -7,6 +7,7 @@ controllers.controller("AppCtrl",
     $scope.errorMessage = '';
     
     $scope.viewTemplate = "parts/app/findEvents.html";
+    $rootScope.hideHeader = false;
 
     /*
     $rootScope.$watch('logregStatus', function(value) {

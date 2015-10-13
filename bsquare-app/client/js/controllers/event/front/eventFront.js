@@ -6,7 +6,7 @@ controllers.controller(
 	
     
     $rootScope.setRootView("event");
-    
+
     console.log($rootScope.app);
 	
     $scope.order = {
