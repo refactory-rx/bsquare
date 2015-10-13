@@ -89,7 +89,7 @@ class TrackerService {
             
             if (err) { return deferred.reject(err); }
             if (!refTracker) {
-                return deferred.resolve({ groupRewards: {} });
+                return deferred.resolve({});
             }
 
             this.getOrdersByTracker(refTracker.eventId, refTracker.uuid, (event, orders) => {

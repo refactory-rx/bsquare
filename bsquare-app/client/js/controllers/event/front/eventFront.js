@@ -246,7 +246,9 @@ controllers.controller(
             $http.get(`/api/reftrackers/${$scope.refTrackerId}/rewardstats`, { headers: requestHeaders } )
             .success((response) => {
                 console.log("Rewardstats response", response);
-                $scope.event.groupRewards = response.rewardStats.groupRewards;
+                if (response.rewardStats.groupRewards) {
+                    $scope.event.groupRewards = response.rewardStats.groupRewards;
+                }
             })
             .error((err) => {
                 console.log("Error", err);
