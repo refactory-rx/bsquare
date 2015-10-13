@@ -238,65 +238,67 @@ class TrackerService {
 	}
 
 	addRewardToTickets(orders, ticketResourceId, reward) {
+        
+        let deferred = Q.defer();
 
-		//console.log("addRewardToTickets: orders.length="+orders.length);
+		console.log(`addRewardToTickets(${reward.name}): orders.length=${orders.length}`);
 
         orders.forEach(order => {
 
 			let rewardsAdded = false;
-
+            let ticketUpdates = [];
             order.tickets.forEach(ticket => {
-
-				if(ticket.ticketResourceId == ticketResourceId) {
-					this.updateTicketWithReward(order, ticket, reward);
+				if(ticket.ticketResourceId === ticketResourceId) {
+					ticketUpdates.push(this.updateTicketWithReward(order, ticket, reward));
 					rewardsAdded = true;
 				}
-
 			});
+            
+            if(rewardsAdded) {
+                let updateOrder = Order.updateQ({ _id: order._id }, { tickets: order.tickets });
+				ticketUpdates.push(updateOrder);
+            }
 
-			//console.log("order "+order._id+" add="+rewardsAdded);
+            Q.all(ticketUpdates)
+            .then(() => {
+                deferred.resolve();
+            })
+            .catch((err) => {
+                deferred.reject(err);
+            });
+                
+            console.log("order "+order._id+" add="+rewardsAdded);
 
-			if(rewardsAdded) {
-				this.updateOrderWithTickets(order, order.tickets);
-			}
 
-		});
+        });
+
+        return deferred.promise;
 
 	}
 
 	updateTicketWithReward(order, ticket, reward) {
+        
+        let deferred = Q.defer();
 
 		if(!ticket.rewards) {
 			ticket.rewards = [];
 		}
 
-		ticket.rewards.push(reward);
-
-        Ticket.update({
-            orderId: order._id.toHexString(),
-            ticketResourceId: ticket.ticketResourceId
-        }, { rewards: ticket.rewards }, { multi: true }, (err, numAffected) => {
-
+        ticket.rewards.push(reward);
+        
+        Ticket.findOne({ _id: ticket._id }, (err, ticket) => {
 			if(err) {
-				//console.log(err);
+                console.log(err);
+                deferred.reject(err);
 			} else {
-				//console.log("updated "+numAffected+" tickets");
+                console.log(`updated ${ticket._id} with (${reward.name})`);
+                ticket.rewards.push(reward);
+                ticket.save();
+                deferred.resolve();
 			}
-
-		});
-
-
-	}
-
-	updateOrderWithTickets(order, tickets) {
-
-        Order.update({ _id: order._id }, { tickets: tickets }, (err, numAffected) => {
-
-			if(err) {
-				//console.log(err);
-			}
-
-		});
+        });
+        
+        return deferred.promise;
 
 	}
 
@@ -308,26 +310,35 @@ class TrackerService {
 
 		let origQtysMap = this.createTicketResourceMap(orders, newOrder);
 		let newQtysMap = this.createTicketResourceMap(orders);
-
+        
+        let addRewardsPromises = [];
         groupRewards.conditions.forEach(rewardCondition => {
 
 			let ticketResourceId = rewardCondition.ticketResource._id;
 			let qtyBefore = origQtysMap[ticketResourceId];
 			let qtyAfter = newQtysMap[ticketResourceId];
-			//console.log(origQtysMap);
-			//console.log(newQtysMap);
 
 			if(qtyAfter && qtyAfter >= rewardCondition.quantity) {
 				if(!qtyBefore || qtyBefore < rewardCondition.quantity) {
-					// Add to all tickets
-					this.addRewardToTickets(orders, ticketResourceId, rewardCondition.reward);
+                    // Add to all tickets
+                    console.log(`add [${rewardCondition.reward.name}] to all orders`);
+					addRewardsPromises.push(this.addRewardToTickets(orders, ticketResourceId, rewardCondition.reward));
 				} else {
 					// Add to new tickets
-					this.addRewardToTickets([newOrder], ticketResourceId, rewardCondition.reward);
+                    console.log(`add [${rewardCondition.reward.name}] to new order`);
+					addRewardsPromises.push(this.addRewardToTickets([newOrder], ticketResourceId, rewardCondition.reward));
 				}
 			}
 
-		});
+        });
+
+        Q.all(addRewardsPromises)
+        .then(() => {
+            console.log("Finished adding rewards to tickets");
+        })
+        .catch((err) => {
+            console.log("Error", err);
+        });
 
     }
 
@@ -336,7 +347,6 @@ class TrackerService {
         let qtysMap = this.createTicketResourceMap(orders);
         event.groupRewards.conditions.forEach(rewardCondition => {
             rewardCondition.reached = qtysMap[rewardCondition.ticketResource._id];
-            //console.log(rewardCondition);
         });
 
         return {
