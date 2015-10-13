@@ -10,6 +10,30 @@ module.exports = {
 			
 		});
 		
+        app.get("/api/reftrackers", (req, res, next) => {
+            
+            app.trackerService.getRefTracker(req.query)
+            .then((refTracker) => {
+                res.json({ status: "ok", refTracker: refTracker });
+            })
+            .catch((err) => {
+                next(err);
+            });
+
+        });
+        
+        app.get("/api/reftrackers/:uuid/rewardstats", (req, res, next) => {
+            
+            app.trackerService.getRewardStatsByTracker(req.params.uuid)
+            .then((rewardStats) => {
+                res.json({ status: "ok", rewardStats: rewardStats });
+            })
+            .catch((err) => {
+                next(err);
+            });
+
+        });
+
         app.post("/api/reftrackers", (req, res) => {
 			
             app.trackerService.getRefTrackers(req, (result) => {

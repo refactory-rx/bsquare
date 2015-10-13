@@ -1150,6 +1150,61 @@ div.ticket {
     display: none;
 }
 
+.poweredby {
+    display: inline-block;
+    border: 1px solid #e0e0e0;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-right: 4px;
+    padding-left: 6px;
+    color: #929292;
+    width: initial;
+}
+
+.top-share {
+    position: absolute;
+    top: 6px;
+    right: 0px;
+}
+
+@media (max-width: 520px) {
+    
+    .poweredby {
+        display: block;
+        width: 100%;;
+        text-align: center;
+    }
+
+    .top-share {
+        position: relative;
+        display: block;
+        margin-top: 4px;
+        width: 100%;
+        float: none;
+        text-align: center;
+    }    
+
+}
+
+@media (min-width: 660px) and (max-width: 820px) {
+    
+    .poweredby {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    .top-share {
+        position: relative;
+        display: block;
+        margin-top: 4px;
+        width: 100%;
+        float: none;
+        text-align: center;
+    }    
+
+}
+
 @media (max-width: 660px) {
     
     .titleLayer {
@@ -1379,23 +1434,27 @@ div.ticket {
 
 .rewardItem {
     text-align: center;
-    border: 1px solid black;
+    border: 1px solid #e0e0e0;
     display: block; 
 	color: black; 
 	width: 100%; 
-	padding: 6px; 
 	margin-right: 6px; 
 	margin-bottom: 4px;
 }
 
 .rewardDescription {
-    display: inline-block;
-    position: absolute;
-    opacity: 1.0;
-    background: #e0e0e0;
-    z-index: 1;
-    border: 1px solid black; padding: 4px;
-    width: 99%;
+    width: 100%; 
+    background: white;
+    padding: 0px;
+    max-height: 0px;
+    overflow: hidden;
+}
+
+.rewardDescription.hovered {
+    border-top: 1px solid #e0e0e0;
+    max-height: 500px;
+    padding: 4px;
+    transition: padding 0s, max-height 1s;
 }
 
 .editTicketResource {

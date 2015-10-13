@@ -157,7 +157,7 @@ class EventService {
             entityId: eventId
         };
 
-        let refTrackerId = tracking.group || tracking.ref;
+        let refTrackerId = tracking.ref;
         
         if (refTrackerId) {
             params.refTrackerId = refTrackerId;

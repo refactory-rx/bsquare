@@ -1,4 +1,4 @@
-<div class="panel panel-default event {{event.layout}}" ng-controller="EventFrontCtrl" data-ng-init="init()" ng-cloak>
+<div class="panel panel-default event {{event.layout}}" ng-controller="EventFrontCtrl" ng-cloak>
 
     <div class="panel-heading columnHeader mobileTitle" style="padding-top: 6px; padding-bottom: 0px;">
         <div class="left" style="margin-left: 6px;">
@@ -30,16 +30,25 @@
                 </div>
                 <div style="padding: 6px;">
                     <div class="eventDescription">
-                        <div style="padding-top: 6px;">
-                            <div style="display: inline-block; border: 1px solid #e0e0e0; padding-top: 4px; padding-bottom: 4px; padding-right: 4px; padding-left: 6px; color:#929292;">
+                        <div style="padding-top: 6px; position: relative;">
+                            <div class="poweredby">
                                 <span style="vertical-align: middle;">
                                     TAPAHTUMASSA MUKANA
                                 </span>
                                 <a href="#/app?view=findEvents"><img src="img/BSQ-logo_small.png" height="30px" style="margin-left: 4px;"></a>
-                            </div>			
+                            </div>
+                            <div class="top-share">
+                                <div class="a2a_kit a2a_kit_size_32 a2a_default_style" style="display: inline-block; margin-top: 4px;">
+                                    <a class="a2a_button_facebook"></a>
+                                    <a class="a2a_button_google_plus"></a>
+                                    <a class="a2a_button_twitter"></a>
+                                    <a class="a2a_button_reddit"></a>
+                                    <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+                                </div>
+                            </div>		
                         </div> 
                         <div>
-                            <pre style="margin-top: 12px; word-break: break-word; word-wrap: initial; white-space: pre-wrap; text-align: justify;">{{event.info.description}}</pre>
+                            <pre style="margin-top: 12px; overflow: hidden; word-break: break-word; word-wrap: initial; white-space: pre-wrap; text-align: justify;">{{event.info.description}}</pre>
                         </div>
                     </div>
                     <div class="eventColumn">
@@ -99,17 +108,19 @@
                                     </div>
                                     <div class="panel-body" style="width: 100%; display: inline-block; padding-top: 6px;">
                                         
-                                        <div ng-repeat="condition in event.groupRewards.conditions" class="headerBg rewardItem" ng-mouseleave="resetRewardDescription()" ng-mouseenter="setRewardDescription(condition)">
-                                            <div style="width: 100%; display: inline-block; height: 12px;">
-                                                <b>{{condition.reward.name}}</b>
+                                        <div ng-repeat="condition in event.groupRewards.conditions" class="rewardItem" ng-mouseleave="resetRewardDescription(condition)" ng-mouseenter="setRewardDescription(condition)">
+                                            <div style="z-index: 0; width: 100%; position: relative; display: block; padding: 6px;">
+                                                <div style="z-index: -1; width: {{ (condition.reached/condition.quantity) * 100 }}%; background: #e0e0e0; height: 100%; position: absolute; top: 0; left: 0;">
+                                                </div>
+                                                <b style="z-index: 2;">{{condition.reward.name}}</b>
+                                            </div>
+                                            <div class="rewardDescription" ng-class="{ 'hovered': condition.hovered }">
+                                                <i>{{condition.reward.description}}</i><br/>
+                                                <b>{{condition.quantity}}</b> x <b>{{condition.ticketResource.name}}</b>
                                             </div>
                                         </div>
                                         
                                     </div>
-                                    <div class="bodyBg rewardDescription" style="" ng-show="hoveredRewardCondition != undefined">
-                                        <i>{{hoveredRewardCondition.reward.description}}</i><br/>
-                                        <b>{{hoveredRewardCondition.quantity}}</b> x <b>{{hoveredRewardCondition.ticketResource.name}}</b>
-                                    </div>    
                                     <script type="text/javascript">
                                         var a2a_config = a2a_config || {};
                                         a2a_config.linkurl = "url";
@@ -136,36 +147,39 @@
 
                                     <div class="panel-body" style="width: 100%; display: inline-block; padding-top: 6px;">
                                         
-                                        <div ng-repeat="reward in event.refRewards.pointRewards" class="headerBg rewardItem" ng-mouseleave="resetPointRewardDescription()" ng-mouseenter="setPointRewardDescription(reward)">
-                                            <div style="width: 100%; display: inline-block; height: 12px;">
+                                        <div ng-repeat="reward in event.refRewards.pointRewards" class="rewardItem" ng-mouseleave="resetPointRewardDescription(reward)" ng-mouseenter="setPointRewardDescription(reward)">
+                                            <div style="width: 100%; display: block; padding: 6px;">
                                                 <b>{{reward.name}}</b>
+                                            </div>
+                                            <div class="rewardDescription" ng-class="{ 'hovered': reward.hovered }">
+                                                <i>{{reward.description}}</i><br/>
+                                                <b>{{reward.points}}</b> {{ 'event.front.rewards.pointsRequired' | translate }}
                                             </div>
                                         </div>
                                         
-                                    </div>
-                                
-                                    <div class="bodyBg rewardDescription" style="" ng-show="hoveredPointReward != undefined">
-                                        <i>{{hoveredPointReward.description}}</i><br/>
-                                        <b>{{hoveredPointReward.points}}</b> {{ 'event.front.rewards.pointsRequired' | translate }}
                                     </div>
 
                                 </div>          
                                 
                             </div>
-                            <div style="width: 100%; display: inline-block;">
+                            <div class="panel panel-default" style="width: 100%;">
                                 
-                                <div ng-repeat="condition in event.refRewards.conditions" style="width: 100%; display: inline-block; height: 12px;">
-                                    <div ng-show="condition.type.type == 'impression'">
-                                        <b>{{condition.points}}</b> {{ 'event.front.rewards.pointsPerView' | translate }}
-                                    </div>
-                                    <div ng-show="condition.type.type == 'attendance'">
-                                        <b>{{condition.points}}</b> {{ 'event.front.rewards.pointsPerAttendance' | translate }} <b>{{condition.ticketResource.name}}</b>
-                                    </div>
-                                    <div ng-show="condition.type.type == 'sale'">
-                                        <b>{{condition.points}}</b> {{ 'event.front.rewards.pointsPerSale' | translate }} <b>{{condition.ticketResource.name}}</b>
-                                    </div>
+                                <div class="panel-heading columnHeader" style="margin-bottom: 4px;">
+                                    Pistesäännöt
                                 </div>
-                                    
+                                <div class="panel-body">
+                                    <div ng-repeat="condition in event.refRewards.conditions" style="width: 100%; display: inline-block; height: 12px;">
+                                        <div ng-show="condition.type.type == 'impression'">
+                                            <b>{{condition.points}}</b> {{ 'event.front.rewards.pointsPerView' | translate }}
+                                        </div>
+                                        <div ng-show="condition.type.type == 'attendance'">
+                                            <b>{{condition.points}}</b> {{ 'event.front.rewards.pointsPerAttendance' | translate }} <b>{{condition.ticketResource.name}}</b>
+                                        </div>
+                                        <div ng-show="condition.type.type == 'sale'">
+                                            <b>{{condition.points}}</b> {{ 'event.front.rewards.pointsPerSale' | translate }} <b>{{condition.ticketResource.name}}</b>
+                                        </div>
+                                    </div>
+                                </div> 
                             </div>
                         </div>
                     </div>
