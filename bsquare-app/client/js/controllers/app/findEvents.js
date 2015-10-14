@@ -29,6 +29,7 @@ controllers.controller(
     		$scope.getEvents($routeParams.q);
             
             $timeout(() => {
+
                 $(".findEventsContent").scroll(() => { 
                     
                     let scrollTop = $(".findEventsContent").scrollTop();
@@ -50,6 +51,41 @@ controllers.controller(
                     }
                     
                 });
+
+                $('#appHeader').bind('mousewheel', (e) => {
+                    
+                    //var scrollTo = (e.wheelDelta*-1) + $('#findEventsContent').scrollTop();
+                    //console.log(e); 
+                    //console.log("mousewheel", e.wheelDelta); 
+                    //$("#findEventsContent").scrollTop(scrollTo);
+                    $("#findEventsContent").trigger(e);
+                    
+                });
+                
+                $("#appHeader").on("scrollstart", function(){
+                      alert("Started scrolling!");
+                });
+
+                /*
+                let headerElem = document.getElementById("appHeader");
+                let targetElem = document.getElementById("findEventsContent");
+                console.log("HEADER ELEM", headerElem);
+                let eventKeys = [
+                    "mousedown", 
+                    "mousemove", 
+                    "touchstart", 
+                    "touchmove", 
+                    "touchend"
+                ];
+                
+                eventKeys.forEach(eventKey => {
+                    headerElem.addEventListener(eventKey, (event) => {
+                        targetElem.dispatchEvent(event);
+                        //console.log("HEADER EVENT", event); 
+                    }, true);          
+                });
+                */
+
             }, 1000);
         } else {
             $scope.templateUrl = "parts/app/findEventsMin.html";

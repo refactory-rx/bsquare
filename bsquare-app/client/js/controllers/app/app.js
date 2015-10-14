@@ -203,7 +203,7 @@ controllers.controller("AppCtrl",
 	};
 	
 	$scope.init();
-	
+    
 	/*
 	$scope.setupTransitions = function() {
 		
