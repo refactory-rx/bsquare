@@ -54,11 +54,13 @@ controllers.controller(
 
                 $('#appHeader').bind('mousewheel', (e) => {
                     
-                    //var scrollTo = (e.wheelDelta*-1) + $('#findEventsContent').scrollTop();
+                    var scrollTo = (e.originalEvent.deltaY) + $('#findEventsContent').scrollTop();
+                    
                     //console.log(e); 
                     //console.log("mousewheel", e.wheelDelta); 
                     //$("#findEventsContent").scrollTop(scrollTo);
-                    $("#findEventsContent").trigger(e);
+                    //$("#findEventsContent").trigger(e);
+                    //$("#findEventsContent").scrollTop(scrollTo);
                     
                 });
                 
