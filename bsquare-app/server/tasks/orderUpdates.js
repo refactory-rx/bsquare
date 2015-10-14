@@ -1,7 +1,7 @@
 import Q from "q";
 
 let Order, Invoice, TicketResource;
-let paymentTime = 3*60*1000;
+let paymentTime = 15*60*1000;
 
 class OrdersTask {
     

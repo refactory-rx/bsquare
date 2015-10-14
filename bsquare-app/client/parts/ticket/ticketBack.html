@@ -11,15 +11,10 @@
         
         <div style="padding: 10px;">
             
-            
-            Ticket terms<br/><br/>
-            Bundled products<br/><br/>
-            etc.<br><br>
-            
             <div ng-show="ticket.rewards && ticket.rewards.length > 0">
-                <div><b>Rewards</b></div>
+                <div><b>Palkinnot</b></div>
                 <div ng-repeat="reward in ticket.rewards">
-                    {{reward}}
+                    {{reward.name}} ({{reward.code}})
                 </div>
             </div>
             
