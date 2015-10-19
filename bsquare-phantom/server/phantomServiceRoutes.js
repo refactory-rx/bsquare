@@ -8,21 +8,22 @@ module.exports = {
 
     init: (app) {
 
-        app.post("/api/tickets", (req, res) => {
+        app.post("/api/tickets", (req, res, next) => {
             log.debug("post tickets", req.body);
-            app.phantomService.createTickets(req.body.tickets, (response) => {
-		        res.json(response);
+            app.phantomService.createTickets(req.body.tickets, (err, tickets) => {
+                if (err) { return next(err); }
+                res.json({ status: "ok", tickets: tickets });
             });
-	    });
+        });
 
-        app.post("/api/ticket", (req, res) => {
+        app.post("/api/ticket", (req, res, next) => {
             log.debug("post ticket", req.body);
             app.phantomService.createTicket(req.body.ticket, (err, ticket) => {
-                log.debug(err, ticket);
+                if (err) { return next(err); }
                 res.json({ status: "ok", ticket: ticket });
             });
-	    });
+        });
 
-	}
+    }
 
 };
