@@ -36,7 +36,7 @@ class PhantomService {
 
     }
 
-	createTickets(tickets, callback) {
+    createTickets(tickets, callback) {
 
         let createTicketPromises = [];
         tickets.forEach(ticket => {
@@ -50,11 +50,11 @@ class PhantomService {
             callback({ success: 1, status: 'ticketsCreated', tickets: tickets });
         });
 
-	}
+    }
 
     createPage(url) {
 
-	    var deferred = Q.defer();
+        var deferred = Q.defer();
 
         phantom.create((ph) => {
 
@@ -80,7 +80,7 @@ class PhantomService {
 
         });
 
-	    return deferred.promise;
+        return deferred.promise;
 
     }
 
@@ -127,7 +127,7 @@ class PhantomService {
 
     _createTicketPdf(ticket) {
 
-	    var deferred = Q.defer();
+        var deferred = Q.defer();
 
         phantom.create((ph) => {
 
@@ -164,7 +164,7 @@ class PhantomService {
 
         });
 
-	    return deferred.promise;
+        return deferred.promise;
 
     }
 
