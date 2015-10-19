@@ -45,7 +45,7 @@ app.statsService = require("./server/services/statsService")(app);
 app.eventService = require("./server/services/eventService")(app);
 app.orderUpdates = require('./server/tasks/orderUpdates')(app);
 
-app.use("/", express.static(staticDir));                                  // set the static files location
+app.use("/", express.static(staticDir));
 app.use("/node_modules", express.static(modulesDir));                                  // set the static files location
 app.use(bodyParser.urlencoded({ extended: "true" }));               // parse application/x-www-form-urlencoded
 app.use(bodyParser.json());                                         // parse application/json
