@@ -1,43 +1,49 @@
-require('./env/env');
+"use strict";
 
-var https = require('https');
-var http = require('http');
-var fs = require('fs');
-var express = require('express');
-var busboy = require('connect-busboy');
-var morgan = require('morgan');
-var bodyParser = require('body-parser');
-var methodOverride = require('method-override');
+require("./env/env");
 
-var app = express();
-app.use(express.static(__dirname + '/client')); 				// set the static files location
-app.use(morgan('dev'));                                         // log every request to the console
-app.use(bodyParser.urlencoded({'extended': 'true'}));            // parse application/x-www-form-urlencoded
-app.use(bodyParser.json());                                     // parse application/json
-app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
-app.use(methodOverride());										// simulate DELETE and PUT
+import log4js from "log4js";
+let log = log4js.getLogger("PhantomServer");
+
+import https from "https";
+import http from "http";
+import fs from "fs";
+import express from "express";
+import busboy from "connect-busboy";
+import morgan from "morgan";
+import bodyParser from "body-parser";
+import methodOverride from "method-override";
+
+let app = express();
+app.use(express.static(`${__dirname}/client`));
+app.use(morgan("dev"));
+app.use(bodyParser.urlencoded({ "extended": "true" }));
+app.use(bodyParser.json());
+app.use(bodyParser.json({ type: "application/vnd.api+json" }));
+app.use(methodOverride());
 app.use(busboy());
 
-require('./server/routes.js')(app);
+app.phantomService = require("./api/phantomService")(app)
+require("./server/phantomServiceRoutes").init(app);
 
-var httpServer = http.createServer(app);
-var httpPort = process.env.PORT || 8080;
+let httpServer = http.createServer(app);
+let httpPort = process.env.PORT || 8080;
 
 httpServer.listen(httpPort);
-console.log('Listening on port '+httpPort);
+log.info(`Listening on port ${httpPort}`);
 
 /**
  * Run HTTPS server instead of HTTP
  *
 
 if(fs.existsSync(__dirname+'/keys')) {
-	
-	var privateKey  = fs.readFileSync(__dirname+'/keys/server-key.pem', 'utf8');
-	var certificate = fs.readFileSync(__dirname+'/keys/server-cert.pem', 'utf8');
 
-	var credentials = { key: privateKey, cert: certificate };
+	let privateKey  = fs.readFileSync(__dirname+'/keys/server-key.pem', 'utf8');
+	let certificate = fs.readFileSync(__dirname+'/keys/server-cert.pem', 'utf8');
 
-	var httpsServer = https.createServer(credentials, app);
+	let credentials = { key: privateKey, cert: certificate };
+
+	let httpsServer = https.createServer(credentials, app);
 
 	httpsServer.listen(443);
 	console.log('Listening on port '+443);
