@@ -23,7 +23,10 @@ class PhantomService {
         let deferred = Q.defer();
         this._createTicketHtml(ticket, (err) => {
 
-            if (err) { return deferred.reject(err); }
+            if (err) {
+                deferred.reject(err);
+                return;
+            }
 
             this._createTicketPdf(ticket)
             .then((ticket) => {
@@ -36,19 +39,22 @@ class PhantomService {
 
     }
 
-    createTickets(tickets, callback) {
+    createTickets(tickets) {
 
-        let createTicketPromises = [];
-        tickets.forEach(ticket => {
-            log.debug("schedule ticket pdf", ticket);
-            createTicketPromises.push(this.createTicket(ticket));
-        });
+        let deferred = Q.defer();
 
-        log.debug("execute batch ticket creation");
-        Q.all(createTicketPromises).then((tickets) => {
+        let createTicketPromises = tickets.map(ticket => this.createTicket(ticket));
+
+        Q.all(createTicketPromises)
+        .then((tickets) => {
             log.debug("done creating tickets", tickets);
-            callback({ success: 1, status: 'ticketsCreated', tickets: tickets });
+            deferred.resolve(tickets);
+        })
+        .catch((err) => {
+            deferred.reject(err);
         });
+
+        return deferred.promise;
 
     }
 
@@ -113,7 +119,6 @@ class PhantomService {
 
         writeStream.on("finish", () => {
 
-            //log.debug("Finished writing file!");
             let path = `${WEB_CONTENT_PATH}/tickets/ticket${ticket._id}.html`;
             fs.writeFile(path, ticketHtml, (err) => {
                 callback(err);

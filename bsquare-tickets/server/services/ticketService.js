@@ -1,3 +1,6 @@
+import log4js from "log4js";
+let log = log4js.getLogger("TicketService");
+
 import Q from "q";
 
 import request from "request";
@@ -27,7 +30,7 @@ class TicketService {
         .then((ticketResource) => {
 
             if(ticketResource.authorizedInvalidation) {
-                console.log("check event of the tkt rsrc");
+                log.debug("check event of the tkt rsrc");
                 return Event.findOneQ({ _id: ticketResource.event });
             } else {
                 ticket.allowInvalidation = false;
@@ -114,7 +117,7 @@ class TicketService {
 
     getTickets(user) {
 
-        console.log("get tktss, screen req");
+        log.debug("get tktss, screen req");
 
         let deferred = Q.defer();
 
@@ -155,10 +158,10 @@ class TicketService {
 
             }
 
-            console.log(`find order by id: ${orderId}`);
+            log.debug(`find order by id: ${orderId}`);
             Order.findOne({ _id: orderId }, (err, order) => {
                 if(err) {
-                    console.log(err);
+                    log.debug(err);
                 } else {
                     this.saveTickets(order, tickets, callback);
                 }
@@ -176,7 +179,7 @@ class TicketService {
 
         Ticket.create(tickets, (ticketErr, ...createdTickets) => {
 
-            console.log("ticket creation: ", ticketErr, createdTickets);
+            log.debug("ticket creation: ", ticketErr, createdTickets);
 
             if(ticketErr) {
 
@@ -217,14 +220,14 @@ class TicketService {
                                 qtySold: qtySold
                             },
                             (err, numAffected) => {
-				                console.log("qty updated for "+ticketResource.name, qtyAvailable, qtyReserved, qtySold);
+				                log.debug("qty updated for "+ticketResource.name, qtyAvailable, qtyReserved, qtySold);
 		    		        }
 			            );
 		    	    });
 
                 });
 
-                console.log("qtyUpdates:", qtyUpdates.length);
+                log.debug("qtyUpdates:", qtyUpdates.length);
                 Q.all(qtyUpdates);
 
                 let emailContent = "Your tickets have been issued<br/><br/>";
@@ -241,20 +244,21 @@ class TicketService {
                     B SQUARED`;
 
                 let phantomService = this.app.phantomService;
-                phantomService.createTickets(createdTickets, (result) => {
+                phantomService.createTickets(createdTickets, (err, tickets) => {
 
                     let orderEmail;
                     for(let i=0; i < order.signupFields.length; i++) {
-                        console.log(order.signupFields[i]);
+                        log.debug(order.signupFields[i]);
                         if(order.signupFields[i].name === "email") {
                             orderEmail = order.signupFields[i].value;
                             break;
                         }
                     }
 
-		            console.log(`send email to ${orderEmail}`);
+		            log.debug(`send email to ${orderEmail}`);
 
-                    let files = result.tickets.map((ticket) => {
+                    let files = tickets.map((ticket) => {
+                        log.debug("sending attachment", ticket);
 			            return {
 				            filename: `ticket${ticket.id}.pdf`,
 				            content: ticket.data
@@ -269,7 +273,7 @@ class TicketService {
                         html: emailContent,
                         files: files
                     }, (err, json) => {
-                        console.log("SENDGRID RESPONSE", err, json);
+                        log.debug("SENDGRID RESPONSE", err, json);
                     });
 
                     callback({ success: 1, status: "orderFulfilled" });

@@ -8,27 +8,33 @@ module.exports = (app) => {
 
     return {
 
-        createTickets: (tickets, callback) => {
-            phantomService.createTickets(tickets, callback);
-        },
-
-        createTicket: (ticket, callback) => {
-            phantomService.createTicket(ticket)
-            .then((ticket) => {
-                callback({ status: "ok", ticket: ticket });
+        createTickets: (tickets, done) => {
+            phantomService.createTickets(tickets)
+            .then((tickets) => {
+                done(null, tickets);
             })
-            .catch((error) => {
-                callback({ status: "error", error: error });
+            .catch((err) => {
+                done(err);
             });
         },
 
-        createPage: (url, callback) => {
-            phantomService.createPage(url)
-            .then((data) => {
-                callback({ status: "ok", data: data });
+        createTicket: (ticket, done) => {
+            phantomService.createTicket(ticket)
+            .then((ticket) => {
+                done(null, ticket);
             })
             .catch((error) => {
-                callback({ status: "error", error: error });
+                done(err);
+            });
+        },
+
+        createPage: (url, done) => {
+            phantomService.createPage(url)
+            .then((data) => {
+                done(null, data);
+            })
+            .catch((error) => {
+                done(err);
             });
         }
 

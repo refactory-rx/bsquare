@@ -28,14 +28,14 @@ module.exports = (app) => {
         });
     });
 
-    app.get("/i", (req, res) => {
+    app.get("/i", (req, res, next) => {
 
         var url = `${app.settings.APP_BASE_URL}/main-index.html#${req.query.route}`;
         console.log("phantom page:", url);
         let phantomService = app.phantomService;
-        phantomService.createPage(url, (result) => {
-            //console.log(result.data);
-            res.send(result.data);
+        phantomService.createPage(url, (err, data) => {
+            if (err) { return next(err); }
+            res.send(data);
         });
     
     });
