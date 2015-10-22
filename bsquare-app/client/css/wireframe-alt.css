@@ -1680,20 +1680,6 @@ div.minView1 div.listEventImage {
 
 @media (max-width: 690px) {
     
-    .mainFilterSection .filterBadge {
-        width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    
-    .mainFilterSection .filterBadge .badgeText {
-        white-space: nowrap;
-    }
-
-    .mainFilterSection input {
-        width: 100%;
-    }
-
     .eventSearch {
         height: initial;
         padding-bottom: 8px;
@@ -1722,7 +1708,32 @@ div.minView1 div.listEventImage {
     .mainFilterSection {
         display: inline-block; 
         text-align: center;
+    }
+    
+    .mainFilterSection.location {
         width: 32%;
+    }
+
+    .mainFilterSection.time {
+        width: 32%;
+    }
+    
+    .mainFilterSection.type {
+        width: 32%;
+    }
+
+    .mainFilterSection .filterBadge {
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .mainFilterSection .filterBadge .badgeText {
+        white-space: nowrap;
+    }
+
+    .mainFilterSection input {
+        width: 100%;
     }
 
     .findEventsContainer {
@@ -1731,6 +1742,27 @@ div.minView1 div.listEventImage {
 
     .findEventsContainer.loggedIn {
         height: calc(100% - 122px);
+    }
+
+}
+
+@media (max-width: 435px) {
+    
+    .mainFilterSection.location {
+        width: calc(98% + 2px);
+        margin-bottom: 8px;
+    }
+
+    .mainFilterSection.time {
+        width: 49%;
+    }
+    
+    .mainFilterSection.type {
+        width: 49%;
+    }
+    
+    .mainFilterSection input {
+        margin-bottom: 4px;
     }
 
 }
