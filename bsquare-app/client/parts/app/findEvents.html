@@ -23,8 +23,8 @@
             <div class="mainFilterSection">
                 <div class="filterBadge" ng-show="!setLocation">
                     <a href="" ng-click="changeLocation()">
-                        <span ng-show="searchLocation">{{searchLocation}}</span>
-                        <span ng-show="!searchLocation">Kaikki kaupungit</span>
+                        <span class="badgeText" ng-show="searchLocation">{{searchLocation}}</span>
+                        <span class="badgeText" ng-show="!searchLocation">KAIKKI KAUPUNGIT</span>
                         <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
                     </a>
                 </div>
@@ -33,8 +33,19 @@
             
             <div class="mainFilterSection">
                 <div class="filterBadge" style="border: 1px solid #e0e0e0; background: white;">
+                    <a href="" ng-click="changeEventTime()">
+                        <span class="badgeText" ng-show="eventTime">{{eventTime}}</span>
+                        <span class="badgeText" ng-show="!eventTime">MILLOIN TAHANSA</span>
+                        <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="mainFilterSection">
+                <div class="filterBadge" style="border: 1px solid #e0e0e0; background: white;">
                     <a href="" ng-click="changeEventType()">
-                        TAPAHTUMAN LAJI
+                        <span class="badgeText" ng-show="eventType">{{eventType}}</span>
+                        <span class="badgeText" ng-show="!eventType">KAIKKI TYYPIT</span>
                         <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
                     </a>
                 </div>
@@ -52,12 +63,29 @@
         </div>
 
     </div>
+
     <div ng-show="setLocation" style="padding: 8px; text-align: center; box-shadow: inset -2px -5px 10px -5px #888889;">
         <a href="" ng-click="resetLocationSearch()">
             <span style="text-decoration: none;" class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
-            Kaikki kaupungit
+            KAIKKI KAUPUNGIT
         </a>
-        <a style="margin-left: 12px;" ng-repeat="location in locationOptions" href="" ng-click="selectLocation(location)">{{location}}</a>
+        <a style="margin-left: 12px; white-space: nowrap;" ng-repeat="location in locationOptions" href="" ng-click="selectLocation(location)">{{location}}</a>
+    </div>
+    
+    <div ng-show="setEventTime" style="padding: 8px; text-align: center; box-shadow: inset -2px -5px 10px -5px #888889;">
+        <a href="" ng-click="resetEventTime()">
+            <span style="text-decoration: none;" class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+            MILLOIN TAHANSA
+        </a>
+        <a style="margin-left: 12px; white-space: nowrap;" ng-repeat="time in eventTimeOptions" href="" ng-click="selectEventTime(time)">{{time}}</a>
+    </div>
+
+    <div ng-show="setEventType" style="padding: 8px; text-align: center; box-shadow: inset -2px -5px 10px -5px #888889;">
+        <a href="" ng-click="resetEventType()">
+            <span style="text-decoration: none;" class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+            KAIKKI TYYPIT
+        </a>
+        <a style="margin-left: 12px; white-space: nowrap;" ng-repeat="type in eventTypeOptions" href="" ng-click="selectEventType(type)">{{type}}</a>
     </div>
     
     <div class="findEventsContainer" ng-class="{ 'loggedIn': logregStatus == 'loggedIn' }">

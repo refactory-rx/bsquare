@@ -1682,8 +1682,14 @@ div.minView1 div.listEventImage {
     
     .mainFilterSection .filterBadge {
         width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     
+    .mainFilterSection .filterBadge .badgeText {
+        white-space: nowrap;
+    }
+
     .mainFilterSection input {
         width: 100%;
     }
@@ -1716,7 +1722,7 @@ div.minView1 div.listEventImage {
     .mainFilterSection {
         display: inline-block; 
         text-align: center;
-        width: 49%;
+        width: 32%;
     }
 
     .findEventsContainer {

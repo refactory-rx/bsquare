@@ -15,8 +15,10 @@ controllers.controller(
     $scope.searchField = {};
     $scope.setLocation = false;
     $scope.setEventType = false;
+    $scope.setEventTime = false;
     $scope.locationOptions = [];
     $scope.eventTypeOptions = [];
+    $scope.eventTimeOptions = [];
 
     $scope.init = () => {
     	$scope.getEvents();
@@ -208,9 +210,19 @@ controllers.controller(
     };
 
     $scope.changeLocation = () => {
-        $scope.setLocation = true;
+        
+        if ($scope.setLocation) {
+            $scope.setLocation = false;
+            return;
+        }
+
+        $scope.locationSearchStr = "";
         var eventLocations = Object.keys($scope.eventStats);
         $scope.locationOptions = eventLocations.filter(location => location != "max");
+        
+        $scope.setEventTime = false;
+        $scope.setEventType = false;
+        $scope.setLocation = true;
     };
 
     $scope.selectLocation = (location) => {
@@ -226,10 +238,6 @@ controllers.controller(
         delete $scope.searchLocation;
     };
 
-    $scope.changeEventType = () => {
-        $scope.setEventType = true;
-    };
-    
     $scope.$watch("locationSearchStr", (locationSearchStr) => {
 
         var eventLocations = Object.keys($scope.eventStats);
@@ -242,6 +250,57 @@ controllers.controller(
         }
 
     }, true);
+
+
+    $scope.changeEventType = () => {
+        
+        if ($scope.setEventType) {
+            $scope.setEventType = false;
+            return;
+        }
+
+        $scope.eventTypeOptions = [ "Musiikki", "Koulutus", "Juhla" ];
+        
+        $scope.setLocation = false;
+        $scope.setEventTime = false;
+        $scope.setEventType = true;
+    
+    };
+    
+    $scope.selectEventType = (type) => {
+        $scope.setEventType = false;
+        $scope.eventType = type;
+    };
+    
+    $scope.resetEventType = () => {
+        $scope.setEventType = false;
+        delete $scope.eventType;
+    };
+    
+    $scope.changeEventTime = () => {
+        
+        if ($scope.setEventTime) {
+            $scope.setEventTime = false;
+            return;
+        }
+
+        $scope.eventTimeOptions = [ "Tänään", "Tällä viikolla", "Tässä kuussa" ];
+        
+        $scope.setLocation = false;
+        $scope.setEventType = false;
+        $scope.setEventTime = true;
+    
+    };
+    
+    $scope.selectEventTime = (time) => {
+        $scope.setEventTime = false;
+        $scope.eventTime = time;
+    };
+    
+    $scope.resetEventTime = () => {
+        $scope.setEventTime = false;
+        delete $scope.eventTime;
+    };
 
     //$scope.init();
     
