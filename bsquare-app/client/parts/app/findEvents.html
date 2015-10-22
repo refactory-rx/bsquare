@@ -21,18 +21,19 @@
         
         <div class="eventSearchLeft">
             <div class="mainFilterSection">
-                <div class="filterBadge">
-                    <a href="">
-                        Helsinki
+                <div class="filterBadge" ng-show="!setLocation">
+                    <a href="" ng-click="changeLocation()">
+                        <span ng-show="searchLocation">{{searchLocation}}</span>
+                        <span ng-show="!searchLocation">Kaikki kaupungit</span>
                         <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
                     </a>
                 </div>
-                <input id="place-input" class="form-control" style="display: none; width: 200px;" type="text" placeholder="{{ 'event.back.info.placeholder-place' | translate }}"/>
-            </div>
+                <input class="form-control" ng-show="setLocation" style="width: 200px; margin-top: -8px; display: inline-block;" type="text" placeholder="{{ 'event.back.info.placeholder-place' | translate }}" ng-model="locationSearchStr"/>
+            </div> 
             
             <div class="mainFilterSection">
                 <div class="filterBadge" style="border: 1px solid #e0e0e0; background: white;">
-                    <a href="">
+                    <a href="" ng-click="changeEventType()">
                         TAPAHTUMAN LAJI
                         <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
                     </a>
@@ -50,6 +51,13 @@
             </div>
         </div>
 
+    </div>
+    <div ng-show="setLocation" style="padding: 8px;">
+        <a href="" ng-click="resetLocationSearch()">
+            <span style="text-decoration: none;" class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+            Kaikki kaupungit
+        </a>
+        <a style="margin-left: 12px;" ng-repeat="location in locationOptions" href="" ng-click="selectLocation(location)">{{location}}</a>
     </div>
     
     <div class="findEventsContainer" ng-class="{ 'loggedIn': logregStatus == 'loggedIn' }">

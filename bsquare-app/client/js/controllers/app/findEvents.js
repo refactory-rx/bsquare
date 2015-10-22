@@ -13,7 +13,11 @@ controllers.controller(
     $scope.eventsErrorMessage = '';
     
     $scope.searchField = {};
-    
+    $scope.setLocation = false;
+    $scope.setEventType = false;
+    $scope.locationOptions = [];
+    $scope.eventTypeOptions = [];
+
     $scope.init = () => {
     	$scope.getEvents();
     };
@@ -24,9 +28,11 @@ controllers.controller(
     	
         
         if (value === "findEvents") {
+            
             $scope.templateUrl = "parts/app/findEventsFull.html";
     		$scope.searchField.text = "";
     		$scope.getEvents($routeParams.q);
+    		$scope.getEventStats();
             
             $timeout(() => {
 
@@ -176,34 +182,67 @@ controllers.controller(
                     
     };
 
-    $scope.formatTime = function(time) {
+    $scope.formatTime = (time) => {
     	
     	var date = new Date(time);
     	var formattedTime = 
-    		date.getFullYear()+'/'+
-    		date.getMonth()+'/'+
+    		date.getFullYear()+"/"+
+    		date.getMonth()+"/"+
     		date.getDate();
     	
-    	return $filter('date')(date, 'MMM dd, y');
+    	return $filter("date")(date, "MMM dd, y");
     	
     };
     
-    $scope.openEvent = function(event) {
-    	
-    	$rootScope.navigate('#/event/'+event._id);
-    	
+    $scope.openEvent = (event) => {
+    	$rootScope.navigate(`#/event/${event._id}`);
     };
     
-    $scope.searchEvents = function() {
+    $scope.searchEvents = () => {
     	
     	var searchText = $scope.searchField.text;
-    	console.log('searching events: '+searchText);
+    	console.log("searching events: "+searchText);
     	
     	$scope.getEvents(searchText);
-    
     	
-    }
-     
+    };
+
+    $scope.changeLocation = () => {
+        $scope.setLocation = true;
+        var eventLocations = Object.keys($scope.eventStats);
+        $scope.locationOptions = eventLocations.filter(location => location != "max");
+    };
+
+    $scope.selectLocation = (location) => {
+        $scope.setLocation = false;
+        $scope.searchLocation = location;
+        $scope.locationSearchStr = "";
+        $scope.locationOptions = [];
+    };
+
+    $scope.resetLocationSearch = () => {
+        $scope.setLocation = false;
+        $scope.locationSearchStr = "";
+        delete $scope.searchLocation;
+    };
+
+    $scope.changeEventType = () => {
+        $scope.setEventType = true;
+    };
+    
+    $scope.$watch("locationSearchStr", (locationSearchStr) => {
+
+        var eventLocations = Object.keys($scope.eventStats);
+        if (!locationSearchStr || locationSearchStr === "") {
+            $scope.locationOptions = eventLocations.filter(location => location != "max");
+        } else {
+            $scope.locationOptions = eventLocations.filter(location => {
+                return location != "max" && location.indexOf(locationSearchStr) != -1;
+            });
+        }
+
+    }, true);
+
     //$scope.init();
     
 }]);
