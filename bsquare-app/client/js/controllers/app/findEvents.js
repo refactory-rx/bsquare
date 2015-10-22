@@ -52,41 +52,23 @@ controllers.controller(
                     
                 });
 
-                $('#appHeader').bind('mousewheel', (e) => {
-                    
-                    var scrollTo = (e.originalEvent.deltaY) + $('#findEventsContent').scrollTop();
-                    
-                    //console.log(e); 
-                    //console.log("mousewheel", e.wheelDelta); 
-                    //$("#findEventsContent").scrollTop(scrollTo);
-                    //$("#findEventsContent").trigger(e);
-                    //$("#findEventsContent").scrollTop(scrollTo);
-                    
+                $("#appHeader").bind("mousewheel", (e) => {
+                    var scrollTo = (e.originalEvent.deltaY) + $("#findEventsContent").scrollTop();
+                    $("#findEventsContent").scrollTop(scrollTo);
                 });
                 
-                $("#appHeader").on("scrollstart", function(){
-                      alert("Started scrolling!");
+                $("#appHeader").bind("touchstart", (e) => {
+                    $scope.touchStartY = e.originalEvent.touches[0].clientY; 
+                    console.log("Start tpuching at ", $scope.touchStartY);
                 });
 
-                /*
-                let headerElem = document.getElementById("appHeader");
-                let targetElem = document.getElementById("findEventsContent");
-                console.log("HEADER ELEM", headerElem);
-                let eventKeys = [
-                    "mousedown", 
-                    "mousemove", 
-                    "touchstart", 
-                    "touchmove", 
-                    "touchend"
-                ];
-                
-                eventKeys.forEach(eventKey => {
-                    headerElem.addEventListener(eventKey, (event) => {
-                        targetElem.dispatchEvent(event);
-                        //console.log("HEADER EVENT", event); 
-                    }, true);          
+                $("#appHeader").bind("touchmove", (e) => {
+                    var touchY = e.originalEvent.touches[0].clientY;
+                    var deltaY = $scope.touchStartY - touchY;
+                    $scope.touchStartY = touchY;
+                    var scrollTo = deltaY + $("#findEventsContent").scrollTop();
+                    $("#findEventsContent").scrollTop(scrollTo);
                 });
-                */
 
             }, 1000);
         } else {
