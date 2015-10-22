@@ -1674,8 +1674,20 @@ div.minView1 div.listEventImage {
     letter-spacing: px;
 }
 
+.mainFilterSection input {
+    width: 200px;
+}
+
 @media (max-width: 690px) {
     
+    .mainFilterSection .filterBadge {
+        width: 100%;
+    }
+    
+    .mainFilterSection input {
+        width: 100%;
+    }
+
     .eventSearch {
         height: initial;
         padding-bottom: 8px;
@@ -1704,6 +1716,7 @@ div.minView1 div.listEventImage {
     .mainFilterSection {
         display: inline-block; 
         text-align: center;
+        width: 49%;
     }
 
     .findEventsContainer {
