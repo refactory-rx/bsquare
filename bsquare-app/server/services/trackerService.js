@@ -344,10 +344,12 @@ class TrackerService {
 
 	compileRewardStats(event, orders) {
 
-        let qtysMap = this.createTicketResourceMap(orders);
-        event.groupRewards.conditions.forEach(rewardCondition => {
-            rewardCondition.reached = qtysMap[rewardCondition.ticketResource._id];
-        });
+        if (event.groupRewards) {
+            let qtysMap = this.createTicketResourceMap(orders);
+            event.groupRewards.conditions.forEach(rewardCondition => {
+                rewardCondition.reached = qtysMap[rewardCondition.ticketResource._id];
+            });
+        }
 
         return {
             groupRewards: event.groupRewards

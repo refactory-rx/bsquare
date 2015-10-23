@@ -59,6 +59,9 @@ mainApp.config(($translateProvider) => {
         "app.findEvents.title": "Find events",
         "app.findEvents.searchFilters": "Search filters",
         "app.findEvents.searchText": "Search by name, type, place...",
+        "app.findEvents.time.today": "Today",
+        "app.findEvents.time.week": "This week",
+        "app.findEvents.time.month": "This month",
         
         "app.myEvents.title": "My events",
         "app.myEvents.add": "Add",
@@ -71,6 +74,10 @@ mainApp.config(($translateProvider) => {
         
         "app.myTickets.title": "My tickets",
         "app.myTickets.noTicketsText": "You don&#39;t have any tickets :(",
+        
+        "event.properties.type.music": "Music",
+        "event.properties.type.party": "Party",
+        "event.properties.type.training": "Training",
         
         "event.front.manage": "Manage",
         "event.front.tickets.title": "Tickets",
@@ -121,6 +128,7 @@ mainApp.config(($translateProvider) => {
         "event.back.info.placeholder-ends": "(set end time)",
         "event.back.info.label-description": "Description",
         "event.back.info.placeholder-description": "Description: eg. The party of all parties!",
+        "event.back.info.label-type": "Type",
         
         "event.back.payout.bankName.label": "Bank name",
         "event.back.payout.bankName.placeholder": "Bank: eg. Nordea",
@@ -303,6 +311,9 @@ mainApp.config(($translateProvider) => {
         "app.findEvents.title": "Etsi tapahtumia",
         "app.findEvents.searchFilters": "Hakukriteerit",
         "app.findEvents.searchText": "Hae nimellä, tyypillä, paikkakunnalla...",
+        "app.findEvents.time.today": "Tänään",
+        "app.findEvents.time.week": "Tällä viikolla",
+        "app.findEvents.time.month": "Tässä kuussa",
         
         "app.myEvents.title": "Omat tapahtumat",
         "app.myEvents.add": "Uusi",
@@ -315,6 +326,10 @@ mainApp.config(($translateProvider) => {
         
         "app.myTickets.title": "Minun lippuni",
         "app.myTickets.noTicketsText": "Et ole vielä hankkinut lippuja :(",
+        
+        "event.properties.type.music": "Musiikki",
+        "event.properties.type.party": "Party",
+        "event.properties.type.training": "Koulutus",
         
         "event.front.manage": "Asetukset",
         "event.front.tickets.title": "Liput",
@@ -365,6 +380,7 @@ mainApp.config(($translateProvider) => {
         "event.back.info.placeholder-ends": "(aseta lopetusaika)",
         "event.back.info.label-description": "Kuvaus",
         "event.back.info.placeholder-description": "Kuvaus: esim. Kaikkien aikojen party!",
+        "event.back.info.label-type": "Tyyppi",
        
         "event.back.payout.bankName.label": "Pankin nimi",
         "event.back.payout.bankName.placeholder": "Pankki: esim. Nordea",

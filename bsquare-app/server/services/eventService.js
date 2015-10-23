@@ -64,19 +64,32 @@ class EventService {
                 return deferred.reject(err);
             }
             
-            let eventStats = { max: 0 };
+            let locations = { max: 0 };
+            let types = { max: 0 };
             events.forEach(event => {
                 
                 let vicinity = event.info.place.vicinity;
                 let city = PLACE_MAP[vicinity] || vicinity;
                 
-                eventStats[city] = eventStats[city] ? eventStats[city] + 1 : 1;
-                if (eventStats[city] > eventStats.max) {
-                    eventStats.max = eventStats[city];
+                locations[city] = locations[city] ? locations[city] + 1 : 1;
+                if (locations[city] > locations.max) {
+                    locations.max = locations[city];
                 }
+
+                let type = event.info.type;
+                if (type) {
+                    types[type] = types[type] ? types[type] + 1 : 1;
+                    if (types[type] > types.max) {
+                        types.max = types[type];
+                    }
+                }
+
             });
 
-            deferred.resolve(eventStats);
+            deferred.resolve({
+                locations: locations,
+                types: types
+            });
 
         });
 
@@ -127,7 +140,23 @@ class EventService {
             }
              
             if (filters["time"]) {
-                filterConditions.push({ "info.time": filters["time"] });
+                
+                let time = filters["time"];
+                let now = (new Date()).getTime();
+                let until = 1000 * 60 * 60 * 24;
+                if (time === "week") {
+                    until = until * 7;
+                } else if (time === "month") {
+                    until = until * 31;
+                }
+
+                filterConditions.push({
+                    "$and": [
+                        { "info.timeEnd": { "$gt": now } },
+                        { "info.timeStart": { "$lt": now + until } }
+                    ]
+                });
+            
             }
             
             if (filters["location"]) {

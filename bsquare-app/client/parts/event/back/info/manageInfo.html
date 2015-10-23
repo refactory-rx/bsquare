@@ -33,6 +33,16 @@
                 </div>
             </div>
             <div class="inputRow form-group">
+                <div class="inputRowCell labelContainer hideTooNarrow">{{ 'event.back.info.label-type' | translate }}</div>
+                <div class="inputRowCell eventInputContainer">
+                    <select class="form-control" style="width: 100%;" ng-model="info.type">
+                        <option value="music">{{ 'event.properties.type.music' | translate }}</option>
+                        <option value="party">{{ 'event.properties.type.party' | translate }}</option>
+                        <option value="training">{{ 'event.properties.type.training' | translate }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="inputRow form-group">
                 <div class="inputRowCell labelContainer hideTooNarrow">YouTube</div>
                 <div class="inputRowCell eventInputContainer">
                     <input placeholder="Esim. https://youtu.be/SwOHi8E7R7U" class="form-control" style="width: 100%;"
