@@ -12,6 +12,8 @@ controllers.controller(
 	$scope.errorMessage = "";
 
 	$scope.recoveryToken = $routeParams.recoveryToken;
+    
+    $rootScope.setRootView("recovery");
 
 	if($scope.recoveryToken) {
 		$scope.recoveryView = 'change';

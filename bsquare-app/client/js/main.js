@@ -67,7 +67,7 @@ controllers.controller(
     $rootScope.rootView = "events"; 
     $rootScope.hideHeader = false;
     $rootScope.og = {
-        title: "Helpp tapa myydä liput",
+        title: "Helppo tapa myydä liput",
         description: "Myy liput vaivattomasti ja pienin kustannuksin",
         image: `${$rootScope.imgBaseUrl}/BSQ-logo_small.png`,
         url: `${$rootScope.appUrl}`
@@ -168,12 +168,13 @@ controllers.controller(
             $rootScope.hideHeader = false;
         }
 
-        console.log('rootview set to '+$rootScope.rootView);
+        console.log("rootview set to "+$rootScope.rootView);
     
     };
 	
     $rootScope.setJumbotron = (view) => {
-        if (view === "events") {
+        console.log("SET VIEW", view);
+        if (view === "events" || view === "front") {
             $(".appHeader").css("height", "300px");
             $("#jumbotron").css({ "opacity": "1.0", "top": "30px" });
             $("#jumbotron > div > h1").css("font-size", "39px");

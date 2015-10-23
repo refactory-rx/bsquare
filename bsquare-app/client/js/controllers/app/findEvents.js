@@ -59,8 +59,10 @@ controllers.controller(
 
                     if (scrollTop > 120) {
                         $("#jumbotron a").css("display", "none");
+                        $("#jumbotron").css("pointer-events", "none");
                     } else {
                         $("#jumbotron a").css("display", "inline-block");
+                        $("#jumbotron").css("pointer-events", "initial");
                     }
 
                 });

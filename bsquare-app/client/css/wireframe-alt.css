@@ -1524,6 +1524,7 @@ div.minView1 div.listEventImage {
 	margin-top: 10px;
     display: block;
     color: black;
+    cursor: pointer;
 }
 
 .promoFull .imageContainer {
@@ -1648,6 +1649,11 @@ div.minView1 div.listEventImage {
     display: inline-block;  
     text-align: center;
     border-left: 1px solid #e0e0e0;
+    cursor: pointer;
+}
+
+.categoriesBar .categorySection:hover {
+    background: #e0e0e0;
 }
 
 .eventSearch .eventSearchLeft {

@@ -2,7 +2,9 @@ controllers.controller("VerifyCtrl",
     ['$rootScope', '$scope', '$routeParams', '$http', '$log',
     ($rootScope, $scope, $routeParams, $http, $log) => {
 
-	$scope.verificationId = $routeParams.id;
+    $rootScope.setRootView("verify");
+    
+    $scope.verificationId = $routeParams.id;
 	$log.debug(`verify id: ${$scope.verificationId}`);
 
 	$scope.verifyStatus = "";
