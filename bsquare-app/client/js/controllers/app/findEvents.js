@@ -193,15 +193,11 @@ controllers.controller(
 
     };
 
-    $scope.formatTime = (time) => {
-
+    $scope.formatTime = (time, format) => {
+        
+        format = format || "MMM dd, y";
     	var date = new Date(time);
-    	var formattedTime =
-    		date.getFullYear()+"/"+
-    		date.getMonth()+"/"+
-    		date.getDate();
-
-    	return $filter("date")(date, "MMM dd, y");
+    	return $filter("date")(date, format);
 
     };
 
@@ -269,6 +265,10 @@ controllers.controller(
     };
 
     $scope.$watch("locationSearchStr", (locationSearchStr) => {
+        
+        if (!locationSearchStr || !$scope.eventStats) {
+            return;
+        }
 
         var eventLocations = Object.keys($scope.eventStats.locations);
         if (!locationSearchStr || locationSearchStr === "") {

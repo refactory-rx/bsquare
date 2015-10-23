@@ -102,14 +102,14 @@
                 <div class="promoFull" style="width: 100%; height: 100%; position: relative;" ng-click="navigate('#/event/'+promoEvents[0]._id)">
                     <div class="imageContainer">
                         <img ng-src="img{{promoEvents[0].info.eventImage}}">
-                    </div>
-                    <div style="height: 20%; border: 1px solid black;">
-                        <a href="#/event/{{promoEvents[0]._id}}"><span style="font-size: 1.5em;">{{promoEvents[0].info.title}}</span></a> in {{promoEvents[0].info.place.vicinity}}
-                    </div>
-                    <div style="height: 20%;">
-                        <div class="panelBg" style="width: 96%; margin: auto; height: 100%; font-size: 1.3em;">
-                            {{formatTime(promoEvents[0].info.timeStart)}}	
+                        <div style="position: absolute; bottom: 8px; right: 8px; background: rgba(0, 0, 0, 0.3); padding: 4px;">
+                            <div class="panelBg" style="padding: 4px; font-size: 1.3em; color: white;">
+                                {{formatTime(promoEvents[0].info.timeStart, "MMM dd")}}	
+                            </div>
                         </div>
+                    </div>
+                    <div style="height: 20%; border: 1px solid #e0e0e0; padding: 4px;">
+                        <a href="#/event/{{promoEvents[0]._id}}"><span style="font-size: 1.5em;">{{promoEvents[0].info.title}}</span></a> in {{promoEvents[0].info.place.vicinity}}
                     </div>
                 </div>
                 
@@ -127,14 +127,14 @@
                 <div class="promoFull" style="width: 100%; height: 100%; position: relative;" ng-click="navigate('#/event/'+promoEvents[1]._id)">
                     <div class="imageContainer">
                         <img ng-src="img{{promoEvents[1].info.eventImage}}">
-                    </div>
-                    <div style="height: 20%; border: 1px solid black;">
-                        <a href="#/event/{{promoEvents[1]._id}}"><span style="font-size: 1.5em;">{{promoEvents[1].info.title}}</span></a> in {{promoEvents[1].info.place.vicinity}}
-                    </div>
-                    <div style="height: 20%;">
-                        <div class="panelBg" style="width: 96%; margin: auto; height: 100%; font-size: 1.3em;">
-                            {{formatTime(promoEvents[1].info.timeStart)}}	
+                        <div style="position: absolute; bottom: 8px; right: 8px; background: rgba(0, 0, 0, 0.3); padding: 4px;">
+                            <div class="panelBg" style="padding: 4px; font-size: 1.3em; color: white;">
+                                {{formatTime(promoEvents[1].info.timeStart, "MMM dd")}}	
+                            </div>
                         </div>
+                    </div>
+                    <div style="height: 20%; border: 1px solid #e0e0e0; padding; 4px;">
+                        <a href="#/event/{{promoEvents[1]._id}}"><span style="font-size: 1.5em;">{{promoEvents[1].info.title}}</span></a> in {{promoEvents[1].info.place.vicinity}}
                     </div>
                 </div>
                 

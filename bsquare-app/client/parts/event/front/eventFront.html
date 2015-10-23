@@ -70,8 +70,8 @@
                                 {{formatTime(event.info.timeStart)}}
                             </div>
                         </div>
-                        <div class="eventVideo">
-                            <div ng-show="event.info.video !== undefined">
+                        <div class="eventVideo" ng-show="event.info.video !== undefined">
+                            <div>
                                 
                                 <anguvideo ng-model="event.info.video" width="100%" height="200"></anguvideo> 
                                 <p style="display: inline-block; text-align: justify; line-height: 100%;">
@@ -79,7 +79,7 @@
 
                             </div>
                         </div>
-                        <div style="width: 100%; text-align: center; margin-top: -12px; margin-bottom: 10px;">
+                        <div style="width: 100%; text-align: center; margin-top: 12px; margin-bottom: 10px;">
                             <!-- Go to www.addthis.com/dashboard to customize your tools -->
                             <!-- AddToAny BEGIN -->
                             <div class="a2a_kit a2a_kit_size_32 a2a_default_style" style="display: inline-block;">
