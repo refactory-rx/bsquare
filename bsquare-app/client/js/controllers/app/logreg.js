@@ -2,7 +2,7 @@ controllers.controller(
     "LogregCtrl", 
     ["$rootScope", "$scope", "$routeParams", "$locale", "$http", "$cookies", "$location", "$log", 
         ($rootScope, $scope, $routeParams, $locale, $http, $cookies, $location, $log) => {
-	
+    
 	$scope.appName = $scope.$parent.name;
     
 	$scope.logregUser = {};
@@ -35,7 +35,7 @@ controllers.controller(
     	
     	$scope.showError = false;
     	
-    	$http.post('/api/login', $scope.logregUser)
+    	$http.post("/api/login", $scope.logregUser)
         .success((response) => {
 				
             $log.debug(response);
@@ -56,9 +56,13 @@ controllers.controller(
                 requestHeaders["session-token"] = loggedUser.token;
                 requestHeaders["bsquare-user"] = loggedUser.email;
                 console.log("logged in", response);
-                
-                $rootScope.navigate('#/app?view=findEvents');
-                
+
+                if ($routeParams.href) {
+                    $rootScope.navigate(`/#${$routeParams.href}`);
+                } else {
+                    $rootScope.navigate('#/app?view=findEvents');
+                }
+
             } else {
                 
                 $scope.showError = true;
@@ -116,7 +120,11 @@ controllers.controller(
                 
                 console.log("regged user", loggedUser);
                 
-                $rootScope.navigate('#/app?view=findEvents');
+                if ($routeParams.href) {
+                    $rootScope.navigate(`/#${$routeParams.href}`);
+                } else {
+                    $rootScope.navigate('#/app?view=findEvents');
+                }
                 
             } else {
                 $scope.showError = true;

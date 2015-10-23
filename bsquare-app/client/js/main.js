@@ -157,8 +157,9 @@ controllers.controller(
             
 	};
 	
-	$rootScope.setRootView = function(view) {
-        
+    $rootScope.setRootView = (view) => {
+
+        $scope.regFirst = false;
         $rootScope.rootView = view;
         $rootScope.setJumbotron(view);
         if (view === "event") {
@@ -203,7 +204,16 @@ controllers.controller(
 			$scope.accountDropdownStatus = 'closed';
 		}
 	};
-	
+    
+    $scope.createEvent = () => {
+        console.log("create vent");
+        if ($rootScope.logregStatus === "loggedIn") {
+            window.location.href = "/#/app?view=myEvents&action=new";
+        } else {
+            $scope.regFirst = true;
+        }
+    };
+
 	$("#dropdown-input").blur(function() {
 		$timeout(function() {
 			console.log('blurred - '+$scope.accountDropdownStatus);

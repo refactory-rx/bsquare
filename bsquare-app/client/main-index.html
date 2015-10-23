@@ -103,7 +103,13 @@
                 <div style="width: 100%; text-align: center;">
                     <h1>Helppo tapa myydä liput.</h1>
                     <p>Aloita nyt. Se on helppoa ja halpaa. Lorem ipsum dolorem.</p>
-                    <p><a class="btn btn-primary btn-lg" href="/#/app?view=myEvents&action=new" role="button">Luo tapahtuma</a></p>
+                    <p>
+                        <a ng-show="!regFirst" class="btn btn-primary btn-lg" href="" ng-click="createEvent()" role="button">Luo tapahtuma</a>
+                        <span ng-show="regFirst">
+                            <a href="/#/app?view=logreg&href=%2Fapp%3Fview%3DmyEvents%26action%3Dnew">Rekisteröidy tai kirjaudu sisään</a> päästäksesi luomaan uutta tapahtumaa.
+                        </span>
+
+                    </p>
                 </div>
             </div>
 							
