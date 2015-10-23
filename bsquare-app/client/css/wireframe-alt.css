@@ -240,7 +240,6 @@ div.main div.mainView.loggedOut {
     right: 2%;
     height: 100%;
     width: 38%;
-    pointer-events: none;
 }
 
 div.panelContent {

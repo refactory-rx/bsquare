@@ -69,6 +69,11 @@ controllers.controller(
                     var scrollTo = (e.originalEvent.deltaY) + $("#findEventsContent").scrollTop();
                     $("#findEventsContent").scrollTop(scrollTo);
                 });
+                
+                $(".promoEvents").bind("mousewheel", (e) => {
+                    var scrollTo = (e.originalEvent.deltaY) + $("#findEventsContent").scrollTop();
+                    $("#findEventsContent").scrollTop(scrollTo);
+                });
 
                 $("#appHeader").bind("touchstart", (e) => {
                     $scope.touchStartY = e.originalEvent.touches[0].clientY;
