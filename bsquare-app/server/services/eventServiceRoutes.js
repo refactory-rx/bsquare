@@ -18,9 +18,14 @@ module.exports = {
             
             let params = {};
             
-            if (req.query.q) {
+            let filters = {};
+            if (req.query.type) filters["type"] = req.query.type;
+            if (req.query.time) filters["time"] = req.query.time;
+            if (req.query.loc) filters["location"] = req.query.loc;
+            
+            if (req.query.q || Object.keys(filters).length > 0) {
                 
-                app.eventService.searchEventsByText(req.query.q)
+                app.eventService.searchEventsByText(req.query.q, filters)
                 .then((events) => {
                     res.json({ status: "ok", events: events });
                 })

@@ -33,7 +33,7 @@ controllers.controller(
             
             $scope.templateUrl = "parts/app/findEventsFull.html";
     		$scope.searchField.text = "";
-    		$scope.getEvents($routeParams.q);
+    		$scope.getEvents({ q: $routeParams.q });
     		$scope.getEventStats();
             
             $timeout(() => {
@@ -90,7 +90,7 @@ controllers.controller(
     	
     	var params = $scope.params;
     	
-    	$log.debug('find params:');
+    	$log.debug("find params:");
     	$log.debug(params);
     		
     	if(params) {
@@ -100,14 +100,14 @@ controllers.controller(
     }, true);
     
     
-    $scope.getEvents = (searchText) => {
+    $scope.getEvents = (params) => {
     	
-    	let url = "/api/events";
-    	if(searchText) {
-    		url += "?q="+searchText;
-    	}
-    	
-    	$http.get(url, { headers: requestHeaders } )
+        let options = { headers: requestHeaders };
+        if (params) {
+            options.params = params;
+        }
+
+        $http.get("/api/events", options)
         .success((response) => {
 			
             $log.debug(response);
@@ -204,8 +204,26 @@ controllers.controller(
     	
     	var searchText = $scope.searchField.text;
     	console.log("searching events: "+searchText);
-    	
-    	$scope.getEvents(searchText);
+
+        let params = {};
+        
+        if ($scope.searchLocation) {
+            params["loc"] = $scope.searchLocation;
+        }
+        
+        if ($scope.eventType) {
+            params["type"] = $scope.eventType;
+        }
+        
+        if ($scope.eventTime) {
+            params["time"] = $scope.eventTime;
+        }
+        
+        if (searchText) {
+            params["q"] = searchText;
+        }
+
+    	$scope.getEvents(params);
     	
     };
 
@@ -230,12 +248,14 @@ controllers.controller(
         $scope.searchLocation = location;
         $scope.locationSearchStr = "";
         $scope.locationOptions = [];
+        $scope.searchEvents();
     };
 
     $scope.resetLocationSearch = () => {
         $scope.setLocation = false;
         $scope.locationSearchStr = "";
         delete $scope.searchLocation;
+        $scope.searchEvents();
     };
 
     $scope.$watch("locationSearchStr", (locationSearchStr) => {
@@ -270,11 +290,13 @@ controllers.controller(
     $scope.selectEventType = (type) => {
         $scope.setEventType = false;
         $scope.eventType = type;
+        $scope.searchEvents();
     };
     
     $scope.resetEventType = () => {
         $scope.setEventType = false;
         delete $scope.eventType;
+        $scope.searchEvents();
     };
     
     $scope.changeEventTime = () => {
@@ -295,11 +317,13 @@ controllers.controller(
     $scope.selectEventTime = (time) => {
         $scope.setEventTime = false;
         $scope.eventTime = time;
+        $scope.searchEvents();
     };
     
     $scope.resetEventTime = () => {
         $scope.setEventTime = false;
         delete $scope.eventTime;
+        $scope.searchEvents();
     };
 
     //$scope.init();

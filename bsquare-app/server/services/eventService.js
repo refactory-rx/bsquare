@@ -104,19 +104,54 @@ class EventService {
         return deferred.promise;
 		
 	}
-		
-	searchEventsByText(searchText) {
+    
+    _createSearchConditions(searchString) {
+        return [
+            { "info.title": new RegExp(searchString, "i") },
+            { "info.description": new RegExp(searchString, "i") },
+            { "info.place.address": new RegExp(searchString, "i") }
+        ];
+    }
+
+	searchEventsByText(searchText, filters) {
 		
         let deferred = Q.defer();
             
-		let conditions = [ { "info.title": new RegExp(searchText, "i") } ];
-		
+		let filterConditions = [];
+		let searchConditions = [];
+        
+        if (filters) {
+            
+            if (filters["type"]) {
+                filterConditions.push({ "info.type": filters["type"] });
+            }
+             
+            if (filters["time"]) {
+                filterConditions.push({ "info.time": filters["time"] });
+            }
+            
+            if (filters["location"]) {
+                let filterSearchConditions = this._createSearchConditions(filters["location"]);
+                filterConditions.push({ "$or": filterSearchConditions });
+            }
+
+        }
+	
 		if(searchText && searchText.length > 3) {
-			conditions.push({ "info.description": new RegExp(searchText, "i") });
-			conditions.push({ "info.place.address": new RegExp(searchText, "i") });
-		}
-		
-        Event.findQ({ $or: conditions })
+            let querySearchConditions = this._createSearchConditions(searchText);
+            searchConditions = searchConditions.concat(querySearchConditions);
+        }
+
+        let query = {};
+        if (searchConditions.length > 0) {
+            query["$or"] = searchConditions;
+        }
+
+        if (filterConditions.length > 0) {
+            query["$and"] = filterConditions;
+        }
+
+        Event.findQ(query)
         .then((events) => {
             deferred.resolve(events);
         })
