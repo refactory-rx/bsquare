@@ -1,4 +1,5 @@
 import url from "url";
+import Errors from "../../../shared/lib/Errors";
 
 module.exports = {
 
@@ -37,8 +38,15 @@ module.exports = {
 
             }
             
-            if (req.query.kind === "own" && req.auth) {
+            if (req.query.kind === "own") {
+                
+                if (!req.auth) {
+                    next(new Errors.Forbidden(null, { message: "unauthorized_request" }));
+                    return;
+                }
+
                 params.user = req.auth.user.id;
+            
             } else {
 			    params["info.timeEnd"] = {
 				    $gt: (new Date()).getTime()

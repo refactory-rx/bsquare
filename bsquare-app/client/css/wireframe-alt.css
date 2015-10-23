@@ -386,7 +386,7 @@ div.myEvents {
     /* border: 1px solid black; */
 	height: 100%;
 	width: 100%;
-	overflow-y: hidden;
+	overflow-y: auto;
 }
 
 div.myEvents div.myListEvent {
@@ -397,7 +397,7 @@ div.myEvents div.myListEvent {
 	/*border: 1px solid #ededed;*/
 	width: 98%;
 	margin-left: 1%;
-	transition: top 1s;
+	/* transition: top 1s; */
 	opacity: 1.0; /*background: rgba(255, 255, 255, 1);*/
 	overflow: hidden;
 	-webkit-transform: translate3d(0, 0, 0);
