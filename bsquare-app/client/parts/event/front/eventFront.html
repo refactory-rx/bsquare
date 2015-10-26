@@ -4,7 +4,6 @@
         <div class="left" style="margin-left: 6px;">
             <div class="event-title" style="font-size: 33px; line-height: 36px;">{{event.info.title}}</div>
         </div>
-        <div ng-show="ownEvent == true" class="right"><a href="" ng-click="setRootView('edit')" ng-show="loggedUser != undefined">{{ 'event.front.manage' | translate }}</a></div>
     </div>
     
     <div class="panel-body event-content" ng-cloak>
@@ -24,6 +23,12 @@
                                     {{event.info.title}}
                                 </div>
                             </div>
+                        </div>
+                        <div ng-show="ownEvent" class="editEventButton">
+                            <a href="" ng-click="setRootView('edit')" ng-show="loggedUser != undefined">
+                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                                {{ 'event.front.manage' | translate }}
+                            </a>
                         </div>
                     </div> 
                     

@@ -1773,6 +1773,18 @@ div.minView1 div.listEventImage {
 
 }
 
+.editEventButton {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.3)
+}
+
+.editEventButton a {
+    color: white;
+}
+
 @media (max-width: 660px) {
 	
 	.addTickets .addTicketsName {
