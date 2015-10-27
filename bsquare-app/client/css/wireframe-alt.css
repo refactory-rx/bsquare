@@ -153,7 +153,7 @@ div.inputForm div.inputRow div.inputRowCell {
 }
 
 div.inputForm div.inputRow div.labelContainer {
-    width: 30%;
+    width: 15%;
     text-align: right;
     margin-right: 8px;
     margin-top: 6px;
@@ -165,8 +165,8 @@ div.inputForm div.inputRow div.inputContainer {
 }
 
 div.inputForm div.inputRow div.eventInputContainer {
-    width: 67%;
-    max-width: 20em;
+    width: 82%;
+    max-width: 25em;
     text-align: left;
 }
 
@@ -1204,7 +1204,68 @@ div.ticket {
 
 }
 
+.yearInput {
+    display: inline-block;
+    width: 20%;
+}
+
+.monthInput {
+    display: inline-block;
+    width: 26%;
+}
+
+.dateInput {
+    display: inline-block;
+    width: 15%;
+}
+
+.hourInput {
+    display: inline-block;
+    width: 15%;
+}
+
+.minuteInput {
+    display: inline-block;
+    width: 20%;
+}
+
+.timeInputLabel {
+    display: none;
+}
+
 @media (max-width: 660px) {
+
+    .timeInputLabel {
+        width: 15%;
+        display: inline-block;
+    }
+
+    .yearInput {
+        display: inline-block;
+        width: 25%;
+        margin-bottom: 4px;
+    }
+
+    .monthInput {
+        display: inline-block;
+        width: 31%;
+    }
+
+    .dateInput {
+        display: inline-block;
+        width: 25%;
+    }
+
+    .hourInput {
+        display: inline-block;
+        width: 49%;
+    }
+
+    .minuteInput {
+        display: inline-block;
+        width: 49%;
+    }
+
     
     .titleLayer {
         display: none;
@@ -1936,7 +1997,7 @@ div.minView1 div.listEventImage {
 @media (min-width: 660px) and (max-width: 1024px) {
     
     div.editEventSettings {
-        width: 75%;
+        width: 60%;
     }
 
 }

@@ -50,7 +50,7 @@
 					<div class="inputRow form-group">
 						<div class="inputRowCell labelContainer">{{ 'event.back.info.label-starts' | translate }}</div>
 						<div class="inputRowCell eventInputContainer">
-							
+                            <date-selector date-output="eventStartTime" label="'event.back.info.label-starts' | translate"/>	
 							<div class="dropdown" style="margin-top: 6px; text-align: center;">
 							  <span ng-show="validationErrors && validationErrors.timeStart" style="color: #e86850;">! </span>
 		                      <a class="dropdown-toggle" id="startDateSelector" role="button" data-toggle="dropdown" data-target="" href="" ng-cloak>
@@ -66,8 +66,8 @@
 					</div>
 					<div class="inputRow form-group">
 						<div class="inputRowCell labelContainer">{{ 'event.back.info.label-ends' | translate }}</div>
-						<div class="inputRowCell eventInputContainer">
-							
+						<div class="inputRowCell eventInputContainer">						
+                            <date-selector date-output="eventEndTime" label="'event.back.info.label-ends' | translate"/>	
 							<div class="dropdown" style="margin-top: 6px; text-align: center;">
 							  <span ng-show="validationErrors && validationErrors.timeEnd" style="color: #e86850;">! </span>
 		                      <a class="dropdown-toggle" id="endDateSelector" role="button" data-toggle="dropdown" data-target="" href="">

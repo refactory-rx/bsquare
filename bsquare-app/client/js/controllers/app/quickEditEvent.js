@@ -43,12 +43,18 @@ controllers.controller(
     			}
 
     			if($scope.event.info.timeStart) {
-	                $scope.eventStartTime = new Date($scope.event.info.timeStart);
-	    		}
+                    $scope.eventStartTime = new Date($scope.event.info.timeStart);
+                    console.log("init start time to", $scope.eventStartTime);
+                } else {
+                    $scope.eventStartTime = new Date((new Date()).getTime() + (24 * 60 * 60 * 1000));
+                }
 
 	            if($scope.event.info.timeEnd) {
 	                $scope.eventEndTime = new Date($scope.event.info.timeEnd);
-	    		}
+                    console.log("init end time to", $scope.eventEndTime);
+                } else {
+                    $scope.eventEndTime = new Date((new Date()).getTime() + (26 * 60 * 60 * 1000));
+                }
 
 	    		if($scope.event.info.place) {
 	                var input = document.getElementById("place-input");
@@ -198,7 +204,7 @@ controllers.controller(
                 $scope.eventChanged = false;
                 $scope.showError = false;
 
-                $scope.setEventStatus("saved");
+                //$scope.setEventStatus("saved");
 
                 $scope.eventExists = true;
 
@@ -373,6 +379,7 @@ controllers.controller(
     }, true);
 
     $scope.$watch("eventStartTime", (startTime) => {
+        console.log("start time chaged", startTime);
         if(startTime) {
     		$scope.event.info.timeStart = startTime.getTime();
     		$scope.clearError("timeStart");
@@ -380,6 +387,7 @@ controllers.controller(
     }, true);
 
     $scope.$watch("eventEndTime", (endTime) => {
+        console.log("end time chaged", endTime);
         if(endTime) {
     		$scope.event.info.timeEnd = endTime.getTime();
     		$scope.clearError("timeEnd");
