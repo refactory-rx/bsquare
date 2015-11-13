@@ -4,42 +4,42 @@
         {{ "event.back.payout.invalidIban" | translate }}
     </div>
 
-    <div role="form">
+    <div role="form" class="input-form-table-container">
         
-        <div class="inputForm">
+        <div class="input-form-table" style="max-width: 420px;">
             
-            <div class="inputRow form-group">
-                <div class="inputRowCell labelContainer hideTooNarrow">{{ 'event.back.payout.bankName.label' | translate }}</div>
-                <div class="inputRowCell eventInputContainer">
+            <div class="input-form-table-row form-group">
+                <div class="input-form-table-cell label-container hideTooNarrow">{{ 'event.back.payout.bankName.label' | translate }}</div>
+                <div class="input-form-table-cell input-container">
                     <input placeholder="{{ 'event.back.payout.bankName.placeholder' | translate }}" class="form-control" style="width: 100%;"
                     type="text" ng-model="payout.bankName" />
                 </div>
             </div>
-            <div class="inputRow form-group">
-                <div class="inputRowCell labelContainer hideTooNarrow">{{ 'event.back.payout.iban.label' | translate }}</div>
-                <div class="inputRowCell eventInputContainer">
+            <div class="input-form-table-row form-group">
+                <div class="input-form-table-cell label-container hideTooNarrow">{{ 'event.back.payout.iban.label' | translate }}</div>
+                <div class="input-form-table-cell input-container">
                     <input placeholder="{{ 'event.back.payout.iban.placeholder' | translate }}" class="form-control" style="width: 100%;"
                     type="text" ng-model="payout.iban" />
                 </div>
             </div>
-            <div class="inputRow form-group">
-                <div class="inputRowCell labelContainer hideTooNarrow">{{ 'event.back.payout.rcptName.label' | translate }}</div>
-                <div class="inputRowCell eventInputContainer">
+            <div class="input-form-table-row form-group">
+                <div class="input-form-table-cell label-container hideTooNarrow">{{ 'event.back.payout.rcptName.label' | translate }}</div>
+                <div class="input-form-table-cell input-container">
                     <input placeholder="{{ 'event.back.payout.rcptName.placeholder' | translate }}" class="form-control" style="width: 100%;"
                     type="text" ng-model="payout.recipientName" />
                 </div>
             </div>
-            <div class="inputRow form-group" style="height: 104px;">
-                <div class="inputRowCell labelContainer">{{ 'event.back.payout.rcptAddress.label' | translate }}</div>
-                <div class="inputRowCell eventInputContainer">
+            <div class="input-form-table-row form-group" style="height: 104px;">
+                <div class="input-form-table-cell label-container">{{ 'event.back.payout.rcptAddress.label' | translate }}</div>
+                <div class="input-form-table-cell input-container">
                     <textarea placeholder="{{ 'event.back.payout.rcptAddress.placeholder' | translate }}" class="form-control"
                     style="height: 100px; width: 100%;" ng-model="payout.recipientAddress" />
                 </div>
             </div>
             
-            <div class="inputRow">
-                <div class="inputRowCell labelContainer">&nbsp;</div>
-                <div class="inputRowCell eventInputContainer">
+            <div class="input-form-table-row">
+                <div class="input-form-table-cell label-container">&nbsp;</div>
+                <div class="input-form-table-cell input-container">
                     <div style="width: 100%;">
                         <div ng-show="payoutStatus == 'new'" style="display: inline; float: right;">
                             <button class="btn btn-default" ng-click="savePayoutOptions()">{{ 'forms.general.save' | translate }}</button>

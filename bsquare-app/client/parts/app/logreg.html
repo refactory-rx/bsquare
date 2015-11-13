@@ -1,11 +1,13 @@
 <div class="panel panel-default logreg opaque" style="width: 98%; left: 1%; position: absolute;">
-	
+    
+    <!--    
 	<div class="panel-heading columnHeader myEventsHeader" ng-click="selectMainView('myEvents')">
 		<div style="display: inline;">
 			{{ 'app.logreg.title' | translate }}
 		</div>
 	</div>
-	
+    -->
+
 	<div ng-show="logregView == 'login'" class="panel-body inputForm" style="padding-top: 24px;">
 	    
 	    <div style="margin-bottom: 24px;">
@@ -21,40 +23,43 @@
 		</div>
 		
 		<div>
-			<div>
-				<form role="form" novalidate>
-					<div class="inputRow form-group" ng-class="{ 'has-error': logregUser.emailAddress == '*' }">
-						<div class="inputRowCell labelContainer">{{ 'app.logreg.email' | translate }}</div>
-						<div class="inputRowCell inputContainer">
-							<input class="form-control" style="width: 100%;" type="text" ng-model="logregUser.emailAddress" email/>
-						</div>
-					</div>
-					<div class="inputRow form-group">
-						<div class="inputRowCell labelContainer">{{ 'app.logreg.password' | translate }}</div>
-						<div class="inputRowCell inputContainer">
-							<input ng-cloak ng-class="logregUser.password.length < 6 ? 'pwdShort' : 'pwdLong'" class="form-control" type="{{pwdInputType}}" ng-model="logregUser.password"/>
-							<span ng-show="logregUser.password.length < 6" style="color: rgb(255, 50, 20); font-size: 0.8em; font-weight: bold; margin-left: 4px;">{{logregUser.password.length}}/6</span>
-						</div>
-					</div>
-					<div class="inputRow">
-						<div class="inputRowCell labelContainer">&nbsp;</div>
-						<div class="inputRowCell inputContainer">
-							<div style="width: 100%;" ng-cloak>
+            
+            <form role="form" novalidate>
+                <div class="input-form-table-container">
+                    <div class="input-form-table">
+                        <div class="input-form-table-row from-group" ng-class="{ 'has-error': logregUser.emailAddress == '*' }">
+                            <div class="input-form-table-cell label-container">{{ 'app.logreg.email' | translate }}</div>
+						    <div class="input-form-table-cell input-container">
+                                <input class="form-control" placeholder="{{ 'app.logreg.email' | translate }}" style="width: 100%;" type="text" ng-model="logregUser.emailAddress" email/>
+						    </div>
+					    </div>
+					    <div class="input-form-table-row form-group">
+						    <div class="input-form-table-cell label-container">{{ 'app.logreg.password' | translate }}</div>
+						    <div class="input-form-table-cell input-container">
+							    <input ng-cloak ng-class="logregUser.password.length < 6 ? 'pwdShort' : 'pwdLong'" class="form-control" type="{{pwdInputType}}" ng-model="logregUser.password"/>
+							    <span ng-show="logregUser.password.length < 6" style="color: rgb(255, 50, 20); font-size: 0.8em; font-weight: bold; margin-left: 4px;">{{logregUser.password.length}}/6</span>
+						    </div>
+					    </div>
+					    <div class="input-form-table-row">
+						    <div class="input-form-table-cell label-container">&nbsp;</div>
+						    <div class="input-form-table-cell input-container">
+							    <div style="width: 100%;" ng-cloak>
 							
-								<div style="display: inline; float: left;" ng-cloak>
-									<input type="checkbox" ng-model="pwdField.hidden" />
-									{{ 'app.logreg.hidepwd' | translate }}
-								</div>
+								    <div style="display: inline; float: left;" ng-cloak>
+									    <input type="checkbox" ng-model="pwdField.hidden" />
+									    {{ 'app.logreg.hidepwd' | translate }}
+								    </div>
 								
-								<div style="display: inline; float: right;" ng-cloak>
-									<button class="btn btn-default" ng-disabled="logregUser.emailAddress == '*' || logregUser.emailAddress.length == 0 || logregUser.password == undefined || logregUser.password.length < 6" ng-click="logreg()">{{ 'app.logreg.btn-go' | translate }}</button>
-								</div>
+								    <div style="display: inline; float: right;" ng-cloak>
+									    <button class="btn btn-default" ng-disabled="logregUser.emailAddress == '*' || logregUser.emailAddress.length == 0 || logregUser.password == undefined || logregUser.password.length < 6" ng-click="logreg()">{{ 'app.logreg.btn-go' | translate }}</button>
+								    </div>
 								
-							</div>
-						</div>
-					</div>
-				</form>
-			</div>		
+							    </div>
+						    </div>
+					    </div>
+                    </div>
+				</div>
+			</form>		
 		</div>
 		
 		<div>
@@ -84,48 +89,49 @@
 				</div>
 			</div>
 			
-			<div>
-				<div>
-					<form role="form" novalidate>
-						<div class="inputRow form-group">
-							<div class="inputRowCell labelContainer">{{ 'forms.dataType.username' | translate }}</div>
-							<div class="inputRowCell inputContainer">
+            
+			<form role="form" novalidate>
+                <div class="input-form-table-container">
+				    <div class="input-form-table">
+						<div class="input-form-table-row form-group">
+							<div class="input-form-table-cell label-container">{{ 'forms.dataType.username' | translate }}</div>
+							<div class="input-form-table-cell input-container">
 								<input type="text" class="form-control" ng-model="logregProfile.displayName"/>
 							</div>
 						</div>
-						<div class="inputRow form-group">
-							<div class="inputRowCell labelContainer">{{ 'forms.dataType.firstName' | translate }}</div>
-							<div class="inputRowCell inputContainer">
+						<div class="input-form-table-row form-group">
+							<div class="input-form-table-cell label-container">{{ 'forms.dataType.firstName' | translate }}</div>
+							<div class="input-form-table-cell input-container">
 								<input type="text" class="form-control" ng-model="logregProfile.firstName"/>
 							</div>
 						</div>
-						<div class="inputRow form-group">
-							<div class="inputRowCell labelContainer">{{ 'forms.dataType.lastName' | translate }}</div>
-							<div class="inputRowCell inputContainer">
+						<div class="input-form-table-row form-group">
+							<div class="input-form-table-cell label-container">{{ 'forms.dataType.lastName' | translate }}</div>
+							<div class="input-form-table-cell input-container">
 								<input type="text" class="form-control" ng-model="logregProfile.lastName"/>
 							</div>
 						</div>
-						<div class="inputRow form-group">
-							<div class="inputRowCell labelContainer"></div>
-							<div class="inputRowCell inputContainer">
+						<div class="input-form-table-row form-group">
+							<div class="input-form-table-cell label-container"></div>
+							<div class="input-form-table-cell input-container">
                                 <input type="checkbox" ng-click="toggleTosCheckbox()" ng-model="tosAccepted"/>
                                 {{ "app.logreg.agreedToTos1" | translate }}
                                 <a href="/#/tos" target="_blank">{{ "app.logreg.tos" | translate }}</a>
                                 {{ "app.logreg.agreedToTos2" | translate }}
                             </div>
 						</div>
-						<div class="inputRow">
-							<div class="inputRowCell labelContainer">&nbsp;</div>
-							<div class="inputRowCell inputContainer">
+						<div class="input-form-table-row">
+							<div class="input-form-table-cell label-container">&nbsp;</div>
+							<div class="input-form-table-cell input-container">
 								<br/>
 								<button class="btn btn-default" ng-disabled="!tosAccepted" ng-click="register()">{{ 'app.logreg.register' | translate }}</button>
 							</div>
 						</div>
-					</form>
-				</div>
+				    </div>
 				
-			</div>
-			
+			    </div>
+            </form>
+
 		</div>
 		
 		<div ng-show="logregStatus == 'registered'" class="registered">

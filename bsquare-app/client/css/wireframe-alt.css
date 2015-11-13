@@ -136,40 +136,82 @@ div.loggedIn {
 	text-align: center;	
 }
 
-div.inputForm {
-	padding: 10px;
-}
-
-div.inputForm div.inputRow {
+.inputForm .inputRow {
 	width: 100%;
 	height: 28px;
 	display: block;
 	text-align: center;
 }
 
-div.inputForm div.inputRow div.inputRowCell {
+.inputForm .inputRow .inputRowCell {
 	display: inline;
 	float: left;
 }
 
-div.inputForm div.inputRow div.labelContainer {
-    width: 15%;
-    text-align: right;
-    margin-right: 8px;
-    margin-top: 6px;
-}
-
-div.inputForm div.inputRow div.inputContainer {
+.inputForm .inputRow .inputContainer {
     width: 14em;
     text-align: left;
 }
 
-div.inputForm div.inputRow div.eventInputContainer {
+.inputForm .inputRow .eventInputContainer {
     width: 82%;
     max-width: 25em;
     text-align: left;
 }
 
+.input-form-table-container {
+    text-align: center;
+    padding: 6px;
+}
+
+.input-form-table-container:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -0.25em;
+}
+
+.input-form-table {
+    width: 100%;
+    max-width: 320px;
+    display: inline-table;
+    border-spacing: 0px 6px;
+    flex-flow: column nowrap;
+}
+
+.input-form-table-row {
+    display: table-row;
+    margin-bottom: 6px;
+}
+
+.input-form-table-row:after {
+    content: "";
+    height: 10px;
+}
+
+.input-form-table-cell {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.input-form-table .label-container {
+    text-align: right;
+    padding-right: 8px;
+}
+
+.input-form-table .input-container {
+    width: 100%;
+    text-align: left;
+}
+
+@media (min-width: 420px) {
+    
+    .input-form-table-cell input::-webkit-input-placeholder {
+        color: transparent;
+    }
+
+}
 
 @media (min-width: 650px) and (max-width: 860px) {
 	div.minView1 div.inputForm div.inputRow div.labelContainer {
@@ -399,8 +441,8 @@ div.myEvents div.myListEvent {
 	margin-left: 1%;
 	/* transition: top 1s; */
 	opacity: 1.0; /*background: rgba(255, 255, 255, 1);*/
-	overflow: hidden;
-	-webkit-transform: translate3d(0, 0, 0);
+	/*overflow: hidden;*/
+	/*-webkit-transform: translate3d(0, 0, 0);*/
 }
 
 div.editEvent {
@@ -2313,7 +2355,11 @@ div.minView1 div.listEventImage {
 }
 
 @media (max-width: 420px) {
-	
+    
+    .input-form-table .label-container {
+        display: none;
+    }
+
 	div.inputForm div.inputRow div.labelContainer {
 		display: none;
 	}
@@ -2445,6 +2491,9 @@ ul.header-dropdown li:hover ul {
 .dropdown-menu {
 	width: 100%;
 	position: absolute;
+    background-color: #ffffff;
+    border: 1px solid black;
+
 }
 
 @media (max-width: 660px) {
@@ -2456,6 +2505,18 @@ ul.header-dropdown li:hover ul {
 .datetimepicker {
 	width: 100%;
 }
+
+@media screen and (max-width: 767px) {
+    .table-responsive {
+        border: none;
+     }
+}
+
+/*
+.datetimepicker table tr td.active.active {
+    background-color: #df691a;
+}
+*/
 
 .dropdown-menu .table>thead>tr>th, 
 .dropdown-menu .table>tbody>tr>th, 
