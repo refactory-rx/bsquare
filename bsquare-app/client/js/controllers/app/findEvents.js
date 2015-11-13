@@ -46,12 +46,14 @@ controllers.controller(
                 $(".findEventsContent").scroll(() => {
 
                     let scrollTop = $(".findEventsContent").scrollTop();
-
+                    let headerOffset = 44+(256-scrollTop);
                     if (scrollTop <= 256) {
-                        $(".appHeader").css("height", 44+(256-scrollTop)+"px");
+                        $("#main-content").css("height", `calc(100% - ${headerOffset}px`);
+                        $(".appHeader").css("height", headerOffset+"px");
                         $("#jumbotron").css({ "opacity": ""+(1-(scrollTop/256)), "top": (30-(70*(scrollTop/256)))+"px" });
                         $("#jumbotron > div > h1").css("font-size", (39-(30*(scrollTop/256)))+"px");
                     } else {
+                        $("#main-content").css("height", `calc(100% - 44px`);
                         $(".appHeader").css("height", "44px");
                         $("#jumbotron").css({ "opacity": "0", "top": "-40px" });
                         $("#jumbotron > div > h1").css("font-size", "9px");

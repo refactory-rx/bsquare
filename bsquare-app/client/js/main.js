@@ -176,11 +176,13 @@ controllers.controller(
         console.log("SET VIEW", view);
         if (view === "events" || view === "front") {
             $(".appHeader").css("height", "300px");
+            $("main-content").css("height", "calc(100% - 300px)");
             $("#jumbotron").css({ "opacity": "1.0", "top": "30px" });
             $("#jumbotron > div > h1").css("font-size", "39px");
             $("#jumbotron a").css("display", "inline-block");
             $("#jumbotron").css("display", "block");
         } else {    
+            $("main-content").css("height", "calc(100% - 44px)");
             $(".appHeader").css("height", "44px");
             $("#jumbotron").css({ "opacity": "0", "top": "-40px" });
             $("#jumbotron > div > h1").css("font-size", "9px");
