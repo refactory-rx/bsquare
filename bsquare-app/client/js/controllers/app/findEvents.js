@@ -32,15 +32,15 @@ controllers.controller(
     $scope.templateUrl = "parts/app/findEventsFull.html";
 
     $scope.$watch("app.views.selectedView", (value) => {
-
-
+        console.log("JGHJGHJGHJGHJGHJGJHjkhjkjkhjkhKJHJK");
         if (value === "findEvents") {
 
             $scope.templateUrl = "parts/app/findEventsFull.html";
-    		$scope.searchField.text = "";
-    		$scope.getEvents({ q: $routeParams.q });
-    		$scope.getEventStats();
+    		    $scope.searchField.text = "";
+    		    $scope.getEvents({ q: $routeParams.q });
+    		    $scope.getEventStats();
 
+            /*
             $timeout(() => {
 
                 $(".findEventsContent").scroll(() => {
@@ -93,10 +93,11 @@ controllers.controller(
                 });
 
             }, 1000);
+            */
         } else {
             $scope.templateUrl = "parts/app/findEventsMin.html";
-    		$scope.getEventStats();
-    	}
+    		    $scope.getEventStats();
+    	  }
 
     }, true);
 

@@ -1,7 +1,8 @@
 controllers.controller("AppCtrl", 
     ['$rootScope', '$scope', '$location', '$routeParams', '$http', '$log', '$timeout', '$filter',
         ($rootScope, $scope, $location, $routeParams, $http, $log, $timeout, $filter) => {
-	
+  
+  console.log("TTTTTTTEEEESSTTT");  
 	$scope.appStatus = '';
     $scope.showError = false;
     $scope.errorMessage = '';

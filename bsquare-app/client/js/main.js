@@ -174,6 +174,7 @@ controllers.controller(
 	
     $rootScope.setJumbotron = (view) => {
         console.log("SET VIEW", view);
+        
         if (view === "events" || view === "front") {
             $(".appHeader").css("height", "300px");
             $("main-content").css("height", "calc(100% - 300px)");
@@ -187,7 +188,8 @@ controllers.controller(
             $("#jumbotron").css({ "opacity": "0", "top": "-40px" });
             $("#jumbotron > div > h1").css("font-size", "9px");
             $("#jumbotron").css("display", "none");
-	    }
+        }
+        
     };
 
     $rootScope.navigate = function(path) {
