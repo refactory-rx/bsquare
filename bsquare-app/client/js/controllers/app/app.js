@@ -157,13 +157,14 @@ controllers.controller("AppCtrl",
         } else {    
             $rootScope.setJumbotron("none");
 	    }
-        
+      
+      /*
     	$timeout(function() {
     		$scope.setViewContentHeight('findEvents');
     		$scope.setViewContentHeight('myEvents');
     		$scope.setViewContentHeight('myTickets');
     	}, 1100);
-    	
+      */
     	
     	$rootScope.app.views.selectedView = view;
     	

@@ -1,12 +1,6 @@
 <div class="cardContainer"> 
     <did id="mainCard" ng-class="{ mainFlipped: rootView == 'back' }">
 
-        <div ng-show="logregStatus === 'loggedIn'" class="categoriesBar">
-            <div ng-click="navigate('#/app?view=findEvents')" class="categorySection">Discover</div>
-            <div ng-click="navigate('#/app?view=myEvents')" class="categorySection">Organize [ + ]</div>
-            <div ng-click="navigate('#/app?view=myTickets')" class="categorySection">Tickets</div>
-        </div>
-
         <figure class="cardBack">
             <div ng-show="logregStatus == 'loggedIn'" ng-include="'parts/app/profile.html'" ng-controller="ProfileCtrl"></div>
             <div ng-show="logregStatus != 'loggedIn'" ng-include="'parts/app/logreg.html'" ng-controller="LogregCtrl"></div>

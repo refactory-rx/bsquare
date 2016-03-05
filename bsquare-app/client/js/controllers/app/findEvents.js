@@ -32,29 +32,32 @@ controllers.controller(
     $scope.templateUrl = "parts/app/findEventsFull.html";
 
     $scope.$watch("app.views.selectedView", (value) => {
-        console.log("JGHJGHJGHJGHJGHJGJHjkhjkjkhjkhKJHJK");
+        console.log("findEvents ::: VIEW SELECTED", value);
         if (value === "findEvents") {
 
             $scope.templateUrl = "parts/app/findEventsFull.html";
     		    $scope.searchField.text = "";
     		    $scope.getEvents({ q: $routeParams.q });
     		    $scope.getEventStats();
-
-            /*
+            
             $timeout(() => {
 
-                $(".findEventsContent").scroll(() => {
+              const findEvents = $(".findEvents");
+              findEvents.scroll(() => {
 
-                    let scrollTop = $(".findEventsContent").scrollTop();
+                    let scrollTop = $("#jumbotron").scrollTop();
                     let headerOffset = 44+(256-scrollTop);
+                    //console.log(scrollTop, headerOffset);
+
+                    /*
                     if (scrollTop <= 256) {
-                        $("#main-content").css("height", `calc(100% - ${headerOffset}px`);
-                        $(".appHeader").css("height", headerOffset+"px");
+                        //$("#main-content").css("height", `calc(100% - ${headerOffset}px`);
+                        $("#jumbotron").css("height", headerOffset+"px");
                         $("#jumbotron").css({ "opacity": ""+(1-(scrollTop/256)), "top": (30-(70*(scrollTop/256)))+"px" });
                         $("#jumbotron > div > h1").css("font-size", (39-(30*(scrollTop/256)))+"px");
                     } else {
-                        $("#main-content").css("height", `calc(100% - 44px`);
-                        $(".appHeader").css("height", "44px");
+                        //$("#main-content").css("height", `calc(100% - 44px`);
+                        $("#jumbotron").css("height", "44px");
                         $("#jumbotron").css({ "opacity": "0", "top": "-40px" });
                         $("#jumbotron > div > h1").css("font-size", "9px");
                     }
@@ -65,10 +68,12 @@ controllers.controller(
                     } else {
                         $("#jumbotron a").css("display", "inline-block");
                         $("#jumbotron").css("pointer-events", "initial");
-                    }
+                        }
+                        */
 
                 });
-
+                
+                /*
                 $("#appHeader").bind("mousewheel", (e) => {
                     var scrollTo = (e.originalEvent.deltaY) + $("#findEventsContent").scrollTop();
                     $("#findEventsContent").scrollTop(scrollTo);
@@ -91,9 +96,11 @@ controllers.controller(
                     var scrollTo = deltaY + $("#findEventsContent").scrollTop();
                     $("#findEventsContent").scrollTop(scrollTo);
                 });
+                */
 
             }, 1000);
-            */
+            
+
         } else {
             $scope.templateUrl = "parts/app/findEventsMin.html";
     		    $scope.getEventStats();

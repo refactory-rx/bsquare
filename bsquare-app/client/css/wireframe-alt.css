@@ -318,11 +318,11 @@ div.main div.minView1 {
 }
 
 div.main div.minView1.loggedIn {
-	height: 48%;
+	height: calc((100% - 96px) / 2);
 }
 
 div.main div.minView1.loggedOut {
-    height: 48%;
+    height: calc((100% - 56px) / 2);
     transition: none;
 }
 
@@ -344,14 +344,14 @@ div.main div.minView2 {
 }
 
 div.main div.minView2.loggedIn {
-	top: 49%;
-	height: 46%;
+	top: calc((100% - 56px) / 2);
+	height: calc((100% - 56px) / 2);
 }
 
 div.main div.minView2.loggedOut {
-	top: 48%;
-	height: 47%;
-    transition: none;
+	top: calc((100% - 96px) / 2);
+	height: calc((100% - 96px) / 2);
+  transition: none;
 }
 
 div.minView2 div.panelContent {
@@ -455,6 +455,7 @@ div.quickEditEventSettings {
 	width: 100%;
 	display: inline-block;
 	text-align: center;
+  padding-bottom: 60px;
 }
 
 div.editEventSettings {
@@ -526,7 +527,7 @@ div.editEvent div.editEventPane {
     /* border: 1px solid black; */
 	height: 99%;
 	width: 100%;
-	overflow-y: hidden;
+	overflow-y: auto;
 }
 
 .findEvents .findEventsContent {
@@ -542,10 +543,9 @@ div.editEvent div.editEventPane {
 	width: 98%;
 	margin-left: 1%;
 	min-height: 80px;
-    /* max-height: 120px; */
-    overflow-y: hidden;
-    margin-bottom: 16px;
-    /* box-shadow: 3px 4px 10px -4px #888888; */
+  /* max-height: 120px; */
+  overflow-y: hidden;
+  /* box-shadow: 3px 4px 10px -4px #888888; */
 }
 
 .findEvents .listEventCell {
@@ -1571,7 +1571,7 @@ div.ticket {
 }
 
 .findEventsContainer.loggedIn {
-    height: calc(100% - 92px);
+    height: calc(100% - 96px);
 }
 
 .eventSearch {
@@ -1846,11 +1846,11 @@ div.minView1 div.listEventImage {
     }
 
     .findEventsContainer {
-        height: calc(100% - 87px);
+        height: calc(100% - 132px);
     }
 
     .findEventsContainer.loggedIn {
-        height: calc(100% - 122px);
+        height: calc(100% - 170px);
     }
 
 }
@@ -2099,7 +2099,7 @@ div.minView1 div.listEventImage {
 	div.main div.minView1.loggedOut {
 		top: 3px;
 		left: 1%;
-		width: 48%;
+		width: calc(50% - 56px);
 		height: 41px;
 	}
 	

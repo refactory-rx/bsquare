@@ -1,11 +1,36 @@
 <div class="panel panel-default findEvents" ng-controller="FindEventsCtrl" ng-init="init()">
     
+
+  <div ng-show="rootView === 'front' || rootView === 'events'" style="width: 100%; padding: 20px; background-color: #e0e0e0;" id="jumbotron">
+    <div style="width: 100%; text-align: center;">
+        <h1>Helppo tapa myydä liput.</h1>
+        <p>Aloita nyt. Se on helppoa ja halpaa. Lorem ipsum dolorem.</p>
+        <p>
+            <a ng-show="!regFirst" class="btn btn-primary btn-lg" href="" ng-click="createEvent()" role="button">Luo tapahtuma</a>
+            <span ng-show="regFirst">
+                <a href="/#/app?view=logreg&href=%2Fapp%3Fview%3DmyEvents%26action%3Dnew">Rekisteröidy tai kirjaudu sisään</a> päästäksesi luomaan uutta tapahtumaa.
+            </span>
+
+        </p>
+    </div>
+  </div>
     <!--    
 	<div class="panel-heading columnHeader" ng-click="navigate('#/app?view=findEvents')">	
 		{{ "app.findEvents.title" | translate }} 
 	</div>
     -->
 
+    <div ng-show="logregStatus === 'loggedIn'" class="categoriesBar">
+        <div ng-click="navigate('#/app?view=findEvents')" class="categorySection">
+          Haku
+        </div>
+        <div ng-click="navigate('#/app?view=myEvents')" class="categorySection">
+          Omat
+        </div>
+        <div ng-click="navigate('#/app?view=myTickets')" class="categorySection">
+          Liput
+        </div>
+    </div>
     <div class="eventSearch">
         
         <!--
