@@ -272,7 +272,8 @@ class PaymentService {
 	}
 	
     updateInvoice(invoice, callback) {
-		
+
+        console.log("update invoice", invoice);
         let response = { success: 0 };
 				
         let paymentProvider;
@@ -293,7 +294,7 @@ class PaymentService {
         }
 		
         paymentProvider.fetchInvoice(fetchParams, (fetchInvoiceResult) => {
-		    
+		       
             if(fetchInvoiceResult.error) {
 		        
                 response.status = 'error';
@@ -321,7 +322,7 @@ class PaymentService {
                     if(invoice.provider == 'coinbase') {
                         invoice.extData = fetchInvoiceResult.extData;
                     } else if(invoice.provider == 'checkout') {
-                        invoice.extData.status[0] = fetchInvoiceResult.extStatus;
+                        invoice.extData = fetchInvoiceResult.extData;
                     }
                   
                     Invoice.update({ _id: invoice._id }, { status: invoice.status, extData: invoice.extData }, (err, numUpdated) => {

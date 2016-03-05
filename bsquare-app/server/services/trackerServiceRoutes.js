@@ -4,11 +4,11 @@ module.exports = {
 		
         app.get("/api/refstats", (req, res) => {
 			
-            app.trackerService.getRefStats(req, (response) => {
-				res.json(response);
-			});
+          app.trackerService.getRefStats(req, (response) => {
+            res.json(response);
+          });
 			
-		});
+		    });
 		
         app.get("/api/reftrackers", (req, res, next) => {
             
@@ -23,14 +23,15 @@ module.exports = {
         });
         
         app.get("/api/reftrackers/:uuid/rewardstats", (req, res, next) => {
-            
-            app.trackerService.getRewardStatsByTracker(req.params.uuid)
-            .then((rewardStats) => {
-                res.json({ status: "ok", rewardStats: rewardStats });
-            })
-            .catch((err) => {
-                next(err);
-            });
+
+          const user = req.auth  ? req.auth.user : null; 
+          app.trackerService.getRewardStatsByTracker(req.params.uuid, user)
+          .then((rewardStats) => {
+              res.json({ status: "ok", rewardStats: rewardStats });
+          })
+          .catch((err) => {
+              next(err);
+          });
 
         });
 

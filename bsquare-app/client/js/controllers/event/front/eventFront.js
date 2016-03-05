@@ -245,21 +245,31 @@ controllers.controller(
 
             $http.get(`/api/reftrackers/${$scope.refTrackerId}/rewardstats`, { headers: requestHeaders } )
             .success((response) => {
-                console.log("Rewardstats response", response);
-                let groupRewards = response.rewardStats.groupRewards;
-                if (groupRewards) {
-                    
-                    groupRewards.conditions.forEach(condition => {
-                        if (!condition.reached) {
-                            condition.reached = 0;
-                        } else if (condition.quantity < condition.reached) {
-                            condition.reached = condition.quantity;
-                        }
-                    });
+ 
+              console.log("Rewardstats response", response);
+ 
+              let groupRewards = response.rewardStats.groupRewards;
+              if (groupRewards) {
+                  
+                  groupRewards.conditions.forEach(condition => {
+                      if (!condition.reached) {
+                          condition.reached = 0;
+                      } else if (condition.quantity < condition.reached) {
+                          condition.reached = condition.quantity;
+                      }
+                  });
 
-                    $scope.event.groupRewards = groupRewards;
-                
-                }
+                  $scope.event.groupRewards = groupRewards;
+              
+              }
+              
+              let refRewards = response.rewardStats.refRewards;
+              if (refRewards && refRewards[$scope.event._id]) {
+                $scope.event.refRewards = refRewards[$scope.event._id];
+              } else {
+                $scope.event.refRewards = 0;
+              }
+
             })
             .error((err) => {
                 console.log("Error", err);

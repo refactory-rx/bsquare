@@ -81,23 +81,86 @@ class TrackerService {
 
     }
 
-    getRewardStatsByTracker(refTrackerUuid) {
+    _getGroupRewards(refTrackerUuid) {
+      
+      const deferred = Q.defer();
+
+      RefTracker.findOne({ uuid: refTrackerUuid }, (err, refTracker) => {
+      
+          if (err) { return deferred.reject(err); }
+          if (!refTracker) {
+              return deferred.resolve({});
+          }
+
+          this.getOrdersByTracker(refTracker.eventId, refTracker.uuid, (event, orders) => {
+              let rewardStats = this.compileRewardStats(event, orders);
+              deferred.resolve(rewardStats);
+          });
+
+      });
+
+      return deferred.promise;
+
+    }
+
+    _getRefRewards(user) {
+
+      const deferred = Q.defer();
+
+      RefTracker.find({ userId: user.id }, (err, refTrackers) => {
+        
+        //console.log("found trackers", err, refTrackers);
+        const orderQueries = refTrackers.map(tracker => {
+          return Order.findQ({ 
+            refTrackerId: tracker.uuid, 
+            status: "fulfilled" 
+          });
+        });
+        
+        const refRewardsByEvent = {};
+        
+        Q.all(orderQueries)
+        .then((orders) => {
+          
+          //console.log("found orders", orders);
+          orders.forEach(orders => {
+            orders.forEach(order => {
+              if (!refRewardsByEvent[order.event]) {
+                refRewardsByEvent[order.event] = 0;
+              }
+              refRewardsByEvent[order.event] += order.orderTotal;
+            });
+          });
+          
+          console.log("ref rewards", refRewardsByEvent);
+          deferred.resolve({ refRewards: refRewardsByEvent });  
+        
+        });
+
+      });
+
+      return deferred.promise;
+    
+    }
+
+    getRewardStatsByTracker(refTrackerUuid, user) {
 
         let deferred = Q.defer();
+        
+        this._getGroupRewards(refTrackerUuid)
+        .then(groupRewards => {
+          
+          if (!user) {
+            return deferred.resolve(groupRewards);
+          }
 
-        RefTracker.findOne({ uuid: refTrackerUuid }, (err, refTracker) => {
-            
-            if (err) { return deferred.reject(err); }
-            if (!refTracker) {
-                return deferred.resolve({});
-            }
+          this._getRefRewards(user)
+          .then(refRewards => {
+            deferred.resolve(Object.assign(refRewards, groupRewards));
+          });
 
-            this.getOrdersByTracker(refTracker.eventId, refTracker.uuid, (event, orders) => {
-                let rewardStats = this.compileRewardStats(event, orders);
-                deferred.resolve(rewardStats);
-            });
-
-        });
+        }); 
+        
 
         return deferred.promise;
 

@@ -95,7 +95,7 @@ class OrdersTask {
                     });
                 } else {
                     if(order.invoiceId) {
-                        module.exports.updateOrderPaymentStatus(order);
+                        this.updateOrderPaymentStatus(order);
                     }
                 }
             });

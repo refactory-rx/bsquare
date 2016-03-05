@@ -149,7 +149,7 @@
                                             <!-- [<a href="/#/app?view=logreg">{{ 'event.front.rewards.logIn' | translate }}</a> {{ 'event.front.rewards.startSharingRef' | translate }}] -->
                                         </div>
                                     </div>
-
+                                    <!--
                                     <div class="panel-body" style="width: 100%; display: inline-block; padding-top: 6px;">
                                         
                                         <div ng-repeat="reward in event.refRewards.pointRewards" class="rewardItem" ng-mouseleave="resetPointRewardDescription(reward)" ng-mouseenter="setPointRewardDescription(reward)">
@@ -163,7 +163,10 @@
                                         </div>
                                         
                                     </div>
-
+                                    -->
+                                    <div style="width: 100%; text-align: center; padding: 12px; font-size: 26px;">
+                                      {{event.refRewards}} €
+                                    </div>
                                 </div>          
                                 
                             </div>
