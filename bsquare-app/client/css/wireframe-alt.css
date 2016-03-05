@@ -1846,7 +1846,7 @@ div.minView1 div.listEventImage {
     }
 
     .findEventsContainer {
-        height: calc(100% - 132px);
+        height: calc(100% - 136px);
     }
 
     .findEventsContainer.loggedIn {
