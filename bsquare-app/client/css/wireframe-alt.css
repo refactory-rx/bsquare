@@ -201,7 +201,7 @@ div.loggedIn {
 }
 
 .input-form-table .input-container {
-    width: 100%;
+    width: 75%;
     text-align: left;
 }
 
@@ -476,7 +476,7 @@ div.editEventLayout {
 	width: 100%;
 }
 
-div.editEvent div.topMenu {
+.topMenu {
 	width: 100%; 
 	overflow: hidden; 
 	margin-bottom: 12px;
@@ -485,7 +485,7 @@ div.editEvent div.topMenu {
 	border-bottom: 1px solid #cccccc;
 }
 
-div.editEvent div.topMenu div.menuElement {
+.topMenu .menuElement {
 	display: inline-block;
 	padding-left: 4px;
 	padding-right: 4px;
@@ -766,17 +766,55 @@ div.opaque {
 
 }
 
-div.settingsContainer {
+.settingsContainer {
 	width: 98%;
     left: 1%;
     position: absolute;
 	height: 100%;
 }
 
-div.settingsContainer div.settings {
-	border: 1px solid black; 
+.settingsContainer .settings {
 	opacity: 1.0;
 	padding: 5%;
+}
+
+.rewards {
+  width: 100%;
+}
+
+.rewards-totals {
+  width: 100%;
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.rewards-totals-earned {
+  font-size: 18px;
+  text-align: center;
+  flex: 1 1;
+}
+
+.rewards-events {
+  width: 100%;
+}
+
+.rewards-events-event {
+  display: flex;
+}
+
+.rewards-events-event-eventName {
+  flex: 1 1;
+  text-align: right;
+}
+
+.rewards-events-event-eventTotal {
+  flex: 1 1;
+  text-align: center;
+}
+
+.rewards-events-event-eventTickets {
+  flex: 1 1;
+  text-align: left;
 }
 
 .addTickets {

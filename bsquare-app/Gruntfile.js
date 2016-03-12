@@ -78,7 +78,7 @@ module.exports = function(grunt) {
                     "client/dist/controllers/app/myTickets.js",
                     "client/dist/controllers/app/findEvents.js",
                     "client/dist/controllers/app/logreg.js",
-                    "client/dist/controllers/app/profile.js",
+                    "client/dist/controllers/app/settings.js",
                     "client/dist/controllers/verify.js",
                     "client/dist/controllers/user.js",
                     "client/dist/controllers/pwdRecovery.js",

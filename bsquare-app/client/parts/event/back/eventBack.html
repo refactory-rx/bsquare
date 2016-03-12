@@ -14,15 +14,51 @@
 	
 					<div class="topMenu">
 						<div style="margin: auto;">
-							<div class="menuElement" ng-class="{ bodyBg: eventView == 'dashboard' }" ng-click="setView('dashboard')">{{ 'event.back.menu.dashboard' | translate }}</div>
-							<div class="menuElement" ng-class="{ bodyBg: eventView == 'manageInfo' }" ng-click="setView('manageInfo')">{{ 'event.back.menu.settings' | translate }}</div>
-							<div class="menuElement" ng-class="{ bodyBg: eventView == 'payout' }" ng-click="setView('payout')">{{ 'event.back.menu.payout' | translate }}</div>
-							<div class="menuElement" ng-class="{ bodyBg: eventView == 'manageTickets' }" ng-click="setView('manageTickets')">{{ 'event.back.menu.tickets' | translate }}</div>
-							<div class="menuElement" ng-class="{ bodyBg: eventView == 'manageLayout' }" ng-click="setView('manageLayout')">{{ 'event.back.menu.layout' | translate }}</div>
-							<div class="menuElement" ng-class="{ bodyBg: eventView == 'manageSignup' }" ng-click="setView('manageSignup')">{{ 'event.back.menu.signup' | translate }}</div>
-							<div class="menuElement" ng-class="{ bodyBg: eventView == 'manageMarketing' }" ng-click="setView('manageMarketing')">{{ 'event.back.menu.marketing' | translate }}</div>
-							<div class="menuElement" ng-class="{ bodyBg: eventView == 'manageOrders' }" ng-click="setView('manageOrders')">{{ 'event.back.menu.orders' | translate }}</div>
-							<div class="menuElement" ng-class="{ bodyBg: eventView == 'guests' }" ng-click="setView('guests')">{{ 'event.back.menu.guests' | translate }}</div>
+							<div class="menuElement" 
+                ng-class="{ selectedMenuElement: eventView == 'dashboard' }" 
+                ng-click="setView('dashboard')">
+                {{ 'event.back.menu.dashboard' | translate }}
+              </div>
+							<div class="menuElement" 
+                ng-class="{ selectedMenuElement: eventView == 'manageInfo' }" 
+                ng-click="setView('manageInfo')">
+                {{ 'event.back.menu.settings' | translate }}
+              </div>
+							<div class="menuElement" 
+                ng-class="{ selectedMenuElement: eventView == 'payout' }" 
+                ng-click="setView('payout')">
+                {{ 'event.back.menu.payout' | translate }}
+              </div>
+							<div class="menuElement" 
+                ng-class="{ selectedMenuElement: eventView == 'manageTickets' }"
+                ng-click="setView('manageTickets')">
+                {{ 'event.back.menu.tickets' | translate }}
+              </div>
+							<div class="menuElement"
+                ng-class="{ selectedMenuElement: eventView == 'manageLayout' }"
+                ng-click="setView('manageLayout')">
+                {{ 'event.back.menu.layout' | translate }}
+              </div>
+							<div class="menuElement" 
+                ng-class="{ selectedMenuElement: eventView == 'manageSignup' }" 
+                ng-click="setView('manageSignup')">
+                {{ 'event.back.menu.signup' | translate }}
+              </div>
+							<div class="menuElement" 
+                ng-class="{ selectedMenuElement: eventView == 'manageMarketing' }"
+                ng-click="setView('manageMarketing')">
+                {{ 'event.back.menu.marketing' | translate }}
+              </div>
+							<div class="menuElement" 
+                ng-class="{ selectedMenuElement: eventView == 'manageOrders' }" 
+                ng-click="setView('manageOrders')">
+                {{ 'event.back.menu.orders' | translate }}
+              </div>
+							<div class="menuElement"
+                ng-class="{ selectedMenuElement: eventView == 'guests' }"
+                ng-click="setView('guests')">
+                {{ 'event.back.menu.guests' | translate }}
+              </div>
 						</div>
 					</div>
 					

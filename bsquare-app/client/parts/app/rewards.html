@@ -1,0 +1,32 @@
+<div class="rewards">
+  <div class="rewards-totals">
+    <div class="rewards-totals-earned">
+      Total earned: <b>{{refStats.earned}} €</b>
+    </div>
+  </div>
+  <div class="rewards-events">
+    <div class="rewards-events-event">
+      <div class="rewards-events-event-eventName">
+        <b>Tapahtuma</b>
+      </div>
+      <div class="rewards-events-event-eventTotal">
+        <b>Palkinto</b>
+      </div> 
+      <div class="rewards-events-event-eventTickets">
+        <b>Lippuja myyty</b>
+      </div> 
+    </div>
+    <div class="rewards-events-event"
+      ng-repeat="(eventId, eventStats) in refStats.rewards">
+      <div class="rewards-events-event-eventName">
+        {{eventStats.eventName}}
+      </div>
+      <div class="rewards-events-event-eventTotal">
+        {{eventStats.total}} €
+      </div>
+      <div class="rewards-events-event-eventTickets">
+        {{eventStats.ticketCount}}
+      </div>
+    </div>
+  </div>
+</div>

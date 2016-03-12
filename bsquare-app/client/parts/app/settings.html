@@ -1,0 +1,24 @@
+<div class="settingsContainer">
+	
+  <div class="row" ng-show="showError == true">
+		<div class="col-md-12 inlineError">
+			{{errorMessage}}
+		</div>
+	</div>
+  
+  <div class="topMenu">
+    <div class="menuElement" 
+      ng-class="{ selectedMenuElement: settingsView == 'profile' }"
+      ng-click="setView('profile')">
+      {{ 'app.settings.menu.profile' | translate }}
+    </div>
+    <div class="menuElement" 
+      ng-class="{ selectedMenuElement: settingsView == 'rewards' }"
+      ng-click="setView('rewards')">
+      {{ 'app.settings.menu.rewards' | translate }}
+    </div>
+  </div>
+
+  <div ng-include="viewTemplates[settingsView]"></div>
+
+</div>

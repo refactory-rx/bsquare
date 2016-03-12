@@ -2,13 +2,12 @@ controllers.controller("AppCtrl",
     ['$rootScope', '$scope', '$location', '$routeParams', '$http', '$log', '$timeout', '$filter',
         ($rootScope, $scope, $location, $routeParams, $http, $log, $timeout, $filter) => {
   
-  console.log("TTTTTTTEEEESSTTT");  
 	$scope.appStatus = '';
-    $scope.showError = false;
-    $scope.errorMessage = '';
-    
-    $scope.viewTemplate = "parts/app/findEvents.html";
-    $rootScope.hideHeader = false;
+  $scope.showError = false;
+  $scope.errorMessage = '';
+  
+  $scope.viewTemplate = "parts/app/findEvents.html";
+  $rootScope.hideHeader = false;
 
     /*
     $rootScope.$watch('logregStatus', function(value) {

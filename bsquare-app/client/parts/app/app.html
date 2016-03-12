@@ -2,7 +2,7 @@
     <did id="mainCard" ng-class="{ mainFlipped: rootView == 'back' }">
 
         <figure class="cardBack">
-            <div ng-show="logregStatus == 'loggedIn'" ng-include="'parts/app/profile.html'" ng-controller="ProfileCtrl"></div>
+            <div ng-show="logregStatus == 'loggedIn'" ng-include="'parts/app/settings.html'" ng-controller="SettingsCtrl"></div>
             <div ng-show="logregStatus != 'loggedIn'" ng-include="'parts/app/logreg.html'" ng-controller="LogregCtrl"></div>
         </figure>
         

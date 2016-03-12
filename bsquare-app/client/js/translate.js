@@ -44,6 +44,9 @@ mainApp.config(($translateProvider) => {
         "app.logreg.tos": "terms of service",
         "app.logreg.agreedToTos2": "and I agree to them by registering",
         
+        "app.settings.menu.profile": "Profile",
+        "app.settings.menu.rewards": "Rewards",
+        
         "pwdRecovery.explanationText": "Password recovery involves two steps:",
         "pwdRecovery.step1Text": "1) Request recovery link to the address you registered with",
         "pwdRecovery.step2Text": "2) Follow the link you get by e-mail and set a new password", 
@@ -326,6 +329,9 @@ mainApp.config(($translateProvider) => {
         
         "app.myTickets.title": "Minun lippuni",
         "app.myTickets.noTicketsText": "Et ole vielä hankkinut lippuja :(",
+        
+        "app.settings.menu.profile": "Profiili",
+        "app.settings.menu.rewards": "Palkinnot",
         
         "event.properties.type.music": "Musiikki",
         "event.properties.type.party": "Party",
