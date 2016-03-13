@@ -1,5 +1,7 @@
 "use strict";
 
+require("babel-polyfill");
+
 let env = require("./env/env");
 
 let https = require("https");
