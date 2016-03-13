@@ -1,3 +1,5 @@
+"use strict";
+
 let env = require("./env/env");
 
 let https = require("https");
