@@ -80,7 +80,7 @@ class TrackerService {
     return deferred.promise;
 
   }
-
+  
   getGroupRewards(refTrackerUuid) {
       
     const deferred = Q.defer();
@@ -104,8 +104,68 @@ class TrackerService {
 
   }
 
-  getRefRewards(user) {
+  getAvailableRefRewards(user) {
+    
+    return new Promise((resolve, reject) => {
+      
+      RefTracker.findQ({ userId: user.id })
+      .then(refTrackers => {
+        
+        const trackerIds = refTrackers.map(tracker => tracker.uuid);
+        const earnedQuery = Order.aggregate([
+          { 
+            $match: {
+              user: { $ne: user.id },
+              refTrackerId: { $in: trackerIds }, 
+              status: "fulfilled" 
+            }
+          },
+          {
+            $group: {
+              _id: null,
+              earned: { $sum: "$orderTotal" }
+            }
+          }
+        ]).execQ();
+        
+        const spentQuery = Order.aggregate([
+          { 
+            $match: {
+              user: user.id,
+              status: "fulfilled" 
+            }
+          },
+          {
+            $group: {
+              _id: null,
+              used: { $sum: "$rewardUsed" }
+            }
+          }
+        ]).execQ();
+        
+        const rewardsAvailable = {}; 
+        Q.all([earnedQuery, spentQuery])
+        .then(results => {
+          console.log("aggr results", results);
+          results.forEach(result => Object.assign(rewardsAvailable, result[0]));
+          delete rewardsAvailable._id;
+          rewardsAvailable.earned = rewardsAvailable.earned || 0;
+          rewardsAvailable.used = rewardsAvailable.used || 0;
+          resolve(rewardsAvailable);
+        })
+        .catch(err => reject(err));
 
+      })
+      .catch(err => {
+        reject(err);
+      });
+    
+    });
+
+  }
+
+  getRefRewards(user) {
+    
     const deferred = Q.defer();
 
     RefTracker.find({ userId: user.id }, (err, refTrackers) => {
@@ -114,7 +174,8 @@ class TrackerService {
       const orderQueries = refTrackers.map(tracker => {
         return Order.findQ({ 
           refTrackerId: tracker.uuid, 
-          status: "fulfilled" 
+          status: "fulfilled",
+          user: { $ne: user.id } 
         });
       });
       
@@ -123,7 +184,7 @@ class TrackerService {
       Q.all(orderQueries)
       .then((orders) => {
         
-        console.log("found orders", orders);
+        //console.log("found orders", orders);
         orders.forEach(orders => {
           orders.forEach(order => {
 
@@ -396,12 +457,16 @@ class TrackerService {
 		//console.log("detectRewardConditions, orders.length="+orders.length);
 
 		let groupRewards = event.groupRewards;
+    if (!groupRewards) {
+      console.log("Event does not have group rewards");
+      return;
+    }
 
 		let origQtysMap = this.createTicketResourceMap(orders, newOrder);
 		let newQtysMap = this.createTicketResourceMap(orders);
         
-        let addRewardsPromises = [];
-        groupRewards.conditions.forEach(rewardCondition => {
+    let addRewardsPromises = [];
+    groupRewards.conditions.forEach(rewardCondition => {
 
 			let ticketResourceId = rewardCondition.ticketResource._id;
 			let qtyBefore = origQtysMap[ticketResourceId];

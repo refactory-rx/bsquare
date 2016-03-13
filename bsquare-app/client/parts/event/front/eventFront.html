@@ -1,197 +1,198 @@
 <div class="panel panel-default event {{event.layout}}" ng-controller="EventFrontCtrl" ng-cloak>
 
-    <div class="panel-heading columnHeader mobileTitle" style="padding-top: 6px; padding-bottom: 0px;">
-        <div class="left" style="margin-left: 6px;">
-            <div class="event-title" style="font-size: 33px; line-height: 36px;">{{event.info.title}}</div>
-        </div>
+  <div class="panel-heading columnHeader mobileTitle" style="padding-top: 6px; padding-bottom: 0px;">
+    <div class="left" style="margin-left: 6px;">
+      <div class="event-title" style="font-size: 33px; line-height: 36px;">{{event.info.title}}</div>
     </div>
+  </div>
     
-    <div class="panel-body event-content" ng-cloak>
+  <div class="panel-body event-content" ng-cloak>
     	
-            <div>
+    <div>
             
-                <div class="eventInfo">
+      <div class="eventInfo">
                     
-                    <div class="eventLogo">
-                        <div id="eventImageContainer">    
-                            <img ng-show="event.info.eventImage != undefined" id="eventImage" align="right" ng-src="img{{event.info.eventImage}}"/>
-                            <div class="titleLayer">
-                                <div style="opacity: 0.3; padding: 12px; background: black; font-size: 33px; line-height: 36px;">
-                                    {{event.info.title}}
-                                </div>
-                                <div style="position: absolute; top: 0px; padding: 12px; color: white; font-size: 33px; line-height: 36px;">
-                                    {{event.info.title}}
-                                </div>
-                            </div>
-                        </div>
-                        <div ng-show="ownEvent" class="editEventButton">
-                            <a href="" ng-click="setRootView('edit')" ng-show="loggedUser != undefined">
-                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                                {{ 'event.front.manage' | translate }}
-                            </a>
-                        </div>
-                    </div> 
+        <div class="eventLogo">
+          <div id="eventImageContainer">    
+              <img ng-show="event.info.eventImage != undefined" id="eventImage" align="right" ng-src="img{{event.info.eventImage}}"/>
+              <div class="titleLayer">
+                  <div style="opacity: 0.3; padding: 12px; background: black; font-size: 33px; line-height: 36px;">
+                      {{event.info.title}}
+                  </div>
+                  <div style="position: absolute; top: 0px; padding: 12px; color: white; font-size: 33px; line-height: 36px;">
+                      {{event.info.title}}
+                  </div>
+              </div>
+          </div>
+          <div ng-show="ownEvent" class="editEventButton">
+              <a href="" ng-click="setRootView('edit')" ng-show="loggedUser != undefined">
+                  <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                  {{ 'event.front.manage' | translate }}
+              </a>
+          </div>
+        </div> 
                     
-                </div>
-                <div style="padding: 6px;">
-                    <div class="eventDescription">
-                        <div style="padding-top: 6px; position: relative;">
-                            <div class="poweredby">
-                                <span style="vertical-align: middle;">
-                                    TAPAHTUMASSA MUKANA
-                                </span>
-                                <a href="#/app?view=findEvents"><img src="img/BSQ-logo_small.png" height="30px" style="margin-left: 4px;"></a>
-                            </div>
-                            <div class="top-share">
-                                <div class="a2a_kit a2a_kit_size_32 a2a_default_style" style="display: inline-block; margin-top: 4px;">
-                                    <a class="a2a_button_facebook"></a>
-                                    <a class="a2a_button_google_plus"></a>
-                                    <a class="a2a_button_twitter"></a>
-                                    <a class="a2a_button_reddit"></a>
-                                    <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
-                                </div>
-                            </div>		
-                        </div> 
-                        <div>
-                            <pre style="margin-top: 12px; overflow: hidden; word-break: break-word; word-wrap: initial; white-space: pre-wrap; text-align: justify;">{{event.info.description}}</pre>
-                        </div>
-                    </div>
-                    <div class="eventColumn">
-                        <div class="eventMap">
-                            <div style="width: 100%; border: 1px solid #e0e0e0;">
-                                <div id="map_canvas" style="width: 100%; height: 250px"></div>
-                            </div>
-                            <div style="width: 100%; border-bottom: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; padding: 12px;">
-                                <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
-                                {{event.info.place.address}}
-                            </div>
-                        </div>
-                        <div class="eventTime">
-                            <div style="display: inline-block; padding: 12px; background: #e0e0e0;">
-                                Alkaa
-                            </div>
-                            <div style="display: inline-block; padding: 12px;">
-                                <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-                                {{formatTime(event.info.timeStart)}}
-                            </div>
-                        </div>
-                        <div class="eventVideo" ng-show="event.info.video !== undefined">
-                            <div>
-                                
-                                <anguvideo ng-model="event.info.video" width="100%" height="200"></anguvideo> 
-                                <p style="display: inline-block; text-align: justify; line-height: 100%;">
-                                </p>
+      </div>
 
-                            </div>
-                        </div>
-                        <div style="width: 100%; text-align: center; margin-top: 12px; margin-bottom: 10px;">
-                            <!-- Go to www.addthis.com/dashboard to customize your tools -->
-                            <!-- AddToAny BEGIN -->
-                            <div class="a2a_kit a2a_kit_size_32 a2a_default_style" style="display: inline-block;">
-                                <a class="a2a_button_facebook"></a>
-                                <a class="a2a_button_google_plus"></a>
-                                <a class="a2a_button_twitter"></a>
-                                <a class="a2a_button_reddit"></a>
-                                <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
-                            </div>
-                            <!-- AddToAny END -->
-                        </div>
-                        <div class="groupRewardsBlock">
-                            
-                            <div style="width: 100%; display: inline-block; position: relative;">    
-                                <div class="panel panel-default" style="width: 100%; display: inline-block; margin-bottom: 6px;">
-                                    <div class="panel-heading columnHeader" style="white-space: nowrap;">
-                                        <div style="display: inline;">
-                                            {{ 'event.front.rewards.groupRewards' | translate }}
-                                        </div>
-                                        <div style="display: inline;" ng-show="refTrackerUrls['group'] != undefined">
-                                            <!-- [<a class="a2a_dd" href="http://www.addtoany.com/share_save">{{ 'event.front.rewards.shareToGet' | translate }}</a>] -->
-                                        </div>
-                                        <div style="display: inline;" ng-show="refTrackerUrls['group'] == undefined">
-                                            <!-- [<a href="/#/app?view=logreg">{{ 'event.front.rewards.logIn' | translate }}</a> {{ 'event.front.rewards.startSharingGroup' | translate }}] -->
-                                        </div>
-                                    </div>
-                                    <div class="panel-body" style="width: 100%; display: inline-block; padding-top: 6px;">
+      <div style="padding: 6px;">
+        <div class="eventDescription">
+          <div style="padding-top: 6px; position: relative;">
+            <div class="poweredby">
+              <span style="vertical-align: middle;">
+                TAPAHTUMASSA MUKANA
+              </span>
+              <a href="#/app?view=findEvents"><img src="img/BSQ-logo_small.png" height="30px" style="margin-left: 4px;"></a>
+            </div>
+            <div class="top-share">
+              <div class="a2a_kit a2a_kit_size_32 a2a_default_style" style="display: inline-block; margin-top: 4px;">
+                <a class="a2a_button_facebook"></a>
+                <a class="a2a_button_google_plus"></a>
+                <a class="a2a_button_twitter"></a>
+                <a class="a2a_button_reddit"></a>
+                <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+              </div>
+            </div>		
+          </div> 
+        <div>
+          <pre style="margin-top: 12px; overflow: hidden; word-break: break-word; word-wrap: initial; white-space: pre-wrap; text-align: justify;">{{event.info.description}}</pre>
+        </div>
+      </div>
+      <div class="eventColumn">
+        <div class="eventMap">
+          <div style="width: 100%; border: 1px solid #e0e0e0;">
+              <div id="map_canvas" style="width: 100%; height: 250px"></div>
+          </div>
+          <div style="width: 100%; border-bottom: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; padding: 12px;">
+              <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+              {{event.info.place.address}}
+          </div>
+        </div>
+        <div class="eventTime">
+            <div style="display: inline-block; padding: 12px; background: #e0e0e0;">
+                Alkaa
+            </div>
+            <div style="display: inline-block; padding: 12px;">
+                <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+                {{formatTime(event.info.timeStart)}}
+            </div>
+        </div>
+        <div class="eventVideo" ng-show="event.info.video !== undefined">
+            <div>
+                
+                <anguvideo ng-model="event.info.video" width="100%" height="200"></anguvideo> 
+                <p style="display: inline-block; text-align: justify; line-height: 100%;">
+                </p>
+
+            </div>
+        </div>
+        <div style="width: 100%; text-align: center; margin-top: 12px; margin-bottom: 10px;">
+          <!-- Go to www.addthis.com/dashboard to customize your tools -->
+          <!-- AddToAny BEGIN -->
+          <div class="a2a_kit a2a_kit_size_32 a2a_default_style" style="display: inline-block;">
+              <a class="a2a_button_facebook"></a>
+              <a class="a2a_button_google_plus"></a>
+              <a class="a2a_button_twitter"></a>
+              <a class="a2a_button_reddit"></a>
+              <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+          </div>
+          <!-- AddToAny END -->
+        </div>
+        <div class="groupRewardsBlock">
+          
+          <div style="width: 100%; display: inline-block; position: relative;">    
+            <div class="panel panel-default" style="width: 100%; display: inline-block; margin-bottom: 6px;">
+              <div class="panel-heading columnHeader" style="white-space: nowrap;">
+                  <div style="display: inline;">
+                      {{ 'event.front.rewards.groupRewards' | translate }}
+                  </div>
+                  <div style="display: inline;" ng-show="refTrackerUrls['group'] != undefined">
+                      <!-- [<a class="a2a_dd" href="http://www.addtoany.com/share_save">{{ 'event.front.rewards.shareToGet' | translate }}</a>] -->
+                  </div>
+                  <div style="display: inline;" ng-show="refTrackerUrls['group'] == undefined">
+                      <!-- [<a href="/#/app?view=logreg">{{ 'event.front.rewards.logIn' | translate }}</a> {{ 'event.front.rewards.startSharingGroup' | translate }}] -->
+                  </div>
+              </div>
+              <div class="panel-body" style="width: 100%; display: inline-block; padding-top: 6px;">
                                         
-                                        <div ng-repeat="condition in event.groupRewards.conditions" class="rewardItem" ng-mouseleave="resetRewardDescription(condition)" ng-mouseenter="setRewardDescription(condition)">
-                                            <div style="z-index: 0; width: 100%; position: relative; display: block; padding: 6px;">
-                                                <div style="z-index: -1; width: {{ (condition.reached/condition.quantity) * 100 }}%; background: #e0e0e0; height: 100%; position: absolute; top: 0; left: 0;">
-                                                </div>
-                                                <b style="z-index: 2;">{{condition.reward.name}}</b>
-                                            </div>
-                                            <div class="rewardDescription" ng-class="{ 'hovered': condition.hovered }">
-                                                <i>{{condition.reward.description}}</i><br/>
-                                                <b>{{condition.quantity}}</b> x <b>{{condition.ticketResource.name}}</b>
-                                            </div>
-                                        </div>
+                <div ng-repeat="condition in event.groupRewards.conditions" class="rewardItem" ng-mouseleave="resetRewardDescription(condition)" ng-mouseenter="setRewardDescription(condition)">
+                  <div style="z-index: 0; width: 100%; position: relative; display: block; padding: 6px;">
+                      <div style="z-index: -1; width: {{ (condition.reached/condition.quantity) * 100 }}%; background: #e0e0e0; height: 100%; position: absolute; top: 0; left: 0;">
+                      </div>
+                      <b style="z-index: 2;">{{condition.reward.name}}</b>
+                  </div>
+                  <div class="rewardDescription" ng-class="{ 'hovered': condition.hovered }">
+                    <i>{{condition.reward.description}}</i><br/>
+                    <b>{{condition.quantity}}</b> x <b>{{condition.ticketResource.name}}</b>
+                  </div>
+                </div>
                                         
-                                    </div>
-                                    <script type="text/javascript">
-                                        var a2a_config = a2a_config || {};
-                                        a2a_config.linkurl = "url";
-                                    </script>
-                                </div> 
-                            </div>
-                        </div>
-                        <div class="refRewardsBlock">
+              </div>
+              <script type="text/javascript">
+                  var a2a_config = a2a_config || {};
+                  a2a_config.linkurl = "url";
+              </script>
+            </div> 
+          </div>
+      </div>
+      <div class="refRewardsBlock">
                         
-                            <div style="width: 100%; display: inline-block; position: relative;">
+        <div style="width: 100%; display: inline-block; position: relative;">
                             
-                                <div class="panel panel-default" style="width: 100%; display: inline-block; margin-bottom: 6px;">
-                                    <div class="panel-heading columnHeader" style="white-space: nowrap;">
-                                        <div style="display: inline;">
-                                            {{ 'event.front.rewards.referralRewards' | translate }}
-                                        </div>
-                                        <div style="display: inline;" ng-show="shareRef">
-                                            <!-- [<a class="a2a_dd" href="http://www.addtoany.com/share_save">{{ 'event.front.rewards.shareToGet' | translate }}</a>] -->
-                                        </div>
-                                        <div style="display: inline;" ng-show="shareRef == undefined">
-                                            <!-- [<a href="/#/app?view=logreg">{{ 'event.front.rewards.logIn' | translate }}</a> {{ 'event.front.rewards.startSharingRef' | translate }}] -->
-                                        </div>
-                                    </div>
-                                    <!--
-                                    <div class="panel-body" style="width: 100%; display: inline-block; padding-top: 6px;">
-                                        
-                                        <div ng-repeat="reward in event.refRewards.pointRewards" class="rewardItem" ng-mouseleave="resetPointRewardDescription(reward)" ng-mouseenter="setPointRewardDescription(reward)">
-                                            <div style="width: 100%; display: block; padding: 6px;">
-                                                <b>{{reward.name}}</b>
-                                            </div>
-                                            <div class="rewardDescription" ng-class="{ 'hovered': reward.hovered }">
-                                                <i>{{reward.description}}</i><br/>
-                                                <b>{{reward.points}}</b> {{ 'event.front.rewards.pointsRequired' | translate }}
-                                            </div>
-                                        </div>
-                                        
-                                    </div>
-                                    -->
-                                    <div style="width: 100%; text-align: center; padding: 12px; font-size: 26px;">
-                                      {{event.refRewards}} €
-                                    </div>
-                                </div>          
-                                
-                            </div>
-                            <div class="panel panel-default" style="width: 100%;">
-                                
-                                <div class="panel-heading columnHeader" style="margin-bottom: 4px;">
-                                    Pistesäännöt
-                                </div>
-                                <div class="panel-body">
-                                    <div ng-repeat="condition in event.refRewards.conditions" style="width: 100%; display: inline-block; height: 12px;">
-                                        <div ng-show="condition.type.type == 'impression'">
-                                            <b>{{condition.points}}</b> {{ 'event.front.rewards.pointsPerView' | translate }}
-                                        </div>
-                                        <div ng-show="condition.type.type == 'attendance'">
-                                            <b>{{condition.points}}</b> {{ 'event.front.rewards.pointsPerAttendance' | translate }} <b>{{condition.ticketResource.name}}</b>
-                                        </div>
-                                        <div ng-show="condition.type.type == 'sale'">
-                                            <b>{{condition.points}}</b> {{ 'event.front.rewards.pointsPerSale' | translate }} <b>{{condition.ticketResource.name}}</b>
-                                        </div>
-                                    </div>
-                                </div> 
-                            </div>
-                        </div>
+          <div class="panel panel-default" style="width: 100%; display: inline-block; margin-bottom: 6px;">
+            <div class="panel-heading columnHeader" style="white-space: nowrap;">
+              <div style="display: inline;">
+                  {{ 'event.front.rewards.referralRewards' | translate }}
+              </div>
+              <div style="display: inline;" ng-show="shareRef">
+                  <!-- [<a class="a2a_dd" href="http://www.addtoany.com/share_save">{{ 'event.front.rewards.shareToGet' | translate }}</a>] -->
+              </div>
+              <div style="display: inline;" ng-show="shareRef == undefined">
+                  <!-- [<a href="/#/app?view=logreg">{{ 'event.front.rewards.logIn' | translate }}</a> {{ 'event.front.rewards.startSharingRef' | translate }}] -->
+              </div>
+            </div>
+            <!--
+            <div class="panel-body" style="width: 100%; display: inline-block; padding-top: 6px;">
+                
+                <div ng-repeat="reward in event.refRewards.pointRewards" class="rewardItem" ng-mouseleave="resetPointRewardDescription(reward)" ng-mouseenter="setPointRewardDescription(reward)">
+                    <div style="width: 100%; display: block; padding: 6px;">
+                        <b>{{reward.name}}</b>
+                    </div>
+                    <div class="rewardDescription" ng-class="{ 'hovered': reward.hovered }">
+                        <i>{{reward.description}}</i><br/>
+                        <b>{{reward.points}}</b> {{ 'event.front.rewards.pointsRequired' | translate }}
                     </div>
                 </div>
+                
+            </div>
+            -->
+            <div style="width: 100%; text-align: center; padding: 12px; font-size: 26px;">
+              {{refRewards.total}} €
+            </div>
+          </div>          
+                                
+        </div>
+        <div class="panel panel-default" style="width: 100%;">
+                                
+          <div class="panel-heading columnHeader" style="margin-bottom: 4px;">
+              Pistesäännöt
+          </div>
+          <div class="panel-body">
+            <div ng-repeat="condition in event.refRewards.conditions" style="width: 100%; display: inline-block; height: 12px;">
+              <div ng-show="condition.type.type == 'impression'">
+                  <b>{{condition.points}}</b> {{ 'event.front.rewards.pointsPerView' | translate }}
+              </div>
+              <div ng-show="condition.type.type == 'attendance'">
+                  <b>{{condition.points}}</b> {{ 'event.front.rewards.pointsPerAttendance' | translate }} <b>{{condition.ticketResource.name}}</b>
+              </div>
+              <div ng-show="condition.type.type == 'sale'">
+                  <b>{{condition.points}}</b> {{ 'event.front.rewards.pointsPerSale' | translate }} <b>{{condition.ticketResource.name}}</b>
+              </div>
+            </div>
+          </div> 
+        </div>
+      </div>
+    </div>
+</div>
 
                 <div style="display: inline-block; width: 100%; margin-top: 24px; margin-bottom: 12px; padding: 6px;" 
                     ng-show="event.groupRewards.conditions.length > 0 || event.refRewards.pointRewards.length > 0">

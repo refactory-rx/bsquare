@@ -3,148 +3,150 @@ import Errors from "../../../shared/lib/Errors";
 
 module.exports = {
 
-    init: (app) => {
+  init: (app) => {
 
-        let { isLoggedIn } = require("../../../shared/lib/RouteFilters")(app);
+    let { isLoggedIn } = require("../../../shared/lib/RouteFilters")(app);
         
-        app.get("/some/url", isLoggedIn, (req, res, next) => {   
-            res.json({ status: "ok" });
+    app.get("/some/url", isLoggedIn, (req, res, next) => {   
+        res.json({ status: "ok" });
+    });
+    
+    app.get("/another/url", (req, res, next) => {   
+        res.json({ status: "ok" });
+    });
+        
+    app.get("/api/events", (req, res, next) => {
+            
+      let params = {};
+      
+      let filters = {};
+      if (req.query.type) filters["type"] = req.query.type;
+      if (req.query.time) filters["time"] = req.query.time;
+      if (req.query.loc) filters["location"] = req.query.loc;
+            
+      if (req.query.q || Object.keys(filters).length > 0) {
+          
+        app.eventService.searchEventsByText(req.query.q, filters)
+        .then((events) => {
+            res.json({ status: "ok", events: events });
+        })
+        .catch((err) => {
+            next(err);
         });
-        
-        app.get("/another/url", (req, res, next) => {   
-            res.json({ status: "ok" });
-        });
-        
-        app.get("/api/events", (req, res, next) => {
-            
-            let params = {};
-            
-            let filters = {};
-            if (req.query.type) filters["type"] = req.query.type;
-            if (req.query.time) filters["time"] = req.query.time;
-            if (req.query.loc) filters["location"] = req.query.loc;
-            
-            if (req.query.q || Object.keys(filters).length > 0) {
-                
-                app.eventService.searchEventsByText(req.query.q, filters)
-                .then((events) => {
-                    res.json({ status: "ok", events: events });
-                })
-                .catch((err) => {
-                    next(err);
-                });
-                 
-                return;
+         
+        return;
 
-            }
+      }
             
-            if (req.query.kind === "own") {
-                
-                if (!req.auth) {
-                    next(new Errors.Forbidden(null, { message: "unauthorized_request" }));
-                    return;
-                }
+      if (req.query.kind === "own") {
+          
+        if (!req.auth) {
+          next(new Errors.Forbidden(null, { message: "unauthorized_request" }));
+          return;
+        }
 
-                params.user = req.auth.user.id;
+        params.user = req.auth.user.id;
+      
+      } else {
+        params["info.timeEnd"] = {
+          $gt: (new Date()).getTime()
+        };
+      }
             
-            } else {
-			    params["info.timeEnd"] = {
-				    $gt: (new Date()).getTime()
-			    };
+      app.eventService.getEvents(params)
+      .then((events) => {
+                
+        let response = { status: "ok", events: events };
+        
+        if (params.user) {
+            response.myEventsTemplate = "parts/app/myEvents_blocked.html";
+            if (req.auth.user.email === "vhalme@gmail.com") {
+                response.myEventsTemplate = "parts/app/myEvents_private.html";
             }
+        }
+        
+        res.json(response);
             
-            app.eventService.getEvents(params)
-            .then((events) => {
-                
-                let response = { status: "ok", events: events };
-                
-                if (params.user) {
-                    response.myEventsTemplate = "parts/app/myEvents_blocked.html";
-                    if (req.auth.user.email === "vhalme@gmail.com") {
-                        response.myEventsTemplate = "parts/app/myEvents_private.html";
-                    }
-                }
-                
-                res.json(response);
-            
-            })
-            .catch((err) => {
-                next(err);
-            });
+      })
+      .catch((err) => {
+          next(err);
+      });
 
 		});
 
-        app.get("/api/events/promo", (req, res, next) => {
-            app.eventService.getPromoEvents()
-            .then((events) => {
-                res.json({ status: "ok", events: events });
-            })
-            .catch((err) => {
-                next(err);
-            });
+    app.get("/api/events/promo", (req, res, next) => {
+        app.eventService.getPromoEvents()
+        .then((events) => {
+            res.json({ status: "ok", events: events });
+        })
+        .catch((err) => {
+            next(err);
         });
+    });
         
-        app.get("/api/events/stats", (req, res, next) => {
-            app.eventService.getEventStats()
-            .then((eventStats) => {
-                res.json({ status: "ok", eventStats: eventStats });
-            })
-            .catch((err) => {
-                next(err);
-            });
+    app.get("/api/events/stats", (req, res, next) => {
+        app.eventService.getEventStats()
+        .then((eventStats) => {
+            res.json({ status: "ok", eventStats: eventStats });
+        })
+        .catch((err) => {
+            next(err);
         });
+    });
 
-        app.get("/api/events/slug", (req, res, next) => {
+    app.get("/api/events/slug", (req, res, next) => {
             
-            if (req.query.slug) { 
-                
-                app.eventService.checkSlug(req.query.slug)
-                .then((available) => {
-                    res.json({ status: "ok", available: available });
-                })
-                .catch((err) => {
-                    next(err);
-                });
+      if (req.query.slug) { 
+          
+          app.eventService.checkSlug(req.query.slug)
+          .then((available) => {
+              res.json({ status: "ok", available: available });
+          })
+          .catch((err) => {
+              next(err);
+          });
 
-            } else if (req.query.title) {
-                
-                app.eventService.getSlugs(req.query.title)
-                .then((slugs) => {
-                    res.json({ status: "ok", slugs: slugs });
-                })
-                .catch((err) => {
-                    next(err);
-                });
+      } else if (req.query.title) {
+          
+          app.eventService.getSlugs(req.query.title)
+          .then((slugs) => {
+              res.json({ status: "ok", slugs: slugs });
+          })
+          .catch((err) => {
+              next(err);
+          });
+      
+      } else {
+          next(new Errors.UnprocessableEntity(null, { message: "invalid_params" }));
+      }
+
+    });
+
+    app.get("/api/events/:id", (req, res, next) => {
             
-            } else {
-                next(new Errors.UnprocessableEntity(null, { message: "invalid_params" }));
-            }
+      let tracking = Object.assign({ 
+        fwd: req.headers["x-forwarded-for"],
+        remoteIp: req.connection.remoteAddress
+      }, req.query, req.auth ? {
+        token: req.headers["session-token"],
+        user: req.auth.user
+      } : {});
 
-        });
+      app.eventService.getEvent(req.params.id)
+      .then((event) => {
+        console.log("got event", event.refRewards);
+        app.eventService.updateImpressions(event._id, tracking);
+        res.json(Object.assign(
+          { status: "ok", event: event },
+          req.auth && event.user.equals(req.auth.user.id) ? 
+            { ownEvent: "true" } : {}
+        ));
+      })
+      .catch((err) => {
+        next(err);
+      });
 
-        app.get("/api/events/:id", (req, res, next) => {
-            
-            let tracking = Object.assign({ 
-                fwd: req.headers["x-forwarded-for"],
-                remoteIp: req.connection.remoteAddress
-            }, req.query, req.auth ? {
-                token: req.headers["session-token"],
-                user: req.auth.user
-            } : {});
-
-            app.eventService.getEvent(req.params.id)
-            .then((event) => {
-                app.eventService.updateImpressions(event._id, tracking);
-                res.json(Object.assign(
-                    { status: "ok", event: event },
-                    req.auth && event.user.equals(req.auth.user.id) ? { ownEvent: "true" } : {}
-                ));
-            })
-            .catch((err) => {
-                next(err);
-            });
-
-        });
+    });
         
 		app.post("/api/events", isLoggedIn, (req, res, next) => {
             

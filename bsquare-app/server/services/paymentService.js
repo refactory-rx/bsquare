@@ -24,33 +24,37 @@ class PaymentService {
 		
 		let response = { success: 0 };
 		
-        Order.findOneQ( { _id: orderId })
-        .then((order) => {
-            
-            if (!order) {
-                return deferred.reject(new Erors.NotFound(null, { message: "order_not_found" }));
-            }
+    Order.findOneQ( { _id: orderId })
+    .then((order) => {
+        
+      if (!order) {
+        return deferred.reject(new Erors.NotFound(
+          null, { message: "order_not_found" }
+        ));
+      }
 
-            if (order.orderTotal === 0) {
-                response.status = "freeOrder";
-                response.message = "Order does not require invoice";
-                deferred.resolve();
-                return; 
-            }
+      if (order.orderTotal === 0) {
+          response.status = "freeOrder";
+          response.message = "Order does not require invoice";
+          deferred.resolve();
+          return; 
+      }
+      
+      console.log("FOUND UPDATED ORDER ********************************");
+      console.log(order);
+      this.provideInvoice("checkout", order, null, (result) => {
+        if (result.success === 1) {
+          deferred.resolve(result.invoice);
+        } else {
+          deferred.reject(new Errors.UnprocessableEntity(null, result));
+        }
+      });
 
-            this.provideInvoice("checkout", order, null, (result) => {
-                if (result.success === 1) {
-                    deferred.resolve(result.invoice);
-                } else {
-                    deferred.reject(new Errors.UnprocessableEntity(null, result));
-                }
-            });
 
-
-        })
-        .catch((err) => {
-            deferred.reject(err);
-        });
+    })
+    .catch((err) => {
+        deferred.reject(err);
+    });
 
 		
 		return deferred.promise;
@@ -192,32 +196,32 @@ class PaymentService {
 			return;
 		}	
 		
-        paymentProvider.createInvoice(order, (result) => {
+    paymentProvider.createInvoice(order, (result) => {
             			        
-	        if(result.error) {
-	        	
-	            response.status = 'error';
-	            response.message = 'Payment provider error.';
-	            response.error = result.error;
-	        	
-	        } else {
+      if(result.error) {
+        
+          response.status = 'error';
+          response.message = 'Payment provider error.';
+          response.error = result.error;
+        
+      } else {
 	            
-	            if(!invoice) {
-	            	invoice = {};
-	            }
+        if(!invoice) {
+          invoice = {};
+        }
                 
-	            invoice.extData = result;
+        invoice.extData = result;
 				invoice.url = result.url;
 				invoice.status = result.status;
-	            invoice.provider = provider;
+        invoice.provider = provider;
 	            
-	            response.invoice = invoice;
+        response.invoice = invoice;
+        
+        response.success = 1;
+        response.status = 'invoiceProvided';
+        response.message = 'Invoice provided.';
 	            
-	            response.success = 1;
-	            response.status = 'invoiceProvided';
-	            response.message = 'Invoice provided.';
-	            
-	        }
+      }
 	        
 	        callback(response);
 	        
@@ -322,7 +326,7 @@ class PaymentService {
                     if(invoice.provider == 'coinbase') {
                         invoice.extData = fetchInvoiceResult.extData;
                     } else if(invoice.provider == 'checkout') {
-                        invoice.extData = fetchInvoiceResult.extData;
+                        invoice.extData.status = fetchInvoiceResult.extData.status;
                     }
                   
                     Invoice.update({ _id: invoice._id }, { status: invoice.status, extData: invoice.extData }, (err, numUpdated) => {

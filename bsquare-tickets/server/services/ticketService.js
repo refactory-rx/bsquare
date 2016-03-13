@@ -173,75 +173,75 @@ class TicketService {
 
 	saveTickets(order, tickets, callback) {
 
-	    let response = {
-		    success: 0
-	    };
+    let response = {
+      success: 0
+    };
 
-        Ticket.create(tickets, (ticketErr, ...createdTickets) => {
+    Ticket.create(tickets, (ticketErr, ...createdTickets) => {
 
-            log.debug("ticket creation: ", ticketErr, createdTickets);
+      log.debug("ticket creation: ", ticketErr, createdTickets);
 
-            if(ticketErr) {
+      if(ticketErr) {
 
-                response.status = "error";
-                response.message = "Could not create tickets.";
-                response.error = ticketErr;
+        response.status = "error";
+        response.message = "Could not create tickets.";
+        response.error = ticketErr;
 
-                callback(response);
+        callback(response);
 
-            } else {
+      } else {
 
-                createdTickets = createdTickets[0];
+        createdTickets = createdTickets[0];
 
-                let qtyByResource = {};
-                tickets.forEach(ticket => {
+        let qtyByResource = {};
+        tickets.forEach(ticket => {
 
-			        if(!qtyByResource[ticket.ticketResourceId]) {
-			            qtyByResource[ticket.ticketResourceId] = 0;
-		    	    }
+        if(!qtyByResource[ticket.ticketResourceId]) {
+            qtyByResource[ticket.ticketResourceId] = 0;
+        }
 
-		    	    qtyByResource[ticket.ticketResourceId] += 1;
+        qtyByResource[ticket.ticketResourceId] += 1;
 
-		        });
+      });
 
-                let resourceIds = Object.keys(qtyByResource);
-                let qtyUpdates = resourceIds.map((resourceId) => {
+      let resourceIds = Object.keys(qtyByResource);
+      let qtyUpdates = resourceIds.map((resourceId) => {
 
-                    return TicketResource.findOneQ({ _id: resourceId }).then((ticketResource) => {
-			            let ticketQty =  qtyByResource[ticketResource._id.toHexString()];
-			            let qtyAvailable = ticketResource.qtyAvailable - ticketQty;
-		    	        let qtyReserved = ticketResource.qtyReserved - ticketQty;
-		    	        let qtySold = ticketResource.qtySold + ticketQty;
-		    	        TicketResource.update(
-                            { _id: ticketResource._id },
-                            {
-                                qtyAvailable: qtyAvailable,
-                                qtyReserved: qtyReserved,
-                                qtySold: qtySold
-                            },
-                            (err, numAffected) => {
-				                log.debug("qty updated for "+ticketResource.name, qtyAvailable, qtyReserved, qtySold);
-		    		        }
-			            );
-		    	    });
+      return TicketResource.findOneQ({ _id: resourceId }).then((ticketResource) => {
+        let ticketQty =  qtyByResource[ticketResource._id.toHexString()];
+        let qtyAvailable = ticketResource.qtyAvailable - ticketQty;
+        let qtyReserved = ticketResource.qtyReserved - ticketQty;
+        let qtySold = ticketResource.qtySold + ticketQty;
+        TicketResource.update(
+          { _id: ticketResource._id },
+          {
+              qtyAvailable: qtyAvailable,
+              qtyReserved: qtyReserved,
+              qtySold: qtySold
+          },
+          (err, numAffected) => {
+            log.debug("qty updated for "+ticketResource.name, qtyAvailable, qtyReserved, qtySold);
+            }
+          );
+        });
 
-                });
+      });
 
-                log.debug("qtyUpdates:", qtyUpdates.length);
-                Q.all(qtyUpdates);
+      log.debug("qtyUpdates:", qtyUpdates.length);
+      Q.all(qtyUpdates);
 
-                let emailContent = "Your tickets have been issued<br/><br/>";
+      let emailContent = "Your tickets have been issued<br/><br/>";
 
-                createdTickets.forEach(ticket => {
-                    emailContent +=
-                        `<a href="${APP_BASE_URL}/#/ticket/${ticket._id}">
-                            ${ticket.ticketName}
-                         </a><br/>`;
-                });
+      createdTickets.forEach(ticket => {
+          emailContent +=
+              `<a href="${APP_BASE_URL}/#/ticket/${ticket._id}">
+                  ${ticket.ticketName}
+               </a><br/>`;
+      });
 
-                emailContent +=
-                    `<br/><br/>
-                    B SQUARED`;
+      emailContent +=
+          `<br/><br/>
+          B SQUARED`;
 
                 let phantomService = this.app.phantomService;
                 phantomService.createTickets(createdTickets, (err, tickets) => {

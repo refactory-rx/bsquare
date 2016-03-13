@@ -31,71 +31,71 @@ const PLACE_MAP = {
 
 class EventService {
     
-    constructor(app) {
-        
-        ({ Event, ImpressionTracker, TicketResource, Ticket } = app.model);
-        ({ WEB_CONTENT_PATH } = app.settings);
-        
-        this.app = app;
-        this.authService = app.authService;
+  constructor(app) {
+      
+    ({ Event, ImpressionTracker, TicketResource, Ticket } = app.model);
+    ({ WEB_CONTENT_PATH } = app.settings);
     
-    }
+    this.app = app;
+    this.authService = app.authService;
+  
+  }
 
 	getEvents(params) {	
         
-        let deferred = Q.defer();    
-        Event.find(params, (err, events) => {
-            if (err) {
-                return deferred.reject(err);
-            }
-            deferred.resolve(events);
-        });
+    let deferred = Q.defer();    
+    Event.find(params, (err, events) => {
+      if (err) {
+        return deferred.reject(err);
+      }
+      deferred.resolve(events);
+    });
 
-        return deferred.promise;
+    return deferred.promise;
 
-    }
+  }
     
-    getEventStats() {	
+  getEventStats() {	
         
-        let deferred = Q.defer();    
-        Event.find({}, (err, events) => {
+    let deferred = Q.defer();    
+    Event.find({}, (err, events) => {
             
-            if (err) {
-                return deferred.reject(err);
-            }
+      if (err) {
+        return deferred.reject(err);
+      }
             
-            let locations = { max: 0 };
-            let types = { max: 0 };
-            events.forEach(event => {
-                
-                let vicinity = event.info.place.vicinity;
-                let city = PLACE_MAP[vicinity] || vicinity;
-                
-                locations[city] = locations[city] ? locations[city] + 1 : 1;
-                if (locations[city] > locations.max) {
-                    locations.max = locations[city];
-                }
+      let locations = { max: 0 };
+      let types = { max: 0 };
+      events.forEach(event => {
+          
+        let vicinity = event.info.place.vicinity;
+        let city = PLACE_MAP[vicinity] || vicinity;
+        
+        locations[city] = locations[city] ? locations[city] + 1 : 1;
+        if (locations[city] > locations.max) {
+          locations.max = locations[city];
+        }
 
-                let type = event.info.type;
-                if (type) {
-                    types[type] = types[type] ? types[type] + 1 : 1;
-                    if (types[type] > types.max) {
-                        types.max = types[type];
-                    }
-                }
+        let type = event.info.type;
+        if (type) {
+          types[type] = types[type] ? types[type] + 1 : 1;
+          if (types[type] > types.max) {
+            types.max = types[type];
+          }
+        }
 
-            });
+      });
 
-            deferred.resolve({
-                locations: locations,
-                types: types
-            });
+      deferred.resolve({
+        locations: locations,
+        types: types
+      });
 
-        });
+    });
 
-        return deferred.promise;
+    return deferred.promise;
 
-    }
+  }
 	
 	getPromoEvents() {
         
@@ -194,64 +194,67 @@ class EventService {
 	
 	getEvent(id) {
         
-        let deferred = Q.defer();
+    let deferred = Q.defer();
 
-        Event.findOneQ({ _id: id })
-        .then((event) => {
+    Event.findOneQ({ _id: id })
+    .then((event) => {
             
-            if (!event) {
-                return deferred.reject(new Errors.NotFound(null, { message: "event_not_found" }));
-            }
+      if (!event) {
+        return deferred.reject(
+          new Errors.NotFound(null, { message: "event_not_found" })
+        );
+      }
 
-            deferred.resolve(event);
+      deferred.resolve(event);
         
-        })
-        .catch((err) => {
-            deferred.reject(err);
-        });
+    })
+    .catch((err) => {
+      deferred.reject(err);
+    });
 
-        return deferred.promise;
+    return deferred.promise;
 		
 	}
     
 	updateImpressions(eventId, tracking) {
 		
-        let params = {
-            viewType: "event",
-            entityId: eventId
-        };
+    let params = {
+      viewType: "event",
+      entityId: eventId
+    };
 
-        let refTrackerId = tracking.ref;
+    let refTrackerId = tracking.ref;
         
-        if (refTrackerId) {
-            params.refTrackerId = refTrackerId;
-        }
+    if (refTrackerId) {
+      params.refTrackerId = refTrackerId;
+    }
 
-        if (tracking.user) {
-            params.userId = tracking.user.id;
-        } else {
-            let fwd = (tracking.fwd || '').split(',')[0];
-            let remoteIp = fwd || tracking.remoteIp;
-            params.remoteIp = remoteIp;
-        }
+    if (tracking.user) {
+      params.userId = tracking.user.id;
+    } else {
+      let fwd = (tracking.fwd || '').split(',')[0];
+      let remoteIp = fwd || tracking.remoteIp;
+      params.remoteIp = remoteIp;
+    }
         	
-        ImpressionTracker.findOneQ(params)
-        .then((impressionTracker) => {
+    ImpressionTracker.findOneQ(params)
+    .then((impressionTracker) => {
             
-            if (!impressionTracker) {
-                impressionTracker = new ImpressionTracker(Object.assign(params, { count: 0 }));
-            }
+      if (!impressionTracker) {
+        impressionTracker = 
+          new ImpressionTracker(Object.assign(params, { count: 0 }));
+      }
 
-            impressionTracker.count += 1;
-            return impressionTracker.saveQ(); 
+      impressionTracker.count += 1;
+      return impressionTracker.saveQ(); 
             
-        })
-        .then((impressionTracker) => {
-            console.log("Saved impression tracker", impressionTracker);
-        })
-        .catch((err) => {
-            console.log("Error in updateEventImpressions", err);
-        });	
+    })
+    .then((impressionTracker) => {
+        console.log("Saved impression tracker", impressionTracker);
+    })
+    .catch((err) => {
+        console.log("Error in updateEventImpressions", err);
+    });	
 		
 	}
 		

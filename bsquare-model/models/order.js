@@ -12,11 +12,12 @@ module.exports = (db) => {
         items: [],
         tickets: [],
         orderTotal: Number,
+        rewardUsed: Number,
         currency: String,
         timePlaced: Number,
         groupTrackerId: String,
         refTrackerId: String
-        
+                
     });
 
 };

@@ -186,47 +186,47 @@ class CheckoutService {
     
     createInvoice(order, callback) {
         
-        var postDict = this.createDict(order);
+      var postDict = this.createDict(order);
         
-        var encodedData = formUrlEncoded.encode(postDict);
+      var encodedData = formUrlEncoded.encode(postDict);
         
-        var headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Accept-Encoding': 'gzip, deflate',
-            'Accept': '*/*'
-        };
+      var headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept-Encoding': 'gzip, deflate',
+        'Accept': '*/*'
+      };
         
-        request.post({ headers: headers, url: PAYMENT_URL, body: encodedData }, (err, response, data) => {
+      request.post({ headers: headers, url: PAYMENT_URL, body: encodedData }, (err, response, data) => {
             
-            if(err) {
+        if(err) {
                 
-                console.log(err);
+          console.log(err);
 			    callback({ error: { message: err.message } });
                 
-            } else {
+        } else {
                 
-                var result = data;
+          var result = data;
                 
-                xml2js.parseString(data, (err, obj) => {
+          xml2js.parseString(data, (err, obj) => {
                     
-                    if(err) {
-                        callback({ error: { message: err.message } });
-                    } else {
-                        result = obj;
-                        console.log(result);
-                        var trade = result.trade;
-                        console.log(trade.paymentURL);
-                        result.status = 'new';
-                        result.url = trade.paymentURL[0];
-                        callback(result);
-                    }
+            if(err) {
+                callback({ error: { message: err.message } });
+            } else {
+                result = obj;
+                console.log(result);
+                var trade = result.trade;
+                console.log(trade.paymentURL);
+                result.status = 'new';
+                result.url = trade.paymentURL[0];
+                callback(result);
+            }
                 
-                });
+          });
                 
 			    
-            }
+        }
             
-        });  
+      });  
         
     }
     

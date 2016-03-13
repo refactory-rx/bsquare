@@ -1,186 +1,189 @@
 controllers.controller(
-    "EventFrontCtrl",
-    ['$rootScope', '$scope', '$location', '$routeParams', '$http', '$log', '$timeout', '$filter', '$locale', '$translate',
-    ($rootScope, $scope, $location, $routeParams, $http, $log, $timeout, $filter, $locale, $translate) => {
+  "EventFrontCtrl",
+  ['$rootScope', '$scope', '$location', '$routeParams', '$http', '$log', '$timeout', '$filter', '$locale', '$translate',
+  ($rootScope, $scope, $location, $routeParams, $http, $log, $timeout, $filter, $locale, $translate) => {
 
-    $rootScope.setRootView("event");
+  $rootScope.setRootView("event");
 
-    console.log($rootScope.app);
+  console.log($rootScope.app);
 
-    $scope.order = {
-        totalPrice: 0
-    };
+  $scope.order = {
+    totalPrice: 0
+  };
 
-    $scope.refTrackerUrls = [];
+  $scope.refRewards = {
+    total: 0
+  };
 
-    $rootScope.$watch("logregStatus", (value) => {
+  $scope.refTrackerUrls = [];
 
-    	$log.debug('eventFront->$watch(logregStatus): value = '+value);
+  $rootScope.$watch("logregStatus", (value) => {
 
-    	if(value !== "loggedIn") {
+    $log.debug('eventFront->$watch(logregStatus): value = '+value);
 
-    		var queryParams = $location.search();
-    		if(!queryParams.group) {
-				delete $scope.groupTrackingUrl;
-    		}
+    if(value !== "loggedIn") {
 
-			delete $scope.refTrackingUrl;
-			delete $scope.shareRef;
-    	}
+      var queryParams = $location.search();
+      if(!queryParams.group) {
+        delete $scope.groupTrackingUrl;
+      }
 
-    });
+      delete $scope.refTrackingUrl;
+      delete $scope.shareRef;
+    }
 
-    $scope.$watch("eventStatus", (eventStatus) => {
+  });
 
-    	console.log("eventStatus: "+eventStatus);
+  $scope.$watch("eventStatus", (eventStatus) => {
 
-    	if(eventStatus === "loaded") {
-    		$scope.init();
-    		$scope.initMap();
-    	}
+    console.log("eventStatus: "+eventStatus);
 
-    }, true);
+    if(eventStatus === "loaded") {
+      $scope.init();
+      $scope.initMap();
+    }
 
-    $scope.init = () => {
+  }, true);
 
-        console.log("eventFront->init()");
+  $scope.init = () => {
 
-        if(!$scope.imageScaled && $(document).width() > 660) {
+    console.log("eventFront->init()");
 
-            let eventImageContainer = $("#eventImageContainer");
-            let eventImage = $("#eventImage");
-            eventImage.load(() => {
+    var queryParams = $location.search();
+    if (queryParams.ref) {
+      $scope.refTrackerId = queryParams.ref;
+    }
 
-                let img = eventImage.get(0);
-                let imgWidth = img.naturalWidth;
-                let imgHeight = img.naturalHeight;
-                console.log("loaded event image: ", imgWidth+" x "+imgHeight);
+    if (!$scope.imageScaled && $(document).width() > 660) {
 
-                var imgRatio = imgWidth/imgHeight;
-                var containerRatio = eventImageContainer.width() / eventImageContainer.height()
-                if (imgRatio < containerRatio) {
-                    eventImageContainer.css("display", "flex");
-                    eventImage.css({ "height": "100%", "width": "auto" });
-                } else {
-                    eventImageContainer.css("display", "table-cell");
-                }
+      let eventImageContainer = $("#eventImageContainer");
+      let eventImage = $("#eventImage");
+      eventImage.load(() => {
 
-                $scope.imageScaled = true;
-                console.log("image processing", imgRatio, containerRatio);
+        let img = eventImage.get(0);
+        let imgWidth = img.naturalWidth;
+        let imgHeight = img.naturalHeight;
+        console.log("loaded event image: ", imgWidth+" x "+imgHeight);
 
-            });
-
+        var imgRatio = imgWidth/imgHeight;
+        var containerRatio = eventImageContainer.width() / 
+          eventImageContainer.height()
+        if (imgRatio < containerRatio) {
+          eventImageContainer.css("display", "flex");
+          eventImage.css({ "height": "100%", "width": "auto" });
+        } else {
+          eventImageContainer.css("display", "table-cell");
         }
 
-        $scope.getTicketResources(() => {
-    		$scope.updateOrder();
-    	});
+        $scope.imageScaled = true;
+        console.log("image processing", imgRatio, containerRatio);
 
-        $timeout(() => {
+      });
 
-            var baseUrl = `${$rootScope.appUrl}/i?route=/event/${$scope.event._id}`;
-	    	var queryParams = $location.search();
+    }
 
-	    	a2a.init("page");
+    $scope.getTicketResources(() => {
+      $scope.updateOrder();
+    });
+
+    $timeout(() => {
+
+      var baseUrl = `${$rootScope.appUrl}/i?route=/event/${$scope.event._id}`;
+
+      a2a.init("page");
 
 			console.log("get tracking urls:");
 			console.log($rootScope.loggedUser);
-            console.log("a2a", a2a);
+      console.log("a2a", a2a);
 
-            if (!$scope.refTracker) {
+      if (!$scope.refTrackerId) {
+        $scope.getRefTracker();
+      }
 
-                if (queryParams.ref) {
-                    $scope.refTrackerId = queryParams.ref;
-                }
+    }, 500);
 
-                $scope.getRefTracker();
-
-            }
-
-	    }, 500);
-
-    };
+  };
 
 
-    $scope.orderQty = (ticketResource, dir) => {
+  $scope.orderQty = (ticketResource, dir) => {
 
-	    let quantity = ticketResource.orderQty;
-	    if (dir === "+") {
-	        quantity += 1;
-	    } else if (dir === "-") {
-	        if(quantity > 0) {
-	            quantity -= 1;
-	        }
-	    }
+    let quantity = ticketResource.orderQty;
+    if (dir === "+") {
+      quantity += 1;
+    } else if (dir === "-") {
+      if(quantity > 0) {
+        quantity -= 1;
+      }
+    }
 
-	    ticketResource.orderQty = quantity;
-	    $scope.updateOrder();
+    ticketResource.orderQty = quantity;
+    $scope.updateOrder();
 
 	};
 
 
-    $scope.updateOrder = () => {
+  $scope.updateOrder = () => {
 
-	    let totalPrice = 0;
-	    let orderItems = [];
-        let ticketsQty = 0;
+    let totalPrice = 0;
+    let orderItems = [];
+    let ticketsQty = 0;
 
-        $scope.ticketResources.forEach(ticketResource => {
+    $scope.ticketResources.forEach(ticketResource => {
 
-            var trId = ticketResource._id;
-		    var trName = ticketResource.name;
-		    var trPrice = ticketResource.price;
-		    var qty = ticketResource.orderQty;
-		    var price = ticketResource.price;
+      var trId = ticketResource._id;
+      var trName = ticketResource.name;
+      var trPrice = ticketResource.price;
+      var qty = ticketResource.orderQty;
+      var price = ticketResource.price;
 
-		    totalPrice += price*qty;
-		    ticketsQty += qty;
+      totalPrice += price*qty;
+      ticketsQty += qty;
 
-		    var item = {
-		        ticketResource: trId,
-		        name: trName,
-		        price: trPrice,
-		        quantity: qty
-		    };
+      var item = {
+        ticketResource: trId,
+        name: trName,
+        price: trPrice,
+        quantity: qty
+      };
 
-		    if(qty > 0) {
-		        orderItems.push(item);
-		    }
+      if(qty > 0) {
+        orderItems.push(item);
+      }
 
 		});
 
-        $scope.ticketsQty = ticketsQty;
+    $scope.ticketsQty = ticketsQty;
+    $scope.order.event = $scope.event._id;
 		$scope.order.items = orderItems;
 		$scope.order.totalPrice = totalPrice;
+    $scope.order.rewardUsed = 0;
 
 	};
 
 
-    $scope.placeOrder = () => {
+  $scope.placeOrder = () => {
 
-		$scope.updateOrder();
+    $scope.updateOrder();
 
-        if($scope.order.items.length == 0) {
-	        $scope.showEventError = true;
-		    $scope.eventStatus = "error";
-            $scope.eventErrorMessage = "The order is empty.";
-            $scope.orderError = { message: "The order is empty." };
-            return;
-        }
+    if($scope.order.items.length == 0) {
+      $scope.showEventError = true;
+      $scope.eventStatus = "error";
+      $scope.eventErrorMessage = "The order is empty.";
+      $scope.orderError = { message: "The order is empty." };
+      return;
+    }
 
-		var orderRequest = {
-			order: $scope.order,
-			eventId: $scope.event._id,
-			action: "new"
+		const orderRequest = {
+			order: $scope.order
 		};
 
-		var queryParams = $location.search();
 
 		$log.debug("place order");
 		$log.debug(orderRequest);
 
-		if($scope.refTrackerId) {
-		    $scope.order.refTrackerId = $scope.refTrackerId;
+		const queryParams = $location.search();
+		if(queryParams.ref) {
+      $scope.order.refTrackerId = queryParams.ref;
 		}
 
 		if($scope.orderError) {
@@ -188,97 +191,98 @@ controllers.controller(
 		}
 
 		$http.post("/api/orders", orderRequest, { headers: requestHeaders } )
-        .success((response) => {
+    .success((response) => {
 
-            $log.debug(response);
+      $log.debug(response);
 
-            if(response.status == "orderCreated" || response.status == "orderFulfilled") {
+      if(response.status === "ok") {
 
-                var order = response.order;
-                $rootScope.navigate(`#/order/${order._id}`);
+        var order = response.order;
+        $rootScope.navigate(`#/order/${order._id}`);
 
-            } else {
+      } else {
 
-                $scope.showEventError = true;
-                $scope.eventStatus = "error";
-                $scope.eventErrorMessage = response.message;
+        $scope.showEventError = true;
+        $scope.eventStatus = "error";
+        $scope.eventErrorMessage = response.message;
 
-                $scope.orderError = response;
+        $scope.orderError = response;
 
-            }
+      }
 
-        })
-        .error((err) => {
-            $log.debug("Error", err);
-        });
+    })
+    .error((err) => {
+      $log.debug("Error", err);
+    });
 
 
 	};
 
 
-    $scope.getRefTracker = () => {
+  $scope.getRefTracker = () => {
 
-        var baseUrl = `${$rootScope.appUrl}/i?route=/event/${$scope.event._id}`;
+    var baseUrl = `${$rootScope.appUrl}/i?route=/event/${$scope.event._id}`;
 
-        let params = {
-            eventId: $scope.event._id
-        };
+    let params = {
+      eventId: $scope.event._id
+    };
 
-        if ($scope.refTrackerId) {
-            params.refTrackerId = $scope.refTrackerId;
-        } else {
-            if ($rootScope.loggedUser && $rootScope.logregStatus === "loggedIn") {
-                params.userId = $rootScope.loggedUser.id;
+    if ($scope.refTrackerId) {
+      params.refTrackerId = $scope.refTrackerId;
+    } else {
+      if ($rootScope.loggedUser && $rootScope.logregStatus === "loggedIn") {
+        params.userId = $rootScope.loggedUser.id;
+      }
+    }
+
+    console.log("Get reftracker params", params);
+    $http.get("/api/reftrackers", { params: params, headers: requestHeaders } )
+    .success((response) => {
+          
+      console.log("Reftracker response", response);
+      $scope.refTrackerId = response.refTracker.uuid;
+      $scope.refTracker = response.refTracker;
+      for (let i = 1; i <= a2a.n; i++) {
+          a2a[`n${i}`].linkurl = `${baseUrl}?ref=${$scope.refTrackerId}`;
+      }
+
+      $http.get(`/api/reftrackers/${$scope.refTrackerId}/rewardstats`,
+                { headers: requestHeaders } )
+      .success((response) => {
+
+        console.log("Rewardstats response", response);
+
+        let groupRewards = response.rewardStats.groupRewards;
+        if (groupRewards) {
+            
+          groupRewards.conditions.forEach(condition => {
+            if (!condition.reached) {
+              condition.reached = 0;
+            } else if (condition.quantity < condition.reached) {
+              condition.reached = condition.quantity;
             }
+          });
+
+          $scope.event.groupRewards = groupRewards;
+        
+        }
+        
+        let refRewards = response.rewardStats.refRewards;
+        if (refRewards && refRewards[$scope.event._id]) {
+          $scope.refRewards = refRewards[$scope.event._id];
+        } else {
+          $scope.refRewards = { total: 0 };
         }
 
-        console.log("Get reftracker params", params);
-	    $http.get("/api/reftrackers", { params: params, headers: requestHeaders } )
-        .success((response) => {
-            
-            console.log("Reftracker response", response);
-            $scope.refTrackerId = response.refTracker.uuid;
-            $scope.refTracker = response.refTracker;
-            for (let i = 1; i <= a2a.n; i++) {
-                a2a[`n${i}`].linkurl = `${baseUrl}?ref=${$scope.refTrackerId}`;
-            }
-
-            $http.get(`/api/reftrackers/${$scope.refTrackerId}/rewardstats`, { headers: requestHeaders } )
-            .success((response) => {
- 
-              console.log("Rewardstats response", response);
- 
-              let groupRewards = response.rewardStats.groupRewards;
-              if (groupRewards) {
-                  
-                  groupRewards.conditions.forEach(condition => {
-                      if (!condition.reached) {
-                          condition.reached = 0;
-                      } else if (condition.quantity < condition.reached) {
-                          condition.reached = condition.quantity;
-                      }
-                  });
-
-                  $scope.event.groupRewards = groupRewards;
-              
-              }
-              
-              let refRewards = response.rewardStats.refRewards;
-              if (refRewards && refRewards[$scope.event._id]) {
-                $scope.event.refRewards = refRewards[$scope.event._id];
-              } else {
-                $scope.event.refRewards = 0;
-              }
-
-            })
-            .error((err) => {
-                console.log("Error", err);
-            });
-        
-        })
-        .error((err) => {
-            console.log("Error", err);
-        });
+      })
+      .error((err) => {
+          console.log("Error", err);
+      });
+      
+    })
+    .error((err) => {
+        console.log("Error", err);
+    });
 
 
 	};

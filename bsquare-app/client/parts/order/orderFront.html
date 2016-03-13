@@ -28,38 +28,55 @@
     
     <div style="margin-top: 24px;">
         
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>{{ 'order.front.ticketType' | translate }}</th>
-                    <th>{{ 'order.front.ticketPrice' | translate }}</th>
-                    <th>{{ 'order.front.ticketQty' | translate }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="item in order.items">
-                    <td>
-                        {{item.name}}
-                    </td>
-                    <td>
-                        {{item.price}} e
-                    </td>
-                    <td>
-                        {{item.quantity}}
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-align: right;">
-                        <b>{{ 'order.front.orderTotal' | translate }}:</b>
-                    </td>
-                    <td>
-                        {{order.orderTotal}} €
-                    </td>
-                    <td>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>{{ 'order.front.ticketType' | translate }}</th>
+            <th>{{ 'order.front.ticketPrice' | translate }}</th>
+            <th>{{ 'order.front.ticketQty' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="item in order.items">
+            <td>
+              {{item.name}}
+            </td>
+            <td>
+              {{item.price}} e
+            </td>
+            <td>
+              {{item.quantity}}
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align: right;">
+              <b>{{ 'order.front.orderTotal' | translate }}:</b>
+            </td>
+            <td>
+              {{order.orderTotal - order.rewardUsed}} €
+            </td>
+            <td>
+              <div ng-show="availableReward">
+                <b>Käytä palkintoa</b>
+                <input type="text" 
+                  class="form-control" 
+                  style="width: 60px;
+                    height: 27px;
+                    display: inline-block;
+                    padding: 8px;"
+                  ng-model="order.rewardUsed" />
+                / 
+                <span style="color: red;" ng-show="!rewardSufficient()">
+                  {{availableReward.available}} €
+                </span>
+                <span ng-show="rewardSufficient()">
+                  {{availableReward.available}} €
+                </span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
         
     </div>
     

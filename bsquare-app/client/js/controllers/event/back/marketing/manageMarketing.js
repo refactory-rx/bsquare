@@ -129,15 +129,15 @@ controllers.controller('event.back.marketing.ManageMarketingCtrl',
     
     $scope.saveRefCondition = function(condition) {
         
-        $scope.event.refRewards.conditions.push(condition);
-        $scope.saveEvent($scope.event);
-        
-        $scope.newRefCondition = {
-            type: $scope.refConditionTypes[2],
-            ticketResource: $scope.ticketResources[0]
-        };
-        
-        $scope.rewardTemplateUrl = 'parts/event/back/marketing/rewardList.html';
+      $scope.event.refRewards.conditions.push(condition);
+      $scope.saveEvent($scope.event);
+      
+      $scope.newRefCondition = {
+          type: $scope.refConditionTypes[2],
+          ticketResource: $scope.ticketResources[0]
+      };
+      
+      $scope.rewardTemplateUrl = 'parts/event/back/marketing/rewardList.html';
     
     };
     

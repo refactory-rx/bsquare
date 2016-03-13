@@ -206,10 +206,8 @@ class OrderService {
 
 
 				})
-                .catch((error) => {
-
+        .catch((error) => {
 					console.log(error);
-
 				});
 
 			}
@@ -218,20 +216,20 @@ class OrderService {
 
 	}
 
-	getOrder(req, callback) {
+	getOrder(req, id) {
+    
+    return new Promise((resolve, reject) => {
+      
+      this.authService.screenRequest(req, true, (result) => {
+        this.getOrderByParams({ _id: id }, (response) => {
+          if (response.error) {
+            return reject(response);
+          }
+          resolve(response);
+        });
+      });
 
-		let orderId = req.params.id;
-		let objId = orderId;
-
-		let params = {
-		    _id: objId
-		};
-
-        this.authService.screenRequest(req, true, (result) => {
-            this.getOrderByParams(params, (response) => {
-				callback(response);
-			});
-		});
+    });
 
 	}
 
@@ -277,228 +275,280 @@ class OrderService {
 
 	}
 
+  sendOrderEmail(order, language) {
+    return new Promise((resolve, reject) => {
+    
+      //translations[req.headers["bsquare-language"]].orderEmail;
+      let orderLink = APP_BASE_URL+"/#/order/"+order._id;
+      let emailContent = 
+        translations[language].orderEmail;
+      emailContent = emailContent.replace(/{orderLink}/g, orderLink);
+                                                            
+      this.app.mailer.sendMail({
+        to: order.signupFields[0].value,
+        subject: "[B^2] Order created",
+        html: emailContent,
+        text: emailContent
+      }, (err, response) => {
+        if (err) return reject(err);
+        resolve(response);
+      });
+      
+    });
+  }
+
+  _updateOrder(order, language) {
+
+    return new Promise((resolve, reject) => {
+      
+      order.saveQ()
+      .then(order => {
+      
+        console.log("UPDATED ORDER", order);
+        if(order.signupStatus === "complete" &&
+          order.status !== "orderFulfilled") {
+          
+          this.sendOrderEmail(order, language);
+                        
+          if(order.orderTotal === 0 || order.orderTotal > 300) {
+            this.fulfillOrder(order._id, (response) => {
+              if (response.error) return reject(response);
+              resolve(response);
+            });
+          } else {
+            resolve(order);
+          }
+
+        } else {
+          resolve(order);
+        }
+
+      })
+      .catch(err => {
+        reject(err);
+      });
+
+    });
+
+  }
+
+  _rewardSufficient(order, user) {
+    return new Promise((resolve, reject) => {
+      
+      console.log("START AVAIL CHECK ____________--------------!!!!!!!!!!!!"); 
+      
+      this.trackerService.getAvailableRefRewards(user)
+      .then(result => {
+        
+        console.log("avail result", result);
+        if (result.earned - result.used < order.rewardUsed) {
+          return reject({ message: "reward_amount_check_failed" });
+        }
+
+        resolve();
+      
+      })
+      .catch(err => {
+        console.log("avail err", err);
+        reject(err);
+      });
+    });
+  
+  }
+  
+  _updateExistingOrder(order, user, language) {
+    return new Promise((resolve, reject) => {
+      
+      Order.findOneQ({ _id: order._id })
+      .then((existingOrder) => {
+        
+        if (!existingOrder) {
+          return reject({ message: "order_not_found" });
+        }
+
+        if (order.signupStatus === "formFilled") {
+          order.signupStatus = "complete";
+        }
+        
+        if (user && order.rewardUsed && order.rewardUsed > 0) { 
+          
+          this._rewardSufficient(order, user)
+          .then(() => {
+          
+            order.orderTotal -= order.rewardUsed;
+            Object.assign(existingOrder, order);
+            console.log("final order", existingOrder);
+            this._updateOrder(existingOrder, language)
+            .then(order => resolve(order))
+            .catch(err => reject(err));
 
-	saveOrder(req, callback) {
+          })
+          .catch(err => reject(err));          
 
-		let saveOrderRequest = req.body;
-		let action = saveOrderRequest.action;
+        }
 
-		let response = {
-			success: 0,
-			status: "none"
-		};
+        Object.assign(existingOrder, order);
+        this._updateOrder(existingOrder, language)
+        .then(order => resolve(order))
+        .catch(err => reject(err));
 
-		let order = saveOrderRequest.order;
+      })
+      .catch(err => {
+        reject(err);
+      });
+      
+    });
 
-        this.authService.screenRequest(req, true, (screenResult) => {
+  }
+
+  _getOrderTotal(itemIds, qtyById) {
+    return new Promise((resolve, reject) => {
+      
+      let orderTotal = 0;
 
-    		if(action !== "new") {
+      TicketResource.find( { _id: { $in: itemIds } }, (err, ticketResources) => {
 
-    		    let orderId = order._id;
-
-    		    delete order._id;
-
-    		    if(order.signupStatus === "formFilled") {
-                    order.signupStatus = "complete";
-                }
-
-                Order.update( { _id: orderId }, order, (err, numAffected) => {
-
-    			    if(err) {
-
-    				    response.status = "error";
-    					response.message = "Failed to save order.";
-    					response.error = err;
-    					callback(response);
-
-    			    } else {
-
-    					response.success = 1;
-    					response.status = "orderSaved";
-    					response.message = "Order saved.";
-
-    					//console.log('saved order: ');
-    					console.log(order);
-
-    					if(order.signupStatus === "complete" && order.status !== "orderFulfilled") {
-
-                            let orderLink = APP_BASE_URL+"/#/order/"+orderId;
-                            let emailContent = translations[req.headers["bsquare-language"]].orderEmail;
-                            emailContent = emailContent.replace(/{orderLink}/g, orderLink);
-                                                                
-                            this.app.mailer.sendMail({
-                                to: order.signupFields[0].value,
-                                subject: "[B^2] Order created",
-                                html: emailContent,
-                                text: emailContent
-                            }, (err, response) => {
-                                console.log("mailer response", err, response);
-                            });
-                            
-                            if(order.orderTotal === 0 || order.orderTotal > 300) {
-                                this.fulfillOrder(orderId, (response) => {
-		                			callback(response);
-		                		});
-		                	} else {
-		            			callback(response);
-		                	}
-
-    					} else {
-    						callback(response);
-    					}
-
-    			    }
-
-
-    			});
-
-    		} else {
-
-    			let eventId = saveOrderRequest.eventId;
-    			order.event = eventId;
-
-    			order.timePlaced = (new Date()).getTime();
-
-   				//console.log('create new order:');
-   				//console.log(screenResult);
-
-    			if(screenResult.status === "authorized") {
-    			    order.user = screenResult.user.id;
-    			}
-
-    			let items = order.items;
-    			let itemIds = [];
-    			let qtyById = [];
-
-    			for(let i=0; i < items.length; i++) {
-    			    let itemId = items[i].ticketResource;
-    			    itemIds.push(itemId);
-    			    qtyById[items[i].ticketResource] = parseInt(items[i].quantity);
-    			}
-
-    			let orderTotal = 0;
-
-    			//console.log('qtyById: ');
-    			//console.log(qtyById);
-
-                TicketResource.find( { _id: { $in: itemIds } }, (err, ticketResources) => {
-
-    			    if(err) {
-
-    				    response.status = "error";
-                		response.message = "Could not read ticket data.";
-                		response.error = err;
-
-    				} else {
-
-    				    if(ticketResources.length != itemIds.length) {
-
-    				        response.status = "invalidItems";
-                		    response.message = "Order request contains invalid information.";
-
-    				    } else {
-
-        				    for(let i=0; i < ticketResources.length; i++) {
-
-        				        let idString = ticketResources[i]._id.toHexString();
-
-        				        if(qtyById[idString] > ticketResources[i].qtyAvailable - ticketResources[i].qtyReserved) {
-        				        	response.status = "soldOut";
-        				        	response.message = `There are not enough tickets of type ${ticketResources[i].name} to satisfy this order.`;
-        				        	response.ticketResource = idString;
-        				        	callback(response);
-        				        	return;
-        				        }
-
-        			            orderTotal += ticketResources[i].price * qtyById[idString];
-
-        				    }
-
-        				    order.orderTotal = orderTotal;
-
-                            Event.findOne({ _id: order.event }, (err, event) => {
-
-        				    	if(!event.signupFields || event.signupFields.length === 0) {
-        				    		order.signupStatus = "complete";
-        				    	}
-
-        				    	order.status = "new";
-
-                                Order.create(order, (err, createdOrder) => {
-
-                                    if(err) {
-
-                                        response.status = 'error';
-                                        response.message = 'Failed to create order.';
-                                        response.error = err;
-
-                                        callback(response);
-
-                                    } else {
-
-                                        response.success = 1;
-                                        response.status = 'orderCreated';
-                                        response.message = 'Order created.';
-                                        response.order = createdOrder;
-
-                                        let qtyUpdates = ticketResources.map((ticketResource) => {
-
-                                            return (() => {
-
-                                                let deferred = Q.defer();
-
-                                                let idString = ticketResource._id.toHexString();
-                                                let qtyReserved = ticketResource.qtyReserved + qtyById[idString];
-                                                console.log("qtyById / qtyReserved", ticketResource.qtyReserved, qtyById, qtyReserved);
-
-                                                TicketResource.update( { _id: ticketResource._id }, { qtyReserved: qtyReserved }, (err, numAffected) => {
-                                                    deferred.resolve(numAffected);
-                                                });
-
-                                                return deferred.promise;
-
-                                            })();
-
-                                        });
-
-                                        Q.all(qtyUpdates)
-                                        .then((updateResults) => {
-                                            console.log('qty update results', updateResults);
-                                        });
-
-
-                                        this.updateOrderMap(createdOrder, ticketResources);
-                                        
-                                        if(order.signupStatus === "complete") {
-                                            
-                                            if(orderTotal === 0 || orderTotal > 300) {
-                                                this.fulfillOrder(createdOrder._id.toHexString(), (response) => {
-                                                    callback(response);
-
-                                                });
-                                            } else {
-                                                callback(response);
-                                            }
-                                        } else {
-                                            callback(response);
-                                        }
-
-
-                                    }
-
-
-                                });
-
-
-        				    });
-
-    				    }
-
-    				}
-
-    			});
-
-    		}
+        if (err) return reject(err);
+
+        if (ticketResources.length != itemIds.length) {
+          return reject({ message: "invalid_items" });
+        }
+
+        for (let i = 0; i < ticketResources.length; i++) {
+
+          let idString = ticketResources[i]._id.toHexString();
+
+          if(qtyById[idString] > ticketResources[i].qtyAvailable - ticketResources[i].qtyReserved) {
+            return reject({
+              status: "soldOut",
+              message: `There are not enough tickets of type ${ticketResources[i].name} to satisfy this order.`,
+              ticketResource: idString
+            });
+          }
+
+          orderTotal += ticketResources[i].price * qtyById[idString];
+
+        }
+        
+        resolve({ orderTotal, ticketResources });
+      
+      });
+
+    });
+    
+  }
+
+  _updateQtys(ticketResources, qtyById) {
+    
+    let qtyUpdates = ticketResources.map(ticketResource => {
+
+      return (() => {
+
+        let deferred = Q.defer();
+
+        let idString = ticketResource._id.toHexString();
+        let qtyReserved = ticketResource.qtyReserved + 
+          qtyById[idString];
+
+        console.log("qtyById / qtyReserved", 
+                    ticketResource.qtyReserved, 
+                    qtyById, qtyReserved);
+
+        TicketResource.update({ _id: ticketResource._id }, 
+                              { qtyReserved: qtyReserved }, 
+                              (err, numAffected) => {
+          deferred.resolve(numAffected);
+        });
+
+        return deferred.promise;
+
+      })();
+
+    });
+
+    Q.all(qtyUpdates)
+    .then((updateResults) => {
+      console.log('qty update results', updateResults);
+    });
+  
+  }
+  
+  _createNewOrder(order, user) {
+
+    return new Promise(async (resolve, reject) => {
+
+      try {
+        
+        order.timePlaced = (new Date()).getTime();
+        order.user = user.id;
+
+        let items = order.items;
+        let itemIds = [];
+        let qtyById = [];
+
+        for(let i = 0; i < items.length; i++) {
+          let itemId = items[i].ticketResource;
+          itemIds.push(itemId);
+          qtyById[items[i].ticketResource] = parseInt(items[i].quantity);
+        }
+
+        const result = await this._getOrderTotal(itemIds, qtyById);
+        order.orderTotal = result.orderTotal;
+        
+        const event = await Event.findOne({ _id: order.event }).exec();
+
+        if(!event.signupFields || event.signupFields.length === 0) {
+          order.signupStatus = "complete";
+        }
+
+        order.status = "new";
+
+        order = await Order.create(order);
+        this._updateQtys(result.ticketResources, qtyById);
+        this.updateOrderMap(order, result.ticketResources);
+                              
+        if(order.signupStatus === "complete") {
+                  
+          if(result.orderTotal === 0 || result.orderTotal > 300) {
+            this.fulfillOrder(order._id.toHexString(), 
+                              (response) => {
+              if (response.error) return reject(response.error);
+              resolve(response.order);
+            });
+          } else {
+            resolve(order);
+          }
+
+        } else {
+          resolve(order);
+        }
+
+      } catch (err) {
+        reject(err);
+      }
+
+    });
+  
+  }
+
+	saveOrder(order, user, language) {
+    
+    console.log("saving order", order);  
+    return new Promise(async (resolve, reject) => { 
+      
+      try {
+        
+        if (order._id) {
+          order = await this._updateExistingOrder(order, user, language);
+        } else {
+          order = await this._createNewOrder(order, user)
+        }
+        
+        resolve(order);
+
+      } catch (err) {
+        reject(err);
+      } 
 
 		});
 
@@ -545,106 +595,81 @@ class OrderService {
 
 	}
 
-	fulfillOrder(orderId, callback) {
+	async fulfillOrder(orderId, callback) {
+    
+    console.log("fulfilling order...");
 
-	    let response = {
-			success: 0,
-			status: "none"
-		};
+    try {
+
+      let response = {
+        success: 0,
+        status: "none"
+      };
+          
+      let order = await Order.findOne( { _id: orderId }).exec();
+      if (!order) {
+        return callback({ error: "not_found" });
+      }
+
+      let items = order.items;
+      let itemIds = [];
+      let qtyById = {};
+
+      for(let i=0; i < items.length; i++) {
+        let itemId = items[i].ticketResource;
+        itemIds.push(itemId);
+        qtyById[items[i].ticketResource] = items[i].quantity;
+      }
+                      
+      const ticketResources = 
+        await TicketResource.find( { _id: { $in: itemIds } }).exec();
+
+      let params = Object.assign({
+          orderId: order._id.toString(),
+          qtysByResource: qtyById
+      }, order.user ? { userId: order.user.toString() } : {});
+
+      this.ticketService.createTickets(params, async (result) => {
         
-        Order.findOne( { _id: orderId }, (err, order) => {
+        console.log("CREATE TICKETS RESULT", result);
+        if(result.success === 0) {
 
-            responseUtil.createFindResponse("Order", err, order, (response) => {
-                
-	       		if(response.success == 1) {
+          callback(result);
 
-		            let items = order.items;
-				    let itemIds = [];
-				    let qtyById = {};
+        } else if(result.status === "orderFulfilled") {
+        
+          const tickets = 
+            await Ticket.find( { orderId: order._id.toHexString() }).exec();
+          console.log("found tickets", tickets);
+          order.status = "fulfilled";
+          order.tickets = tickets;
+          order = await order.save();
+          
+          console.log("NUM AFF", order);
+          order.tickets = tickets;
+          this.trackerService.checkGroupTrackingRules(order);
+          response.status = "orderFulfilled";
+          response.message = "Order fulfilled.";
+          response.order = order;
+          response.tickets = tickets;
 
-				    for(let i=0; i < items.length; i++) {
-				        let itemId = items[i].ticketResource;
-				        itemIds.push(itemId);
-				        qtyById[items[i].ticketResource] = items[i].quantity;
-				    }
-                    
-                    TicketResource.find( { _id: { $in: itemIds } }, (trErr, ticketResources) => {
-                        
-                        responseUtil.createFindResponse("TicketResource", trErr, ticketResources, (response) => {
+          callback(response);
+        
+        }
 
-				    		if(response.success == 1) {
+      });
 
-                                let params = Object.assign({
-                                    orderId: order._id.toString(),
-                                    qtysByResource: qtyById
-                                }, order.user ? { userId: order.user.toString() } : {});
-
-                                this.ticketService.createTickets(params, (result) => {
-
-                                    if(result.success === 0) {
-
-                                        callback(result);
-
-                                    } else if(result.status === "orderFulfilled") {
-
-                                        Ticket.find( { orderId: order._id.toHexString() }, (err, tickets) => {
-
-                                            Order.update( { _id: order._id }, { status: "fulfilled", tickets: tickets }, (orderUpdateErr, numAffected) => {
-
-                                                responseUtil.createUpdateResponse("Order", orderUpdateErr, numAffected, (response) => {
-
-                                                    if(response.success == 1) {
-                                                        
-                                                        order.tickets = tickets;
-                                                        this.trackerService.checkGroupTrackingRules(order);
-                                                        response.status = "orderFulfilled";
-                                                        response.message = "Order fulfilled.";
-                                                        response.order = order;
-                                                        response.tickets = tickets;
-
-                                                    }
-
-                                                    callback(response);
-
-                                                });
-
-                                            });
-
-                                        });
-
-                                    } else {
-                                        callback(result);
-                                    }
-
-                                });
-
-				    		} else {
-
-				    			callback(response);
-
-				    		}
-
-			    		});
-
-
-				    });
-
-			    } else {
-
-			    	callback(response);
-
-			    }
-
-	        });
-
-	    });
+    } catch (err) {
+      console.log("fulfillment error", err);
+      callback({ error: err });
+    }
 
 	}
     
-    initRoutes() {
-        let orderServiceRoutes = require("./orderServiceRoutes");
-        orderServiceRoutes.init(this.app);
-    }
+  initRoutes() {
+      let orderServiceRoutes = require("./orderServiceRoutes");
+      orderServiceRoutes.init(this.app);
+  }
 
 }
 
