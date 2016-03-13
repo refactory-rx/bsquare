@@ -1,4 +1,4 @@
-"user strict";
+"use strict";
 
 let BaseError = exports.BaseError = class BaseError extends Error {
     constructor(status, data = null) {
