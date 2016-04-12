@@ -28,8 +28,8 @@ module.exports = {
             SENDGRID_PASSWORD: config["SENDGRID_PASSWORD"],
             SENDGRID_FROM: config["SENDGRID_FROM"],
                 
-            DB_HOST: config["DB_HOST"],
-            DB_PORT: config["DB_PORT"] || config["PG_PORT_27017_TCP_ADDR"], 
+            DB_HOST: config["DB_HOST"] || || config["MONGO_PORT_27017_TCP_PORT"],
+            DB_PORT: config["DB_PORT"] || config["MONGO_PORT_27017_TCP_ADDR"], 
             DB_USERNAME: config["DB_USERNAME"] || "bsquare",
             DB_PASSWORD: config["DB_PASSWORD"] || "bsquare",
                 
