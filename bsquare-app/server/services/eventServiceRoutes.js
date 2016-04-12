@@ -1,5 +1,5 @@
 import url from "url";
-import Errors from "../../../shared/lib/Errors";
+import * as Errors from "../../../shared/lib/Errors";
 
 module.exports = {
 

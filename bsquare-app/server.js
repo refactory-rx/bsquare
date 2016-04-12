@@ -1,6 +1,6 @@
 "use strict";
 
-let env = require("./env/env");
+import * as Errors from "../shared/lib/Errors";
 
 let https = require("https");
 let http = require("http");
@@ -12,7 +12,7 @@ let bodyParser = require("body-parser");
 let methodOverride = require("method-override");
 let mongoose = require("mongoose-q")(require("mongoose"));
 
-let Errors = require("../shared/lib/Errors");
+let env = require("./env/env");
 
 let settings = env.getSettings();
 mongoose.connect(settings.DATABASE_URL);

@@ -1,7 +1,7 @@
 import Q from "q";
 import url from "url";
 
-import Errors from "../../../shared/lib/Errors";
+import * as Errors from "../../../shared/lib/Errors";
 
 let Order, Invoice, TicketResource;
 

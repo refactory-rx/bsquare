@@ -5,9 +5,10 @@ import crypto from "crypto";
 import merge from "merge";
 import IBAN from "iban";
 
+import * as Errors from "../../../shared/lib/Errors";
+
 let mailUtil = require('../utils/mailUtil');
 let httpUtil = require('../utils/httpUtil');
-let Errors = require("../../../shared/lib/Errors");
 
 let Event, ImpressionTracker, TicketResource, Ticket;
 let WEB_CONTENT_PATH;
