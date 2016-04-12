@@ -5,8 +5,10 @@ module.exports = {
         var config;
 
         try {
-            config = require("../config/settings");
-            console.log("found settings module, using variables from settings module");
+
+          config = require("../config/settings");            
+          console.log("found settings module, using variables from settings module");
+        
         } catch(error) {
             if(error.code === "MODULE_NOT_FOUND") {
                 console.log("settings module not found, using env variables");
@@ -26,7 +28,10 @@ module.exports = {
             SENDGRID_PASSWORD: config["SENDGRID_PASSWORD"],
             SENDGRID_FROM: config["SENDGRID_FROM"],
                 
-            DATABASE_URL: config["DATABASE_URL"],
+            DB_HOST: config["DB_HOST"],
+            DB_PORT: config["DB_PORT"] || config["PG_PORT_27017_TCP_ADDR"], 
+            DB_USERNAME: config["DB_USERNAME"] || "bsquare",
+            DB_PASSWORD: config["DB_PASSWORD"] || "bsquare",
                 
             CHECKOUT_MERCHANT_ID: config["CHECKOUT_MERCHANT_ID"],
             CHECKOUT_MERCHANT_SECRET: config["CHECKOUT_MERCHANT_SECRET"],

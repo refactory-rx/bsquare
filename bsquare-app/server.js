@@ -14,8 +14,12 @@ let mongoose = require("mongoose-q")(require("mongoose"));
 
 let env = require("./env/env");
 
-let settings = env.getSettings();
-mongoose.connect(settings.DATABASE_URL);
+const settings = env.getSettings();
+const { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD } = settings;
+const dbUrl = 
+  `mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/bsquare`;
+console.log("DB URL: ", dbUrl);
+mongoose.connect(dbUrl);
 
 let app = express();
 
